@@ -4,7 +4,22 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-12 — by Tumo (via Claude)_
+_Last updated: 2026-09-15 — by Tumo (via Claude). Previous update: 2026-09-12._
+
+> **⚠️ Open question, and it sits above everything else on this board: what happened to the
+> hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
+> the 13–14 Jul orientation and the **16 Jul showcase** — are now two months past, and **this repo
+> holds no record of any of them.** No log entry says the concept was submitted; none says it was
+> missed. The demo video (T034), a required deliverable, was never recorded. The phase tracker below
+> still carries "⬜ not started" against windows that closed in July, and that is left standing on
+> purpose: it is the honest state of the record, not a claim that nothing was submitted.
+> **Only Tumo can answer this**, and the answer changes what the remaining work is *for* — a
+> showcase build, a post-hackathon product, or a portfolio piece. Until then the board tracks it as
+> ongoing development on `main`.
+>
+> **Gap in the record:** nothing was committed between **2026-08-30** and **2026-09-12**, when
+> PR #59 (VOICE-01–07 planning) and PR #60 (CI checks on every PR into `main`) landed. `main` is
+> clean at `9d7a513`.
 
 ---
 
@@ -192,7 +207,7 @@ without the cache the Listen button would stop working around the 12th.
 4. Persistence: WatermelonDB so recordings survive reload (T024). Optional: NativeWind (T006).
 5. Phase 3: ElevenLabs static intro · record the 2–3 min demo video · finalise the written narrative.
 
-## 🗓️ Timeline (today: 2026-08-26)
+## 🗓️ Timeline (today: 2026-09-15)
 
 ### Architecture v2 (current programme)
 
@@ -202,16 +217,21 @@ without the cache the Listen button would stop working around the 12th.
 | **5.2 Core loop** | `/watch` + player · `/journey` stages · quiz · heritage cards · progress store | 2 Sep – 8 Sep | ✅ done (early) |
 | **5.3 Rooms + polish** | Passport · Kids · Schools · i18n sweep · a11y · POPIA review | 9 Sep – 15 Sep | ✅ done (early) |
 
-### Hackathon (complete)
+### Hackathon (all windows closed — outcome unrecorded)
+
+**Every window below is in the past.** The heading used to read "(complete)", which was never true of
+the last three rows and is now misleading, so it says what the table actually shows. The ⬜ marks are
+**the state of this record, not a claim about what Tumo did** — see the warning at the top of this
+file. "(early)" is kept where it was earned: those phases genuinely finished ahead of their window.
 
 | Phase | What | Target window | Status |
 |-------|------|---------------|--------|
 | **0. Scaffold** | Governance + docs + Expo boots + 1 module renders | 29–30 Jun | ✅ done |
 | **1. Story core** | 3 literary modules · cinematic Reader · Child/Adult · ST/EN toggle · gallery | 1–3 Jul | 🟡 mostly done (early) |
 | **2. Community + offline** | Oral-history recorder · POPIA consent · local save · (Supabase/Lelapa stretch) | 4–6 Jul | 🟡 core done (early) |
-| **3. Polish + submit** | Accessibility pass · intro narration · demo video · written narrative | 7–9 Jul | ⬜ not started |
-| **🏁 Submit concept** | Prototype + 2–3 min video + narrative | **9 Jul 16:00** | ⬜ |
-| **4. Showcase prep** | (if finalist) polish for live showcase | 13–16 Jul | ⬜ |
+| **3. Polish + submit** | Accessibility pass · intro narration · demo video · written narrative | 7–9 Jul | 🟡 partly done — narrative drafted, a11y partly done (25 pre-v2 controls unlabelled), **demo video never recorded** |
+| **🏁 Submit concept** | Prototype + 2–3 min video + narrative | **9 Jul 16:00** (passed) | ❓ **unrecorded — needs Tumo** |
+| **4. Showcase prep** | (if finalist) polish for live showcase | 13–16 Jul (passed) | ❓ **unrecorded — needs Tumo** |
 
 ## 🧱 What's built so far
 
@@ -274,6 +294,45 @@ without the cache the Listen button would stop working around the 12th.
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-10** — **The dates were fiction, and the build was never as verified as it looked.**
+
+  Every date at the top of the three entry-point documents was wrong. `CLAUDE.md` opened with "today
+  is **2026-06-29**", `docs/00-project-plan.md` with the same, and this board with "today:
+  **2026-08-26**" — while the actual date was **2026-09-10** and the last commit on `main` was
+  2026-08-30. A reader arriving at `CLAUDE.md` was told the concept deadline was ten days away when
+  it had passed two months earlier. All three now carry the real date, `docs/00` is marked as the
+  historical document it is, and the hackathon phase table's heading no longer says "(complete)" over
+  three rows that are not.
+
+  **What was deliberately not written: an outcome.** Nothing in this repo records whether the 9 July
+  concept submission was made. No log entry says it was; none says it was missed. The gap in the log
+  runs 8 Jul → 26 Aug, straight through the deadline, the finalist announcement and the showcase. The
+  temptation was to infer — the narrative is drafted and the video never was, so *probably* — and
+  inferring is exactly what [AGENTS.md §4](AGENTS.md) forbids when the subject is the record itself.
+  The ⬜ marks stay, relabelled **❓ unrecorded — needs Tumo**, and the question now sits above
+  everything else on this board. **Only Tumo can close it**, and the answer decides what the
+  remaining work is *for*.
+
+  **Then the verification, and it did not start where it was meant to.** `npm run typecheck` failed
+  immediately: **`app/node_modules` did not exist at all.** The tests had already passed 179/179
+  before that was noticed — because they are pure-logic and Node 22 strips types natively, so they
+  run with no dependencies installed whatsoever. That is a genuinely useful property of how they were
+  written, and it is also a trap: **a green test run here is not evidence the project is
+  installable.** `npm ci` then failed twice with Windows `ENOTEMPTY` against a half-written
+  `node_modules`; a hard delete and a clean install fixed it, and nothing was holding the directory —
+  no dev server, no stray process.
+
+  Verified from a clean install: **`npm run typecheck` clean** · **179/179 tests pass** · `npm ci`
+  succeeds from the committed lockfile (all three on 2026-09-10) · **`npm run build:web` green**
+  (2026-09-11) — `expo export` produced a **3.9 MB** JS bundle and the PWA post-step precached the
+  **10-file, 4.13 MB shell**, which is the 4.1 MB first-open cost the payload table above claims, now
+  re-measured rather than remembered. Total `dist` is **564 files, 267.45 MB** — media is in the
+  build output but deliberately **not** precached, which is the whole point of PWA-03 on a metered
+  line. The counts in [docs/10](docs/10-status-and-roadmap.md) were stale in two places — it claimed
+  **85** tests in one section and **117** in another — and both now read 179.
+
+  No app code was touched. V2-12, EL-05 and PWA-05 are unchanged and still need a human.
 
 - **2026-08-30 (planning)** — **Voice-per-story and emotional tone added to the backlog as VOICE-01–07,
   not built.** Tumo asked that the narrating voice suit the story and its theme, and that the tone
