@@ -1,5 +1,14 @@
 # 00 — Project Plan & Timeline
 
+> **Historical document (as of 2026-09-15).** This is the plan as it was written on 2026-06-29, and
+> every date in it has passed. It is kept as the record of what was planned, not as a description of
+> what is happening now. **Whether the 9 July concept submission was made is not recorded anywhere in
+> this repo** — see the warning at the top of [STATUS.md](../STATUS.md). For live status use
+> [STATUS.md](../STATUS.md); for what is built versus planned use
+> [10-status-and-roadmap.md](10-status-and-roadmap.md); the current programme is
+> [13-architecture-v2-plan.md](13-architecture-v2-plan.md) and
+> [14-game-architecture.md](14-game-architecture.md).
+
 ## Goal
 
 Ship a **demo-ready Maloba prototype by the concept deadline (9 July 2026, 16:00)** and, if selected
@@ -23,7 +32,7 @@ wins Community Impact (25%).
 ElevenLabs intro narration → cloud sync (keep local-only) → 4th module (Vilakazi) → Adult↔Child live
 Gemini calls (pre-generate instead).
 
-## Phases & timeline (today: 2026-06-29)
+## Phases & timeline (written 2026-06-29 — all windows now closed)
 
 | Phase | Deliverable | Window | Demo-able output |
 |-------|-------------|--------|------------------|

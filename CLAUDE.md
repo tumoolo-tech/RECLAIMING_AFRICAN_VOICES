@@ -48,14 +48,26 @@ local SQLite + sync).
 - **Don't:** burn paid API quota in dev. ElevenLabs is static-only; Gemini/Pollinations are free but
   rate-limited — cache aggressively.
 
-## Real timeline (today is 2026-06-29)
+## Real timeline (as of 2026-09-15)
 
-| Date | Milestone |
-|------|-----------|
-| **9 Jul 2026, 16:00** | **Concept submission deadline** — prototype + 2–3 min video + written narrative |
-| 10 Jul 2026 | Finalists announced (top 50) |
-| 13–14 Jul 2026 | Technical orientation + Red Horizon Metaverse access |
-| **16 Jul 2026** | **Final showcase event** |
+**Every hackathon date below is in the past**, and the repo carries **no record of what happened on
+any of them** — no log entry says the concept was submitted, and none says it was missed. Do not
+assume either. This is an open question for Tumo, tracked at the top of
+[STATUS.md](STATUS.md); until it is answered, treat the four dates as history and the project as
+ongoing work on `main`.
+
+| Date | Milestone | Outcome in this repo |
+|------|-----------|----------------------|
+| **9 Jul 2026, 16:00** | **Concept submission deadline** — prototype + 2–3 min video + written narrative | **Unrecorded.** The narrative is drafted; the demo video (T034) was never recorded |
+| 10 Jul 2026 | Finalists announced (top 50) | **Unrecorded** |
+| 13–14 Jul 2026 | Technical orientation + Red Horizon Metaverse access | **Unrecorded** |
+| **16 Jul 2026** | **Final showcase event** | **Unrecorded** |
+
+Development did not stop at the deadline: work continued through 8 Jul, then again from 26 Aug to
+**30 Aug 2026** (Architecture v2, the Know the Road game layer, the ElevenLabs narration voice, and
+all 54 `countries/` files), and resumed on **12 Sep 2026** with docs-and-CI work only — VOICE-01–07
+planned but not built, and typecheck + unit tests now running on every PR into `main`. The last
+commit on `main` is 2026-09-12.
 
 Full phased plan: [docs/00-project-plan.md](docs/00-project-plan.md).
 

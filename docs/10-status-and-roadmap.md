@@ -90,8 +90,9 @@ notarises the public-domain canon on a public blockchain. Humanities first; tech
   localized across all 11 languages.
 
 **Engineering**
-- ✅ `tsc` clean · **85 pure-logic unit tests** · `expo export --platform web` green · low-data reading ·
-  cached images · deployed on Vercel + a custom domain.
+- ✅ `tsc` clean · **179 pure-logic unit tests** (re-run 2026-09-10, all passing) ·
+  `expo export --platform web` green · low-data reading · cached images · deployed on Vercel + a
+  custom domain.
 
 ---
 
@@ -143,7 +144,7 @@ The app runs fully without these; each simply upgrades or swaps an already-worki
 - **Progress persistence is web-only.** Stars, cards and streaks survive a refresh on web
   (localStorage); on native they last the session and the Passport says so rather than implying a
   guarantee. Lands with WatermelonDB alongside the Archive's own native persistence.
-- **No pre-v2 browser re-walk yet (V2-12).** Typecheck, the 117 tests and the web bundle are green,
+- **No pre-v2 browser re-walk yet (V2-12).** Typecheck, the 179 tests and the web bundle are green,
   and `app/src/routes.test.ts` pins the route/nav wiring, but no one has opened every pre-v2 screen in
   a browser since the shell landed. No test here can see a layout.
 - **Quiz coverage is partial** — 13 of the 25 journey milestones have questions. The rest complete on
