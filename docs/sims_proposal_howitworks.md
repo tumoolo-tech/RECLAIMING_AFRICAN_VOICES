@@ -2,7 +2,9 @@
 
 **Purpose:** internal working document — how the product actually functions, step by step, from a
 user opening the app through to a booked heritage experience. Complements the Department of Tourism
-pitch (`maloba-dot-pitch.md`), which makes the case for *why*; this document shows *how*.
+pitch ([sims_proposal.md](sims_proposal.md)), which makes the case for *why*; this document shows
+*how*. For what actually gets built, in what order, against the code that already exists, see
+[15-heritage-tourism-plan.md](15-heritage-tourism-plan.md).
 
 ---
 
@@ -111,7 +113,8 @@ path.
 | Gemini Flash | Language adaptation/translation of verified content — not used to generate historical claims |
 | Lelapa AI / Vulavula | Indigenous-language speech-to-text and translation for oral history capture |
 | POPIA consent flow | Gate before any recording; tied to Stage 2 of the content pipeline |
-| Real/commissioned art (replacing Pollinations AI art) | Visual layer for stories and location entries — sourced per the team's decision on commissioned vs. licensed vs. community art (open question, see pivot proposal) |
+| Gemini image generation (build-time) + Pollinations (runtime fallback) | Visual layer for stories and location entries. **AI-illustrated today and labelled as such** — every image carries an "Artistic interpretation" note in all eleven languages ([AboutSourcesScreen.tsx](../app/src/components/AboutSourcesScreen.tsx)). Images are pre-rendered offline by `npm run gen:images` and cached as local assets; Pollinations serves only where no cached asset exists |
+| Commissioned / licensed / community artwork | **The intended replacement for AI imagery, story by story, as it becomes available** — not a decision that has been made or scheduled. Tracked as an open item in [15-heritage-tourism-plan.md](15-heritage-tourism-plan.md) §8, not as committed work |
 
 ---
 

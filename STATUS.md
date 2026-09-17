@@ -46,7 +46,8 @@ _Last updated: 2026-09-15 — by Tumo (via Claude). Previous update: 2026-09-12.
 | **🎮 Know the Road — the game layer (Phase 6)** | 🟡 **2 of 10** — KTR-01 + KTR-02 done (27–30 Aug); solving now moves you *and* is worth something · plan: [docs/14-game-architecture.md](docs/14-game-architecture.md) |
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
-| **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **not yet a required check** — make it one once it has run green |
+| **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Three decisions are Tumo's** (nav placement vs Architecture v2 **D1**, pilot breadth, partner ownership) · plan: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -294,6 +295,36 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-17 (planning)** — **The tourism pitch gets an implementation plan, and the pitch gets an
+  honest paragraph about AI.**
+
+  [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) turns the two partnership
+  drafts into `TOUR-01–13` in three staged gates. The useful finding was how little is actually new:
+  the places, the sourced stories, the consent flow and the rights gate all exist, and
+  [ingest/rights.ts](app/src/services/ingest/rights.ts) *already implements in code* the pitch's rule
+  that literature is used only where rights are clear — `"unverified"` blocks ingest and publish.
+  **Four things genuinely don't exist:** nothing models a bookable operator, `landmarks` is a bare
+  `string[]` (Soweto already lists the pitch's own four landmarks that way), no relation joins a story
+  to a place, and nothing would notice a dead booking link. Soweto is the pilot seed because the
+  content is already there.
+
+  **The AI claim was softened rather than the product changed** — Tumo's call: AI illustration stays
+  until better visuals come from people. The pitch had said, in the present tense, that AI generates
+  neither narrative nor visuals; the app does generate visuals with Gemini (Pollinations as runtime
+  fallback). It now says what is true and is a stronger claim for it: **no historical claim is ever
+  AI-generated**, images are AI-illustrated and labelled "Artistic interpretation" in all 11
+  languages, never presented as photographs of real people, and commissioned/community artwork
+  replaces them story by story as it becomes available. A partnership could accelerate exactly that.
+
+  **One claim in the pitch is still wrong and is now a task.** §3 calls the contribution "direct,
+  **traceable**." Traceable needs per-person click attribution, which is what POPIA compliance exists
+  to prevent and would apply to minors in Kids mode. v1 can report places and operators linked, not
+  conversions — TOUR-13, and the wording should change before the document is sent.
+
+  Also still open in those drafts: §7, the actual ask, is an unfilled placeholder; the byline says a
+  3-person team while CLAUDE.md says solo; and both call the product "Maloba" after the 3 Jul rename
+  to Ubuntu Heritage. No app code touched.
 
 - **2026-09-10** — **The dates were fiction, and the build was never as verified as it looked.**
 
