@@ -1,238 +1,251 @@
-# Places — review sheet (Soweto pilot)
+# Places — review sheet (all cities)
 
-**What this is:** the drafted content for the first four `Place` records, for Tumo to review **before**
-any of it becomes code. Same convention as [provinces-content.md](provinces-content.md), which
-`provinces.ts` names as its own review sheet.
+**What this is:** the drafted content for `Place` records, for Tumo to review **before** any of it
+becomes code. Same convention as [provinces-content.md](provinces-content.md).
 
-**Why it exists:** SP-053. Review happens on prose, not on a TypeScript diff. Nothing here reaches
-`app/src/content/places.ts` until it is signed off (TOUR-05b).
+**Scope widened 2026-09-18 (SP-069):** every landmark in every city, not Soweto alone — *"every place
+also has its own interesting thing to tell."*
 
-**The rule I researched under (SP-054):** an acceptable source is the institution's own published
-page, a heritage authority or museum record, or a published history. **Not** a travel blog, an
-aggregator, or an AI summary. Anything I could not ground that way is marked, not guessed.
+**The rule I research under (SP-054):** the institution's own published page, a heritage authority or
+museum record, or a published history. **Not** a travel blog, an aggregator, or an AI summary.
 
-**How to sign off:** mark each row ✅ approve / ❌ reject / ✏️ amend. A rejected place **stays a bare
-string** in `provinces.ts` rather than becoming an entity with thin provenance (SP-028) — that is a
-normal outcome, not a failure.
+**Status: research in progress — roughly 20 of 73 drafted.** The classification below is complete and
+is the more important half, because it changes what the number even is.
 
 ---
 
-## ⚠️ Three things to decide before anything ships
+## ⚠️ Four findings, before any content
 
-### 1. No coordinate can be sourced to SP-054 standard
+### 1. It is 73 places, not 75
 
-**None of the four institutions publish decimal coordinates.** Museums publish street addresses;
-they do not publish lat/lng. The candidates below come from Wikipedia, which **SP-054 does not
-admit** as a source.
+`Hector Pieterson Memorial` and `Mandela House` each appear twice — Johannesburg and Soweto — and
+`alsoListedIn` (SP-017) already resolves both from one entity. **Verified working in the browser.**
 
-SP-052 says a coordinate is a factual claim and is sourced like any other — so by our own rule,
-these four coordinates cannot ship as they stand. Three ways out:
+### 2. Six "landmarks" are not places at all
 
-- **(a) You verify each against an official map** (Google Maps / OpenStreetMap at the published
-  street address) and we cite "verified against the published street address". Honest, and about ten
-  minutes of work.
-- **(b) Amend SP-054** to admit Wikipedia for coordinates specifically — a lower bar for a
-  locational fact than for a historical claim.
-- **(c) Drop `coords`** after all, reversing SP-014, and ship four places without them.
+These are descriptive phrases, not things you can stand in. Promoting them to entities with ids,
+sources and coordinates would be forcing the data model to hold something that isn't there:
 
-**This currently blocks TOUR-05b.** I'd suggest (a) — it keeps SP-054 intact and the work is small.
-
-### 2. Vilakazi Street has no single coordinate
-
-It is a street, not a point. Any coordinate is a *representative* choice, not a fact about the
-street. This is the same problem that made a bike tour an `Experience` rather than a `Place` of
-`kind: "route"`.
-
-Options: use the Mandela House corner as the representative point and say so in `sources`; or leave
-Vilakazi Street without coordinates, which needs `coords` to be optional after all.
-
-### 3. The "only street in the world" claim is a superlative nobody evidences
-
-`provinces.ts` already states, in Soweto's `origins`: *"Vilakazi Street is the only street to have
-housed two Nobel laureates."* The claim is published by South African Tourism, Brand South Africa,
-CNN, and Mandela House's own site — but **they are all repeating it, not evidencing it.** No source
-demonstrates that no other street on earth qualifies.
-
-That Mandela and Tutu both lived on Vilakazi Street is solidly attested. The superlative is not.
-**Recommendation:** attribute rather than assert — *"South African Tourism and Mandela House describe
-it as the only street in the world to have housed two Nobel laureates"* — and leave the existing
-`provinces.ts` line for a separate pass, since this phase promised not to edit existing content
-(SP-029).
-
----
-
-## The four places
-
-### 1. `vilakazi-street` — Vilakazi Street
-
-| | |
-|---|---|
-| **kind** | `street` |
-| **cityId** | `soweto` |
-| **alsoListedIn** | — |
-| **landmarkLabel** | `"Vilakazi Street"` ✔ matches `provinces.ts` |
-| **coords** | ⚠️ see §2 above — a street has no point |
-
-**`what` (draft):**
-> The street in Orlando West where Nelson Mandela and Archbishop Desmond Tutu both lived. It is named
-> after Benedict Wallet Vilakazi, the Zulu poet and the first Black South African to receive a PhD,
-> whose *Inkondlo kaZulu* (1935) was the first collection of Western-influenced poetry published in
-> Zulu.
-
-**`sources` (draft):**
-> Named for B.W. Vilakazi — Encyclopædia Britannica, *Benedict Wallet Vilakazi*; University of the
-> Witwatersrand, "The last word: Benedict Vilakazi" (2022). Mandela's residence at 8115 — Mandela
-> House (Soweto Heritage Trust), About. **[NEEDS SOURCE]** for Tutu's residence on the street — I have
-> not grounded the address of Tutu House to SP-054 standard.
-
-**Open:** the superlative (§3). The Tutu residence needs its own citation before the `what` line can
-name him — or the line drops him and says only what is sourced.
-
----
-
-### 2. `hector-pieterson-memorial` — Hector Pieterson Memorial & Museum
-
-| | |
-|---|---|
-| **kind** | `museum` |
-| **cityId** | `soweto` |
-| **alsoListedIn** | `["johannesburg"]` ✔ Joburg lists it too (SP-017) |
-| **landmarkLabel** | `"Hector Pieterson Memorial"` ✔ matches both cities |
-| **coords** | candidate `-26.234833, 27.908617` — ⚠️ Wikipedia, see §1 |
-
-**`what` (draft):**
-> The memorial and museum in Orlando West commemorating the schoolchildren killed when police opened
-> fire on the march of 16 June 1976. It is named for Hector Pieterson, the twelve-year-old whose death
-> that day was carried around the world in Sam Nzima's photograph. The museum opened on 16 June 2002,
-> near the place he was shot.
-
-**`sources` (draft):**
-> South African History Online, *Hector Pieterson Memorial and Museum, Soweto* — address 8288 Khumalo
-> Street, Orlando West; opened 16 June 2002; the surrounding area declared a National Heritage Site.
-
-**Open — worth your judgement:** `provinces.ts` calls it "Hector Pieterson Memorial", but the
-memorial and the museum are **two adjacent things**: the memorial marks near where Pieterson was
-shot; the museum opened in 2002. I have modelled them as one place because the landmark string does.
-Splitting them would be more accurate and would break the `landmarkLabel` match. Your call.
-
----
-
-### 3. `mandela-house` — Mandela House
-
-| | |
-|---|---|
-| **kind** | `museum` |
-| **cityId** | `soweto` |
-| **alsoListedIn** | `["johannesburg"]` ✔ |
-| **landmarkLabel** | `"Mandela House"` ✔ matches both cities |
-| **coords** | candidate `-26.2385361, 27.9087722` — ⚠️ Wikipedia, see §1 |
-
-**`what` (draft):**
-> The four-roomed house at 8115 Vilakazi Street, on the corner of Ngakane Street, where Nelson
-> Mandela lived from 1946. He gave it to the Soweto Heritage Trust in 1997 to be run as a museum, and
-> it was awarded heritage status on 16 March 1999. On his release he described it as "the centre
-> point of my world".
-
-**`sources` (draft):**
-> Mandela House (Soweto Heritage Trust), *About* — 8115 Orlando West, corner of Vilakazi and Ngakane
-> Streets; "On 16 March 1999, the house was awarded the status of a public heritage site, with Nelson
-> Mandela as the Founder Trustee"; the "centre point of my world" quotation.
-
-**Note on the dates:** the museum's own page gives **16 March 1999** for heritage status and 1946 for
-when Mandela moved in. Wikipedia says he lived there "1946 to 1962" — I have used the museum's own
-wording and left the end date out, since the institution does not state one. **The strongest source
-here is the institution itself**, which is exactly what SP-054 asks for.
-
----
-
-### 4. `regina-mundi-church` — Regina Mundi Church
-
-| | |
-|---|---|
-| **kind** | `church` |
-| **cityId** | `soweto` |
-| **alsoListedIn** | — |
-| **landmarkLabel** | `"Regina Mundi Church"` ✔ matches `provinces.ts` |
-| **coords** | candidate `-26.262, 27.8829` — ⚠️ Wikipedia, see §1 |
-
-**`what` (draft):**
-> The largest Catholic church in South Africa, in Rockville, Soweto. During apartheid it sheltered
-> anti-apartheid meetings and activists and became known as "the people's church". When police fired
-> on students in Orlando West on 16 June 1976, many fled here; police followed them in and fired
-> inside the building, and the marks are still visible. In 1997 President Mandela declared 30 November
-> Regina Mundi Day in recognition of the church's role in the struggle.
-
-**`sources` (draft):**
-> South African History Online, *Regina Mundi, Catholic Church, Soweto*. **[NEEDS SOURCE]** — see the
-> date conflict below before this ships.
-
-**⚠️ Unresolved factual conflict — I am not picking a winner.** The construction date is genuinely
-contested across sources:
-
-| Claim | Where |
-|---|---|
-| Groundbreaking 1960, completed 1962 | Wikipedia infobox |
-| "built in 1964" | Wikipedia body text — *contradicts its own infobox* |
-| Official opening 24 July 1962, presided over by Cardinal Montini of Milan | search summary, unverified |
-
-I have kept every date out of the `what` line above rather than guess. Resolving this needs the
-parish's or the archdiocese's own record. **Until then this place is `[NEEDS SOURCE]` on its founding
-date — though the 1976 account and the Mandela proclamation are separately sourced and could ship
-without it.**
-
----
-
-## Proposed links (`place-links.ts`)
-
-### `direct` — the event happened here, or the person is memorialised here
-
-| Content | Place | `why` (draft) |
+| String | City | Why not |
 |---|---|---|
-| `article:time-soweto-photograph` | `hector-pieterson-memorial` | The article is about Sam Nzima's photograph of Hector Pieterson's death on 16 June 1976; this is the place that memorialises him and that day |
-| `article:herstory-soweto-erasure` | `hector-pieterson-memorial` | The article is about the same uprising and the same photograph, arguing Antoinette Sithole is remembered as "Hector's sister" rather than a protester |
-| `president:mandela` | `mandela-house` | He lived at 8115 Vilakazi Street from 1946 |
-| `city:soweto` | all approved places | The city screen lists its own landmarks |
+| `"the wine estates"` | Stellenbosch | Dozens of separate estates, no single entity |
+| `"the goldfields headgears"` | Welkom | Plural mine structures across a region |
+| `"the traffic-circle street plan"` | Welkom | An urban-planning feature — not somewhere you go |
+| `"the Kruger's southern gates"` | Mbombela | Three different gates (Numbi, Malelane, Crocodile Bridge) |
+| `"the historic gold-rush streets"` | Barberton | Diffuse streetscape, no defined site |
+| `"Mmabatho"` | Mahikeng | A neighbouring town, not a landmark |
 
-**Note on the first two:** the memorial is *near* where Pieterson was shot, not the exact spot. They
-qualify as `direct` under §9's **memorialised** clause rather than its "happened here" clause, and
-the `why` says so rather than blurring it.
+**Recommendation: these stay bare strings.** That is exactly what SP-028 is for. It takes the real
+number to **67**.
 
-### `thematic` — one real candidate, and it is a genuine boundary case
+### 3. Four strings conflate two or more places
 
-| Content | Place | The argument |
-|---|---|---|
-| `module:vilakazi` | `vilakazi-street` | The app's fourth literary pillar is B.W. Vilakazi's *Inkondlo kaZulu* (1935). **The street is named after him.** |
-
-**This is the one I most want you to rule on**, because it tests the rule rather than applying it:
-
-- **For `direct`:** §9 admits "where the person is memorialised", and naming a street after someone is
-  a memorialisation. He is the reason the street has that name.
-- **For `thematic`:** he never lived or worked there. Groutville-born, Wits-based. The connection is
-  commemorative, not biographical — and §9 says *when a link is genuinely arguable, it is thematic.*
-
-**My reading: `thematic`.** The literal text of §9 would let it through as direct, but the spirit
-won't — a reader tapping "visit this" from a poetry module would expect somewhere Vilakazi *was*, and
-the street is not that. Under-claiming costs a weaker card; over-claiming states something false.
-
-It is also, separately, the most interesting thing this research turned up: **the hackathon's
-literary core reaches the tourism layer from the other direction** — not history pointing at a place,
-but a place named after a poet in the app's own canon.
-
-### Rejected
-
-| Considered | Verdict |
+| String | Actually |
 |---|---|
-| `article:herstory-soweto-erasure` → `regina-mundi-church` | **Rejected.** Demonstrators did flee to Regina Mundi on 16 June, but **the article never mentions the church.** Linking them would be me inventing the connection, not finding it (SP-055) |
+| `"the Gandhi statue & station"` | Two separate sites — the statue, and the railway station where he was thrown off the train in 1893 |
+| `"Nelson Mandela Museum"` | **Three** sites: the Bhunga Building in Mthatha, the Youth & Heritage Centre at Qunu, and the open-air museum at Mvezo — and Qunu and Mvezo are *also* listed separately |
+| `"Naval Hill & Nelson Mandela statue"` | A hill and the statue on it — arguably one, arguably two |
+| `"Donkin Reserve & lighthouse"` | A reserve and the lighthouse in it — arguably one |
+
+These need an editorial call each: one place or two?
+
+### 4. Two entries look geographically or categorically wrong
+
+- **`"Thulamela"` is listed under Thohoyandou, but it is in the northern Kruger National Park** —
+  several hundred kilometres away. The Greater Mapungubwe Heritage Route links it to the Venda sites
+  thematically, which may be why it's there, but it is not a Thohoyandou landmark.
+- **`"Sun City"` is a commercial resort**, not a heritage site. It sits oddly in a list that is
+  otherwise museums, memorials and sacred places. Your call whether it belongs.
 
 ---
 
-## What this unblocks, and what it doesn't
+## ⚠️ SP-070 — the coordinate rule now blocks everything
 
-**Ready to ship on your approval:** `hector-pieterson-memorial` and `mandela-house` — both grounded,
-Mandela House on the institution's own record.
+At four places, SP-067 was ten minutes of your verification. At 67 it is not workable, and the
+classification above shows why it is not just a volume problem:
 
-**Needs one more thing each:** `vilakazi-street` (a source for Tutu's residence, or drop him from the
-line) · `regina-mundi-church` (the founding-date conflict, or ship without a founding date).
+**A large share of these have no single point by nature** — the Magaliesberg and Makhonjwa Mountains
+are ranges, Algoa Bay is a bay, the Msunduzi is a river, the Golden Mile is a stretch of beachfront,
+District Six and Bo-Kaap are districts, Qunu and Mvezo are villages, Vilakazi and Dorp are streets.
 
-**Blocks all four:** the coordinate question in §1. Ten minutes of your time under option (a) and
-every place above can land.
+`coords` is **required** by SP-011/SP-014. So either:
+
+- **(a) `coords` becomes optional** — reversing SP-014. A place needs sourced prose + a citation;
+  a coordinate is added where one honestly exists. **This unblocks the sweep immediately.**
+- **(b) `coords` stays required** — and roughly a third of the list cannot ship at all, including
+  Vilakazi Street, the place the whole pitch is built on.
+
+**I recommend (a).** It was the right call at four places and it is close to forced at 67.
+
+---
+
+## Drafted places
+
+Every entry below is grounded in a source named in its own `sources` line. Anything I could not
+ground to SP-054 standard is marked, not guessed.
+
+### Cape Town
+
+**`robben-island`** — Robben Island · `site`
+> Used between the 17th and 20th centuries as a place of banishment, a prison, a hospital for people
+> the colony wished to isolate, and a military base. Nelson Mandela was held here for eighteen of his
+> twenty-seven years in prison. The last political prisoners left in 1991, the prison closed in 1996,
+> and the island became a museum in 1997.
+
+*Sources:* UNESCO World Heritage Centre, *Robben Island* (inscribed 1999) · Department of Sport, Arts
+and Culture, *Robben Island Museum*.
+
+**`district-six`** — District Six · `site`
+> The inner-city Cape Town district declared white under the Group Areas Act, from which more than
+> 60,000 residents were forcibly removed between 1968 and 1982. A former Methodist church near the
+> old neighbourhood opened as the District Six Museum in 1994; its floor carries a large map on which
+> former residents have written where their homes stood.
+
+*Sources:* District Six Museum, districtsix.co.za.
+
+**`castle-of-good-hope`** — Castle of Good Hope · `monument`
+> The oldest surviving colonial building in South Africa.
+
+*Sources:* **[NEEDS SOURCE]** — I have not yet grounded the construction dates or the Castle's own
+record. Do not ship this line as it stands.
+
+**`bo-kaap`** — Bo-Kaap · `site`
+> The quarter above the city centre settled by people brought to the Cape as slaves from Indonesia,
+> Malaysia and elsewhere. Apartheid planners classified it Malay and left it standing, unlike
+> District Six.
+
+*Sources:* **[NEEDS SOURCE]** — needs the Bo-Kaap Museum's or Iziko's own record before it ships.
+
+**`table-mountain`** · **`va-waterfront`** — **not yet researched.**
+
+### Johannesburg
+
+**`constitution-hill`** — Constitution Hill · `site`
+> A prison complex turned into the home of the Constitutional Court. Three prisons stand on the site:
+> the Old Fort of 1893, where white men were held; Number Four, the "Natives' Gaol" built in 1904;
+> and the Women's Gaol of 1910. Those detained here include Mahatma Gandhi, Nelson Mandela, Winnie
+> Madikizela-Mandela, Albertina Sisulu and Fatima Meer. It opened as a museum in 2004.
+
+*Sources:* Constitution Hill, *The history of Constitution Hill*, constitutionhill.org.za · South
+African History Online, *Constitution Hill Museum, Johannesburg*.
+
+**`apartheid-museum`** · **`gold-reef-city`** — **not yet researched.**
+
+### Soweto
+
+Unchanged from the first pass — `vilakazi-street`, `hector-pieterson-memorial`, `mandela-house`,
+`regina-mundi-church`. **Regina Mundi's founding date remains genuinely contested** (1960 groundbreaking
+/ 1962 completed vs "built in 1964", Wikipedia contradicting its own infobox), so every date is left
+out of its entry rather than guessed.
+
+### Kimberley
+
+**`the-big-hole`** — The Big Hole · `site`
+> The largest hand-dug excavation in the world, dug by prospectors who descended on a flat-topped
+> hill after diamonds were found there.
+
+*Sources:* The Big Hole, thebighole.co.za (the site's own record).
+
+**`sol-plaatje-house`** — Sol Plaatje House · `museum`
+> The house on Angel Street bought for Sol Plaatje's family by the Plaatje Jubilee Fund in 1927. He
+> lived there until his death in 1932 and his widow until 1942. It is now a museum and a library of
+> African literature. **This is the author of *Mhudi*** — one of the app's four literary pillars.
+
+*Sources:* Kimberley City Portal, historical attractions record. **[VERIFY]** — I would rather cite
+the museum's own page; I have not found it yet.
+
+**`mcgregor-museum`** — McGregor Museum · `museum`
+> Founded on 24 September 1907, now the Northern Cape's principal research institute for natural and
+> cultural history. Its branches include the Duggan-Cronin Gallery, holding photographic and
+> ethnographic collections from the 1920s and 1930s.
+
+*Sources:* McGregor Museum record. **[VERIFY]** — wants the museum's own page rather than a summary.
+
+**`william-humphreys-art-gallery`** — **not yet researched.**
+
+### Mthatha
+
+**`nelson-mandela-museum`** — Nelson Mandela Museum · `museum`
+> A museum across three sites: the Bhunga Building in Mthatha, the Youth and Heritage Centre at Qunu
+> where Mandela grew up, and an open-air museum at Mvezo where he was born and where his umbilical
+> cord is buried in Xhosa tradition.
+
+*Sources:* Department of Sport, Arts and Culture, *Nelson Mandela Museum*.
+
+**Editorial call needed:** the museum spans Qunu and Mvezo, which `provinces.ts` also lists
+separately. One place or three?
+
+**`qunu`** · **`mvezo`** · **`bumbane-great-place`** — **not yet researched** (pending the call above).
+
+### Durban
+
+**`phoenix-settlement`** — Phoenix Settlement · `site`
+> The community Gandhi founded on farmland outside Durban in 1904 — homes, a clinic, a school and the
+> printing press he had moved there in 1904. He and his family lived there until he returned to India
+> in 1914. Declared a national heritage site in 2020.
+
+*Sources:* South African History Online, *Phoenix Settlement and Gandhi Trail* · Durban University of
+Technology, *Phoenix Settlement recognised as a national heritage site* (2020).
+
+**`golden-mile`** · **`ushaka-marine-world`** · **`moses-mabhida-stadium`** · **`victoria-street-market`** — **not yet researched.**
+
+### Pietermaritzburg
+
+**`pietermaritzburg-station`** — Pietermaritzburg Railway Station · `site`
+> On 7 June 1893 Gandhi, then a young lawyer newly arrived from India, was thrown off a first-class
+> carriage here for refusing to move to third class. He later described the night he spent in the
+> station's waiting room as the turning point that began his philosophy of non-violent resistance.
+
+*Sources:* Pietermaritzburg Gandhi Foundation, *History* · South African History Online,
+*Pietermaritzburg*.
+
+**Editorial call needed:** `provinces.ts` says `"the Gandhi statue & station"` — one string, two
+sites. Split, or keep as one?
+
+**`pmb-city-hall`** — City Hall · `monument`
+> Opened in 1900. Reported to be the largest brick building in the southern hemisphere, with a 47m
+> clock tower.
+
+*Sources:* **[VERIFY]** — the "largest brick building in the southern hemisphere" claim is widely
+repeated and, like the Vilakazi Street superlative, **I have not found anything that evidences it.**
+Attribute it or drop it.
+
+**`tatham-art-gallery`** · **`msunduzi-river`** — **not yet researched.**
+
+### Thohoyandou
+
+**`lake-fundudzi`** — Lake Fundudzi · `site`
+> One of the most sacred sites of the Venda, formed when an ancient landslide dammed the Mutale
+> River. It is held to be protected by a python god, honoured in an annual ceremony.
+
+*Sources:* South African Tourism, *Land of the Venda*. **[VERIFY]** — for a sacred site I want a
+Venda or heritage-authority source, not a tourism board.
+
+> **⚠️ Cultural-access note, and it is not a detail.** Lake Fundudzi is sacred and access is
+> traditionally controlled — permission from the custodians is required, and there are protocols for
+> approaching it. **This place must not carry a "plan a visit" affordance** without that being
+> handled properly. Thathe Vondo forest carries the same caution. This is precisely the kind of thing
+> the humanities-grounding rule exists for, and it argues for an explicit "sacred / restricted
+> access" flag on `Place` before either ships.
+
+**`dzata-ruins`** — Dzata ruins · `site`
+> The remains of the first Venda capital in South Africa, occupied around the 16th century, with
+> stone walling in the Zimbabwe style. It lies in the Nzhelele Valley, about 40km west of
+> Thohoyandou.
+
+*Sources:* South African Tourism, *Vhembe District* / Greater Mapungubwe Heritage Route.
+**[VERIFY]** — wants SAHRA or the Dzata Museum's own record.
+
+**`thulamela`** — **see finding 4.** It is in the northern Kruger National Park, not Thohoyandou.
+
+**`thathe-vondo-forest`** — **not yet researched.** Sacred; same access caution as Lake Fundudzi.
+
+---
+
+## Not yet researched
+
+Stellenbosch · Gqeberha · Makhanda · Ulundi · Bloemfontein · Welkom · Polokwane · Mbombela ·
+Barberton · Mahikeng · Rustenburg, plus the individual entries marked above.
+
+**Roughly 47 of 67 remain.** I will keep going — but answering SP-070 first would stop me researching
+coordinates that cannot ship.
