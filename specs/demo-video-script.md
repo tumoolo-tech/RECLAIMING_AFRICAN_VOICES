@@ -38,7 +38,7 @@ communities straight into the archive."*
 
 **Do:** On any open scene: toggle **Child Mode**, then switch language to **Setswana**.
 **Say:** *"Two reading levels — the tone changes, the facts never do. And it reads in Setswana, with a
-framework built for all eleven official languages."*
+framework built for eleven of the twelve official languages."*
 **Do:** Tap **Listen / Reetsa** — let it speak a line. Then **turn off Wi-Fi** and scroll/read.
 **Say:** *"It reads aloud — built for African-made neural voices from Botlhale AI. And with the Wi-Fi
 off — it still works. This is for real phones, on real networks."*

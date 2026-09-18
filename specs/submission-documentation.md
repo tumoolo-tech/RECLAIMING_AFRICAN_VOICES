@@ -43,8 +43,8 @@ nothing machine-made is passed off as authoritative.
 not hard-coded UI. Adding a new text or language is a data edit, never an app rewrite — which is what
 makes the platform extensible and maintainable.
 
-**Multilingual by construction.** The entire interface switches across all 11 official South African
-languages. Literary content is **human-reviewed in English and Setswana**; the other nine are provided
+**Multilingual by construction.** The entire interface switches across eleven of South Africa's twelve official
+languages (Sign Language, the twelfth, is not yet served). Literary content is **human-reviewed in English and Setswana**; the other nine are provided
 as **machine-draft translations, clearly labelled "unreviewed,"** pending native-speaker review.
 
 **Accessibility & connectivity-aware.** Built low-data and offline-capable: the reading core (text,
@@ -135,8 +135,8 @@ community** feed with a shared story. *(You already have this screenshot.)*
 **3.11 Heritage Ledger** — the on-chain provenance record with a "Verify on Solana" link.
 `![Heritage Ledger — on-chain provenance](screenshots/11-heritage-ledger.png)`
 
-**3.12 Language picker** — all 11 official languages, indigenous languages first-class.
-`![All 11 official South African languages](screenshots/12-languages.png)`
+**3.12 Language picker** — eleven of the twelve official languages, indigenous languages first-class.
+`![Eleven of the twelve official South African languages](screenshots/12-languages.png)`
 
 ---
 

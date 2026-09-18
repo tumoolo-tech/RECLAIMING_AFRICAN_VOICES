@@ -58,7 +58,7 @@ builds a grounded **Cultural Atlas** of the heritage around them; and it gives c
   through the Community Archive — recorded in their own languages, including natural code-switching. Each
   Atlas entry invites exactly this: *"record your family's version."*
 - **Speakers of under-resourced SA languages**, treated as first-class: the **entire interface switches
-  across all 11 official languages**, and the literature is offered in-language, served by
+  across eleven of the twelve official languages** (Sign Language is the twelfth, not yet served), and the literature is offered in-language, served by
   **African-built language technology** — Lelapa AI / Vulavula for transcription and translation, and
   Botlhale AI for indigenous-language speech.
 
@@ -112,7 +112,7 @@ is added — the demo is honest about which is which:
 |-----------|-------:|-----------------|
 | Humanities Depth | 30% | Four real foundational texts, critically framed, **plus a cited, multi-section Cultural Atlas** of heroes, customs, peoples and provinces; tech serves the humanities |
 | Community Impact | 25% | Community Archive: users become owners of their own recorded histories; every Atlas entry invites a family's own version |
-| Accessibility | 20% | Offline-first, low-data, **whole UI in all 11 official languages**, Child/Adult, read-aloud, cheap Android + web |
+| Accessibility | 20% | Offline-first, low-data, **whole UI in eleven of the twelve official languages**, Child/Adult, read-aloud, cheap Android + web |
 | Creativity | 15% | Cinematic AI graphic novel + a walkable history Journey + indigenous-language narration + on-chain heritage provenance, all on a free-tier pipeline |
 | Sustainability | 10% | Zero cost, POPIA-compliant, community-owned, content-as-data, African-built AI, verifiable provenance |
 

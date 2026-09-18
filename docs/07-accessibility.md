@@ -17,7 +17,10 @@ requirements from day one, verified at each phase.
 ## Language diversity
 
 - **Setswana + English** at minimum, via an `i18n/` string layer + language context.
-- Architected to extend to **all 11 official SA languages** — strings are data, not hardcoded.
+- Architected to extend to **all eleven spoken official SA languages** — strings are data, not hardcoded.
+  South African Sign Language is the **twelfth** official language (Eighteenth Amendment, 2023) and is
+  not served yet: no captions, transcripts or signed video exist. That is an accessibility gap, not a
+  count to round away (issue #36).
 - Indigenous languages are **first-class** (Lelapa code-switching STT), not bolted on.
 - Literary translations are **human-reviewed drafts**, never presented as authoritative machine output.
 
