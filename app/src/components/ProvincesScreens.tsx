@@ -12,6 +12,9 @@ import { SideIndexScroll } from "./SideIndexScroll";
 import { FeatureEntry } from "./FeatureEntry";
 import { Journey } from "./Journey";
 import { provincesJourney, CARD_ASPECT } from "../content/journey";
+import { places as ALL_PLACES, type Place } from "../content/places";
+import { PlaceView } from "./PlaceView";
+import { PlaceBookings } from "./VisitPanel";
 
 // Provinces → City history. Black & white + gold-for-emphasis, colour photography (never grayscaled).
 // Content is grounded (src/content/provinces.ts); stats flagged "cited" (green) vs "to verify" (orange).
@@ -79,6 +82,7 @@ const UI = {
   },
   byTheNumbers: { en: "By the numbers", tn: "Ka dipalo", af: "In syfers", zu: "Ngezinombolo", xh: "Ngamanani", nso: "Ka dipalo", st: "Ka dinomoro", ss: "Ngetinombolo", ts: "Hi tinhlayo", nr: "Ngeenombolo", ve: "Nga nomboro" },
   landmarks: { en: "Landmarks & heritage", tn: "Mafelo a botlhokwa le boswa", af: "Landmerke & erfenis", zu: "Izindawo ezibalulekile namagugu", xh: "Iindawo ezibonakalayo nelifa", nso: "Mafelo a bohlokwa le bohwa", st: "Libaka tsa bohlokwa le lefa", ss: "Tindzawo letibalulekile nemagugu", ts: "Tindhawu ta xiyimo ni ndzhaka", nr: "Iindawo eziqakathekileko namagugu", ve: "Fhethu ha ndeme na ifa" },
+  openPlace: { en: "open this place", tn: "bula lefelo le", af: "open hierdie plek", zu: "vula le ndawo", xh: "vula le ndawo", nso: "bula lefelo le", st: "bula sebaka sena", ss: "vula lendzawo", ts: "pfula ndhawu leyi", nr: "vula le ndawo", ve: "vula fhethu hafha" },
   yourVersion: { en: "Your family's version", tn: "Kanegelo ya lelapa la gago", af: "Jou familie se weergawe", zu: "Umlando womndeni wakho", xh: "Ibali losapho lwakho", nso: "Kanegelo ya lapa la gago", st: "Pale ya lelapa la hao", ss: "Indzaba yemndeni wakho", ts: "Ntsheketo wa ndyangu wa wena", nr: "Umlando womndeni wakho", ve: "Tshiitwa tsha muṱa waṋu" },
   memoryHint: {
     en: "Record a family memory of this place", tn: "Gatisa kgakologelo ya lelapa ya lefelo le", af: "Neem 'n familie-herinnering van hierdie plek op", zu: "Qopha inkumbulo yomndeni yale ndawo", xh: "Rekhoda inkumbulo yosapho yale ndawo",
@@ -202,7 +206,19 @@ export function ProvinceScreen({ province, onBack, onOpenCity, lang }: { provinc
 }
 
 // ---------- 3 · City detail ----------
+/** The Place a landmark string resolves to, if any. Matched on `landmarkLabel` — the exact string —
+ *  never on the name, and never fuzzily (SP-016). A city that also LISTS a place it does not own
+ *  resolves it too, so Johannesburg's "Mandela House" chip reaches the Soweto entity (SP-017). */
+function placeForLandmark(cityId: string, label: string): Place | undefined {
+  return ALL_PLACES.find(
+    (p) => p.landmarkLabel === label && (p.cityId === cityId || (p.alsoListedIn ?? []).includes(cityId)),
+  );
+}
+
 export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBack: () => void; onArchive?: () => void; lang: LangCode }) {
+  // The place overlay is local state, not a route (SP-035, SP-037) — the same pattern the journey
+  // sheet already uses one function up in this file. No prop signature changed.
+  const [openPlace, setOpenPlace] = useState<Place | null>(null);
   return (
     <Screen tone="dark">
       <View style={s.cityHero}>
@@ -243,9 +259,23 @@ export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBa
 
       <SectionLabel label={t(UI.landmarks, lang)} />
       <View style={s.chipRow}>
-        {city.landmarks.map((lm) => (
-          <View key={lm} style={s.chip}><Text style={s.chipText}>{lm}</Text></View>
-        ))}
+        {city.landmarks.map((lm) => {
+          // A chip becomes pressable ONLY where a sourced Place exists (SP-044). Every other chip in
+          // every other city renders exactly as it did before — an unsourced landmark stays a string.
+          const p = placeForLandmark(city.id, lm);
+          if (!p) return <View key={lm} style={s.chip}><Text style={s.chipText}>{lm}</Text></View>;
+          return (
+            <PressScale
+              key={lm}
+              style={[s.chip, s.chipLive]}
+              onPress={() => setOpenPlace(p)}
+              accessibilityLabel={`${lm} — ${t(UI.openPlace, lang)}`}
+            >
+              <Text style={s.chipText}>{lm}</Text>
+              <Icon.ChevronRight size={14} color={colors.gold} />
+            </PressScale>
+          );
+        })}
       </View>
 
       {onArchive ? (
@@ -263,6 +293,15 @@ export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBa
         <Text style={s.srcH}>{t(UI.howWeSource, lang)}</Text>
         <Text style={s.srcT}>{city.sources}</Text>
       </View>
+
+      {/* PlaceView carries the heritage; PlaceBookings is injected as a slot so the commerce import
+          stays out of PlaceView entirely (SP-062). */}
+      <PlaceView
+        place={openPlace}
+        lang={lang}
+        onClose={() => setOpenPlace(null)}
+        footer={openPlace ? <PlaceBookings placeId={openPlace.id} lang={lang} /> : null}
+      />
     </Screen>
   );
 }
@@ -382,6 +421,9 @@ const s = StyleSheet.create({
 
   chipRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   chip: { backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)", borderRadius: radius.pill, paddingVertical: 7, paddingHorizontal: 13 },
+  // A chip that resolves to a sourced Place. The chevron is what tells a reader it does something —
+  // colour alone would fail anyone who cannot distinguish it.
+  chipLive: { flexDirection: "row", alignItems: "center", gap: 6, borderColor: "rgba(26,133,167,0.55)", backgroundColor: "rgba(26,133,167,0.10)", paddingRight: 9 },
   chipText: { color: "#fff", fontFamily: fonts.bodyMedium, fontSize: 12 },
 
   cityArchive: { flexDirection: "row", alignItems: "center", gap: spacing.md, marginTop: spacing.lg, backgroundColor: "#0a0a0a", borderWidth: 1, borderColor: "rgba(255,255,255,0.14)", borderRadius: radius.md, padding: spacing.md },

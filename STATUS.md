@@ -47,7 +47,7 @@ _Last updated: 2026-09-18 — by Tumo (via Claude). Previous update: 2026-09-17.
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A 4 of 5 done (TOUR-01–05a), 4 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: review [design/places-content.md](design/places-content.md) and answer SP-067. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A 4 of 5 + Stage B built (TOUR-01–09 done, 10 partial), 9 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: review [design/places-content.md](design/places-content.md) and answer SP-067 — nothing renders in the shipped app until the registries are seeded. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -430,7 +430,35 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   direction. The rejected one, `herstory-soweto-erasure` → `regina-mundi-church`, was dropped because
   the article never mentions the church: linking them would have been inventing the connection.
 
-  **Stage A is 4 of 5.** `TOUR-05b` is deliberately not started — SP-053 says nothing reaches
+  **Stage B followed, built against a throwaway fixture that was never committed.** Two new
+  components (`VisitPanel`, `PlaceView`), one extracted helper (`services/openExternal` — leaving the
+  app now has exactly one owner, and `noopener,noreferrer` is not copied around), and edits to
+  `ProvincesScreens` and `ArticleReader`. `shell/nav.ts` and `App.tsx` untouched, so Architecture v2
+  **D1** stands and the route union was not grown.
+
+  The Kids rule drew the component boundary rather than taste. Because Kids surfaces may never import
+  `experiences.ts` (SP-062), `PlaceView` **cannot** import it either — so it carries heritage only and
+  receives the commercial half as a slot. The heritage component now has no way to render a booking
+  path, which is a stronger guarantee than remembering to hide a button.
+
+  **Seen working in a browser, not just asserted.** With the fixture seeded, all four Soweto landmark
+  chips became buttons exposed to the accessibility tree as `button "Vilakazi Street — open this
+  place"`, and the place overlay rendered Mandela House showing **only** the `live` experience — the
+  `unverified` one, deliberately named "must not render", stayed hidden. That is SP-019 holding in
+  rendered UI rather than in a unit test. The four-stop bike tour surfacing at one of its stops is the
+  shape Tumo's multi-place question forced, working.
+
+  **Two guards mutation-tested**: dropping Venda from a `UI` block and adding an `experiences` import
+  to `KidsScreen.tsx` turned the language sweep and the Kids import test red, then were reverted.
+
+  **One thing could not be verified and is not claimed.** The `VisitPanel` inside the article reader
+  is correct in the DOM — right coordinates, opacity 1, topmost by `elementFromPoint` — but the reader
+  modal does not composite into a screenshot. Restoring `ArticleReader.tsx` to its **committed** state
+  reproduced it exactly, so **this is pre-existing on `main`, not Stage B**. Whether a human sees the
+  reader correctly is still unconfirmed and worth thirty seconds of Tumo's time.
+
+  Fixture removed and verified by hash against the pristine files; zero `FIXTURE` residue in `src/`.
+  Typecheck clean, **199/199**. **Stage A is 4 of 5.** `TOUR-05b` is deliberately not started — SP-053 says nothing reaches
   `places.ts` before the sheet is reviewed, and SP-067 blocks the coordinates regardless. `4 of 13`
   `TOUR-*` done, all three registries still shipping empty.
 
