@@ -297,6 +297,40 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
 
 ## 🗒️ Log
 
+- **2026-09-19 (a place is a page)** — **Places stop being a bottom sheet.** Tumo asked for
+  locations like Vilakazi Street to have their own page, with pictures and a story of their own.
+
+  **The overlay decision was built on a misreading, and it is worth admitting plainly.** SP-035 kept
+  place detail out of the router because `App.tsx` recorded that the route union had pushed the
+  type-checker to its limit — and SP-036 accepted "no deep link to a place" as the cost. Re-reading
+  that comment, the recursion came from **inlining a component inside the route switch**, and the
+  fix was extracting it (`StageRoute`). A route with an extracted component is the pattern that
+  already works. Verified: typecheck stays clean with the 25th member. The cost was never real
+  (`SP-085`).
+
+  So `PlaceScreen` is a page: hero, story, sources, **what happened here** (pulled from the story
+  links, with the editorial reason shown), and **elsewhere in this city**. Seen working end to end —
+  Vilakazi Street → Hector Pieterson Memorial → back, with each page listing the others.
+
+  **On pictures, the answer is real photographs or none.** The ART decision permits AI for literary
+  scenes, disclosed as artistic interpretation. That reasoning does not carry here: an AI picture of
+  Vilakazi Street depicts a **real, identifiable address this app is telling someone to travel to**,
+  and a reader would take it for a photograph of that street. Getting a person onto a plane with an
+  invented image is a different order of wrong from an interpretive illustration. Places therefore
+  carry licensed photographs with photographer and licence recorded — which is precisely what ART
+  said it was waiting for (`SP-086`). None are sourced yet, so **every page says so out loud**: "No
+  licensed photograph of this place yet — we do not illustrate real places with AI."
+
+  Two structural calls. Credit and licence render **on the page**, because CC BY-SA attribution is
+  an obligation and a credit nobody scrolls to is not attribution (`SP-087`). And `places.ts` stores
+  a file NAME while `place-images.ts` holds the `require()` — otherwise the data module would import
+  image binaries and stop loading under `node --test`, the exact trap that makes `provinces.ts`
+  un-importable (`SP-088`). A test pins every named file to a real entry, and was mutation-tested
+  with an unregistered file, an empty credit and a bad source URL.
+
+  **208 tests, typecheck clean.** Still open in Phase 9: sourcing the photographs, mapping URLs to
+  the route so a place can actually be shared, and longer stories now that there is room.
+
 - **2026-09-19 (#34)** — ***Indaba, My Children* is in copyright until 2070, and the Ledger never
   fingerprinted a single work.** Two findings, one fix. **One:** Vusamazulu Credo Mutwa died on
   25 March 2020; under the Copyright Act 98 of 1978 (life + 50) the book is protected to the end of

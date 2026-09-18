@@ -278,6 +278,29 @@ paid for out of a 40 000-character month.
       passage per cast voice, and an honest answer to whether the emotion helps the text or acts on
       top of it
 
+## Phase 9 — A place is a page (2026-09-19)
+
+Places were a bottom sheet: a paragraph and a close button. Right for a link beside a story, wrong
+for the thing this layer is actually about — somewhere you might travel to.
+
+- [x] PAGE-01 `PlaceScreen.tsx` — a real page: hero, story, sources, what happened here, elsewhere
+      in this city. Reached by a route, so it is deep-linkable (SP-085, reversing SP-035/036)
+- [x] PAGE-02 `PlaceBody.tsx` — shared by the page and the in-reader sheet so the two cannot drift
+      (SP-089)
+- [x] PAGE-03 `Place.image` + `place-images.ts` — **real licensed photographs or none, never AI**
+      (SP-086). Name-and-registry split keeps `places.ts` importable under `node --test` (SP-088).
+      Credit and licence render on the page, because CC BY-SA attribution is an obligation (SP-087)
+- [~] PAGE-04 **Source the photographs.** `npm run fetch:place-photo` reads licence and author from
+      Commons' own metadata, downloads, converts to webp and prints the record to paste — it never
+      edits `places.ts`, because whether a photograph actually shows the place is a human judgement
+      (same division as `check-place-links`). **It refuses any licence it does not recognise as
+      free, and refuses a file with no recorded author**, since attribution is a licence obligation.
+      **Soweto done (4 of 49)**, each photograph looked at before acceptance. 45 to go
+- [ ] PAGE-05 **Deep links.** The route exists; the web build does not yet map a URL to it, so a
+      place cannot be shared as a link. That was the whole cost SP-036 accepted and SP-085 removed
+- [ ] PAGE-06 **Longer stories.** Every place currently carries the 1–3 sourced sentences written
+      for a sheet. The page has room for more, and each new claim needs its own source (T4)
+
 ## Phase 8 — Languages: measure the gap before closing it (2026-09-18)
 
 The i18n framework is done and enforced: `ui-coverage.test.ts` fails the build if a button label is

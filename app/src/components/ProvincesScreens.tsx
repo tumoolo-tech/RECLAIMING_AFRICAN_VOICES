@@ -13,8 +13,6 @@ import { FeatureEntry } from "./FeatureEntry";
 import { Journey } from "./Journey";
 import { provincesJourney, CARD_ASPECT } from "../content/journey";
 import { places as ALL_PLACES, type Place } from "../content/places";
-import { PlaceView } from "./PlaceView";
-import { PlaceBookings } from "./VisitPanel";
 
 // Provinces → City history. Black & white + gold-for-emphasis, colour photography (never grayscaled).
 // Content is grounded (src/content/provinces.ts); stats flagged "cited" (green) vs "to verify" (orange).
@@ -215,10 +213,9 @@ function placeForLandmark(cityId: string, label: string): Place | undefined {
   );
 }
 
-export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBack: () => void; onArchive?: () => void; lang: LangCode }) {
-  // The place overlay is local state, not a route (SP-035, SP-037) — the same pattern the journey
-  // sheet already uses one function up in this file. No prop signature changed.
-  const [openPlace, setOpenPlace] = useState<Place | null>(null);
+export function CityScreen({ city, onBack, onArchive, onOpenPlace, lang }: { city: City; onBack: () => void; onArchive?: () => void; onOpenPlace?: (id: string) => void; lang: LangCode }) {
+  // A place is its own page now, not a sheet — so the chip navigates rather than opening an
+  // overlay. SP-035 is reversed deliberately: see PlaceScreen.tsx for why the route is safe.
   return (
     <Screen tone="dark">
       <View style={s.cityHero}>
@@ -268,7 +265,7 @@ export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBa
             <PressScale
               key={lm}
               style={[s.chip, s.chipLive]}
-              onPress={() => setOpenPlace(p)}
+              onPress={() => onOpenPlace?.(p.id)}
               accessibilityLabel={`${lm} — ${t(UI.openPlace, lang)}`}
             >
               <Text style={s.chipText}>{lm}</Text>
@@ -294,14 +291,6 @@ export function CityScreen({ city, onBack, onArchive, lang }: { city: City; onBa
         <Text style={s.srcT}>{city.sources}</Text>
       </View>
 
-      {/* PlaceView carries the heritage; PlaceBookings is injected as a slot so the commerce import
-          stays out of PlaceView entirely (SP-062). */}
-      <PlaceView
-        place={openPlace}
-        lang={lang}
-        onClose={() => setOpenPlace(null)}
-        footer={openPlace ? <PlaceBookings placeId={openPlace.id} lang={lang} /> : null}
-      />
     </Screen>
   );
 }
