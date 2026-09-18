@@ -352,7 +352,23 @@ not as a place you can stand in.
 
 *Sources:* South African History Online, *Welkom*. The town's founding is well sourced; the park itself is not.
 
-## Limpopo — Thohoyandou
+## Limpopo
+
+### Polokwane
+
+**`bakone-malapa`** · `museum`
+> An open-air museum of Northern Sotho life. The name comes from *Bakone ba Matlala a' Thaba*, the clan who lived here in the 17th century, and *malapa*, the Northern Sotho word for homestead. Two traditional homesteads carry the exhibits, and the village is reconstructed in the style of about 250 years ago. Excavation has also found Ndebele and Shangaan occupation, and Stone Age settlement going back some 20,000 years.
+
+*Sources:* South African Tourism, *The Bakone Malapa Northern Sotho Open-Air Museum*. **[VERIFY]** — wants the museum's or the municipality's own record.
+
+**`irish-house`** · `museum`
+> A prefabricated Victorian building brought to the town in 1906 by the German immigrant Moschke, sold in 1920 to J.A. Jones, who ran it as a general dealer and gave it the name it still carries. The city council bought it in 1984 and restored it, green paint and all. It now holds displays on Limpopo's history and cultural groups, and archaeological finds from nearby sites.
+
+*Sources:* South African History Online, *Irish House, Polokwane Museum*.
+
+**`polokwane-game-reserve`** — **not researched.**
+
+### Thohoyandou
 
 **`lake-fundudzi`** · `site` · **`access: "sacred-restricted"`**
 > One of the most sacred sites of the Venda, formed when an ancient landslide dammed the Mutale River. It is held to be protected by a python god, honoured in an annual ceremony. **Access is controlled by its custodians.**

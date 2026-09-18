@@ -356,7 +356,13 @@ text-read tests, and **no outbound booking link in Kids mode** — are `SP-014`/
       `provinces.ts` already names for itself. Four places, their researched citations, their
       coordinates and where each coordinate came from, plus any `thematic` candidates. **Nothing
       reaches `places.ts` before Tumo has reviewed this** (SP-053, SP-057)
-- [ ] TOUR-05b **BLOCKED on TOUR-05a sign-off + SP-067.** Migrate Soweto out of `landmarks: string[]` — `"Vilakazi Street"`,
+- [x] TOUR-05b **Seeded 49 places across 18 of 19 cities**, on Tumo's instruction to seed what has
+      sources. Every entry names a real source; `landmarkLabel` matched `provinces.ts` byte-for-byte
+      on the first run, including the em-dash in `"Emakhosini — the valley of the kings"`. Two
+      `direct` article links seeded — the only content type a surface reads today. **Held back
+      deliberately:** 3 `[NEEDS SOURCE]`, 9 with no story the repo can tell, the 6 that are not
+      places, the 3 access-restricted ones awaiting Tumo's call, and Welkom's park. Was: migrate
+      Soweto out of `landmarks: string[]` — `"Vilakazi Street"`,
       `"Hector Pieterson Memorial"`, `"Mandela House"`, `"Regina Mundi Church"` become the first four
       `Place` records, and `time-soweto-photograph` → `hector-pieterson-memorial` the first `direct`
       link. The memorial and Mandela House carry `alsoListedIn: ["johannesburg"]` (SP-017), since
