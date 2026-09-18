@@ -29,22 +29,26 @@
 
 | Language | Status | Also spoken in SA? | Source |
 |---|---|---|---|
-| **Sesotho** | **Official** | **Yes — the same language**, `st`, one of South Africa's eleven | [1], app data |
-| **English** | **Official** | Yes — `en` | [1], app data |
-| **isiXhosa** | Source [1] names it as official too | Yes — `xh` | [1] |
-| **SiPhuthi** | Source [1] names it as official too | No | [1] |
+| **Sesotho** | **Official** | **Yes — the same language**, `st`, one of South Africa's eleven | [5], app data |
+| **English** | **Official** | Yes — `en` | [5], app data |
+| **isiXhosa** | **Official — since 13 August 2025** | Yes — `xh` | [5], [6] |
+| **isiPhuthi** | **Official — since 13 August 2025** | No — a Nguni language close to siSwati, **not** siSwati | [5], [6] |
+| **Sign language** | **Official — since 13 August 2025** (the Act says "sign language", generically) | — | [5], [6] |
 
-⚠️ **Source [1] is internally inconsistent** — its prose says Sesotho is official "along with English,
-IsiXhosa, and SiPhuthi", while **its infobox lists only Sesotho and English** [1]. **The app's existing
-citation — Constitution of Lesotho, 1993, §3(1) — names two.** `[NEEDS SOURCE]` to resolve whether
-isiXhosa and SiPhuthi were added later.
+✅ **Resolved 2026-09-19 (issue #25).** Source [1]'s prose was right and its infobox stale. The
+**Tenth Amendment to the Constitution Act, 2025 (Act No. 2 of 2025)**, published 13 August 2025,
+substitutes §3(1): *"The official languages of Lesotho shall be Sesotho, English, isiXhosa, isiPhuthi
+and sign language"* [5], [6]. The 1993 text named two; the app's `ls` entry cited that text and was
+therefore stale too. **Applied to the app:** `xh` added to `supported`; isiPhuthi and sign language
+named in `notYet`; the `sourceNote` now cites the Amendment
+([`country-languages.ts`](../app/src/content/country-languages.ts)). isiPhuthi stays out of
+`supported` on purpose — the README's first trap: same family, similar name, **not** the app's `ss`.
 
-🔴 **If isiXhosa is official in Lesotho, the app's `ls` entry is incomplete.** It currently supports
-`["st", "en"]`. **isiXhosa is `xh` — the app already has it.** Adding it would cost nothing and would
-make the entry more accurate. **SiPhuthi would go in `notYet`.** **This is the second place where this
-research could directly improve shipping data**, after Zimbabwe ([`zw-zimbabwe.md`](zw-zimbabwe.md)).
-
-**Languages Ubuntu Heritage does not have:** SiPhuthi only.
+Two things worth noticing. **Lesotho and South Africa made sign language official within two years of
+each other** (SA: Eighteenth Amendment, 2023) — the same accessibility gap the app carries for both
+(issue #36). And **isiPhuthi**, a language of the Phuthi people of southern Lesotho and the Eastern
+Cape, is official in a country where it is a small minority — worth a line when the language picker
+names it.
 
 ---
 
@@ -183,8 +187,8 @@ Algeria, Libya, Chad and Malawi ([`mw-malawi.md`](mw-malawi.md)).
 - [ ] 🔴 **Mofolo — *Chaka* and *Moeti oa Bochabela*.** Editions, translations, rights status. **Then
       propose it as Sesotho content for the app.** The highest-value action item in the folder.
 - [ ] 🔴 **The three deleted anthem verses** on Basotho custom. **Find out what they said.**
-- [ ] 🔴 **Resolve Lesotho's official languages** — two or four? **If isiXhosa is official, update the
-      app's `ls` entry.**
+- [x] ~~🔴 **Resolve Lesotho's official languages** — two or four?~~ **Five, since the Tenth Amendment Act,
+      2025 — resolved and applied to the app's `ls` entry on 2026-09-19 (issue #25).**
 - [ ] ⚠️ **Moshoeshoe I and the Difaqane** — the counterpart to Botswana's account. Connect explicitly.
 - [ ] **How Lesotho avoided incorporation into South Africa.** Absent from source [1]; it is why the
       country exists.
@@ -206,3 +210,10 @@ Algeria, Libya, Chad and Malawi ([`mw-malawi.md`](mw-malawi.md)).
    Wikipedia, Encyclopedia.com, *The Journalist* (South Africa) and a SOAS repository entry on Sesotho
    literary aesthetics. **The Britannica and EBSCO entries are the strongest and should be read
    directly before this material is used.**
+5. Constitution of Lesotho, 1993 (rev. 2025), §3(1) — constituteproject.org/constitution/Lesotho_2025 —
+   the substituted text: Sesotho, English, isiXhosa, isiPhuthi and sign language. **Primary text, as
+   consolidated by Constitute.**
+6. Mayet & Associates, "Lesotho Enacts Landmark Tenth Constitutional Amendment" —
+   zmayetlaw.co.ls/lesotho-enacts-landmark-tenth-constitutional-amendment/ — the Act's name and number
+   (Act No. 2 of 2025), its publication date (13 August 2025) and the official-languages summary. **A law
+   firm's summary, not the Gazette; the Gazette notice is still wanted.**

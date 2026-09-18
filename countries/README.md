@@ -43,18 +43,21 @@ exist, a language the app doesn't have, or a missing source.
 
 ### What the 2026-08-30 research found for that file specifically
 
-**Three concrete corrections to data already shipping** — each needs its instrument verified first,
-and each is written up in the country's own file:
+**Three concrete corrections to data already shipping** — each written up in the country's own file,
+and **each verified against its instrument on 2026-09-19 (issue #25)** before it touched the app. One of
+the three went the *opposite* way from the research, which is what the verification step is for:
 
-| Country | Finding | File |
-|---|---|---|
-| **Namibia** | **Setswana (`tn`) is a recognised national language and is missing from the `na` entry.** The app already has `tn`. | [`na-namibia.md`](na-namibia.md) |
-| **Lesotho** | Source names **isiXhosa (`xh`)** as official alongside Sesotho and English; the `ls` entry has only `st` and `en`. The app already has `xh`. | [`ls-lesotho.md`](ls-lesotho.md) |
-| **Zimbabwe** | The constitution "**embraces only two nationally, Shona and English**" — which sharpens the honest-technicality comment already in the code. | [`zw-zimbabwe.md`](zw-zimbabwe.md) |
+| Country | Finding | Against the instrument | File |
+|---|---|---|---|
+| **Namibia** | Setswana (`tn`) missing from the `na` entry | ✅ **Applied.** The Constitution (Art. 3) names only English and lists no national languages; the claim rests on the Ministry of Basic Education's *Language Policy for Schools* (2003) §5.10, which names Setswana. The entry cites both and says which claim is which. | [`na-namibia.md`](na-namibia.md) |
+| **Lesotho** | isiXhosa (`xh`) official but not in the `ls` entry | ✅ **Applied.** The Tenth Amendment to the Constitution Act, 2025 (Act No. 2 of 2025) rewrote §3(1): Sesotho, English, isiXhosa, isiPhuthi and sign language. `xh` added; isiPhuthi and sign language named in `notYet` (isiPhuthi is **not** siSwati). | [`ls-lesotho.md`](ls-lesotho.md) |
+| **Zimbabwe** | "embraces only two nationally, Shona and English" | ❌ **Rejected.** Not in the 2013 Act — §6(3)(a) requires all sixteen to be "treated equitably". The encyclopaedia gloss was checked and not applied; the code comment stays as narrow as it was, and a test pins the phrase out of the `sourceNote`. | [`zw-zimbabwe.md`](zw-zimbabwe.md) |
 
-**One new entry worth adding** — **Mozambique**, whose Tsonga is the app's Xitsonga (`ts`); see
-[`mz-mozambique.md`](mz-mozambique.md) and reuse the Shangani↔Xitsonga citation the `zw` entry
-already carries.
+**One new entry, deferred** — **Mozambique**, whose Changana is the app's Xitsonga (`ts`). The
+instrument is in hand (Constitution Arts. 9–10: Portuguese official, national languages unnamed), but
+the entry cannot be wired honestly until issue #19 lets an entry exist **without English** (not
+official there) and **without a forced `lead`**. Written up with the three reasons in
+[`mz-mozambique.md`](mz-mozambique.md); first to wire when #19 lands.
 
 **One blocker that stops most of the rest.** For **most of the 54, the app speaks none of the
 country's languages** — and `country-languages.ts` cannot express that, because `lead` is a required

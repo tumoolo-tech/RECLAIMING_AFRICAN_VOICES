@@ -108,3 +108,43 @@ test("the Southern African neighbours lead with the language they actually share
   assert.equal(languagesFor("ls")?.lead, "st");
   assert.equal(languagesFor("sz")?.lead, "ss");
 });
+
+// ── Issue #25 — three corrections the countries/ research found, each verified against its instrument
+//    before it was applied. Pinned so a "tidy-up" cannot quietly undo a sourced fact.
+
+test("Lesotho: isiXhosa is official since the Tenth Amendment (2025), and SiPhuthi is not siSwati", () => {
+  const ls = languagesFor("ls");
+  assert.ok(ls);
+  // Tenth Amendment to the Constitution Act, 2025 (Act No. 2 of 2025), §3(1): Sesotho, English,
+  // isiXhosa, isiPhuthi and sign language. isiXhosa is the same language as the app's `xh`.
+  assert.ok(ls.supported.includes("xh"), "isiXhosa is official in Lesotho (Tenth Amendment, 2025)");
+  assert.ok(/Tenth Amendment/.test(ls.sourceNote), "the sourceNote must name the amending Act, not only the 1993 text");
+  // The same-name trap (countries/README.md): SiPhuthi is a Nguni language close to siSwati and is
+  // NOT siSwati. Mapping it to `ss` on resemblance would be a plausible-looking falsehood.
+  assert.ok(!ls.supported.includes("ss"), "SiPhuthi must not be mapped to South Africa's siSwati");
+  assert.ok(ls.notYet.some((n) => /phuthi/i.test(n)), "SiPhuthi is official and must be named as one we do not have");
+  // The Act says "sign language", generically. Named as the Act names it — no invented title.
+  assert.ok(ls.notYet.some((n) => /sign language/i.test(n)), "sign language is official in Lesotho and must be named");
+  assert.equal(ls.lead, "st");
+});
+
+test("Namibia: Setswana is a recognised school language, sourced to the Ministry's policy, not the Constitution", () => {
+  const na = languagesFor("na");
+  assert.ok(na);
+  assert.ok(na.supported.includes("tn"), "Setswana is on the Ministry's first-language list (Language Policy for Schools, 2003, §5.10)");
+  // Two claims, two instruments — the note must carry both, because the Constitution names only
+  // English and a reader checking Article 3 for "Setswana" would rightly find nothing.
+  assert.ok(/Article 3\(1\)/.test(na.sourceNote), "the official-language claim rests on Article 3(1)");
+  assert.ok(/Language Policy for Schools/.test(na.sourceNote), "the recognised-language claim rests on the Ministry's policy");
+  assert.equal(na.lead, "en", "English is the sole official language and stays the lead");
+});
+
+test("Zimbabwe: the 'only two embraced nationally' gloss was checked against §6 and is not applied", () => {
+  const zw = languagesFor("zw");
+  assert.ok(zw);
+  // §6(3)(a): "ensure that all officially recognised languages are treated equitably". A sourceNote
+  // that ranked Shona and English above the other fourteen would contradict the instrument it cites.
+  assert.ok(/equitably/.test(zw.sourceNote), "the note must carry §6(3)(a), which is what the Act actually says");
+  assert.ok(!/only two|embraces two|two of them nationally/i.test(zw.sourceNote), "the rejected encyclopaedia gloss must not be in the note");
+  assert.equal(zw.supported.length, 6, "the six languages Zimbabwe shares with the app are unchanged");
+});

@@ -49,8 +49,19 @@ and would make the entry truer.**
 
 **This is the third and clearest place where this research directly improves shipping data**, after
 Zimbabwe ([`zw-zimbabwe.md`](zw-zimbabwe.md)) and Lesotho ([`ls-lesotho.md`](ls-lesotho.md)).
-⚠️ **Verify against Article 3 first** — the app's existing citation is the authority, and source [1]
-does not give the constitutional provision for the national-language list.
+✅ **Verified and applied, 2026-09-19 (issue #25).** Article 3 was checked [5]: it names **English only**
+and contains **no list of national languages** — Article 3(3) merely lets Parliament permit other
+languages regionally. So "recognised national language" is **not a constitutional status** in Namibia,
+whatever source [1] implies. The list that does exist is the Ministry of Basic Education, Sport and
+Culture's *Language Policy for Schools in Namibia* (2003), §5.10, which names the first-language-level
+school languages: Afrikaans, English, German, Ju|'hoansi, Khoekhoegowab, Oshikwanyama, Oshindonga,
+Otjiherero, Rukwangali, Rumanyo, **Setswana**, Silozi and Thimbukushu [6]. **Applied to the app:** `tn`
+added to `supported`; `notYet` extended with Rumanyo, Thimbukushu, Silozi and Ju|'hoansi from the same
+list; the `sourceNote` now names **both** instruments and says which claim rests on which
+([`country-languages.ts`](../app/src/content/country-languages.ts)). The table above should be read
+with "Recognised national" meaning *on the Ministry's school-language list* — the file's own definition
+of national language (the policy's Glossary: "languages spoken in Namibia as mother tongues by Namibian
+citizens") is broader than any list.
 
 ⚠️ **siLozi needs the "same name ≠ same language" check.** Lozi is also a recognised regional language
 of **Zambia** ([`zm-zambia.md`](zm-zambia.md)) at 5.4%, and it is a Sotho-related language
@@ -172,8 +183,9 @@ likely second `[NEEDS SOURCE]`.
 
 ## Open questions
 
-- [ ] 🔴 **Add Setswana (`tn`) to the app's `na` entry** — verify against Article 3 first. **The
-      clearest data improvement this research has produced.**
+- [x] ~~🔴 **Add Setswana (`tn`) to the app's `na` entry** — verify against Article 3 first.~~ **Done
+      2026-09-19 (issue #25)** — Article 3 names no national languages; the claim rests on the Ministry's
+      2003 school-language policy §5.10 and the entry says so.
 - [ ] 🔴 **The Herero and Nama genocide**, from scholarship, with the reparations and restitution
       questions. **Then decide how — and whether — the app tells it.**
 - [ ] 🔴 **Herero and Nama cultural life, present tense.** They appear here only as victims.
@@ -196,3 +208,11 @@ likely second `[NEEDS SOURCE]`.
 2. *(reserved — **no anthem source was fetched for Namibia**)*
 3. *(reserved — Namibia's World Heritage list was not fetched; Twyfelfontein comes from source [1])*
 4. *(reserved — no literature search was run for Namibia)*
+5. Constitution of the Republic of Namibia, Article 3 — constituteproject.org/constitution/Namibia_2014 —
+   3(1) English is the official language; 3(2)–(3) permit other languages in schools and, by Act of
+   Parliament, regionally. **Names no other language. Primary text, as consolidated by Constitute.**
+6. Ministry of Basic Education, Sport and Culture, *The Language Policy for Schools in Namibia —
+   Discussion Document*, January 2003 — nied.edu.na/assets/documents/05Policies/NationalCurriculumGuide/
+   Po_LanguagePolicy-discussion_2003.pdf — §5.10 lists the first-language-level school languages,
+   Setswana among them; the Glossary defines "national language". **Government source; a discussion document,
+   so the 2016 update of the policy (epdn.org) should be checked when it can be fetched.**

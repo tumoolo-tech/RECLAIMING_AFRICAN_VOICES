@@ -4,7 +4,7 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-18 (#36) — by Furn (via Claude). Previous update: 2026-09-18 (Stage C)._
+_Last updated: 2026-09-19 (#25) — by Furn (via Claude). Previous update: 2026-09-18 (#36)._
 
 > **⚠️ Open question, and it sits above everything else on this board: what happened to the
 > hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
@@ -47,7 +47,7 @@ _Last updated: 2026-09-18 (#36) — by Furn (via Claude). Previous update: 2026-
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 done** (the "12 official languages" fix, this branch) · week-1 next: #45 #43 #34 #35 #25 #51 |
+| **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 merged (PR #69) · #25 done (this branch)** — three of four corrections applied, Mozambique deferred to #19 · week-1 next: #45 #43 #34 #35 #51 |
 | **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10.** 49 places live · freshness script · pitch corrected. **Phase 8 started:** the content-translation gap is now measured and ratcheted. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places · ~14 `[VERIFY]` sources · 4 conflated strings · Thulamela's city · the pitch's team-size line · and `ANTHROPIC_API_KEY` if the draft pipeline (LANG-09) should run. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
@@ -335,6 +335,30 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   report now says "eleven of the twelve official languages" and names South African Sign Language as
   the one not yet served. The guard is also extended to cover `scripts/`, because a script that
   prints a sentence into a pitch can make the same false claim a component can.
+
+- **2026-09-19 (#25)** — **Three corrections to `country-languages.ts`, each checked against its
+  instrument first — and one of them went the opposite way from the research.** The 30 Aug research
+  had flagged four things from Wikipedia and marked every instrument `[NEEDS SOURCE]`; the file's own
+  rule is *constitution or government source*, so the verification was the work.
+  **Lesotho:** the Tenth Amendment to the Constitution Act, 2025 (Act No. 2 of 2025, 13 Aug 2025)
+  rewrote §3(1) to *Sesotho, English, isiXhosa, isiPhuthi and sign language* — five, not two.
+  Wikipedia's prose was right and its infobox stale, and so was our `sourceNote`. `xh` added;
+  isiPhuthi and sign language named in `notYet` — isiPhuthi stays out of `supported` because it is
+  **not** siSwati, the README's first trap. **Namibia:** Article 3 names only English and contains **no
+  list** of national languages at all; "recognised" has to rest on the Ministry of Basic Education,
+  Sport and Culture's *Language Policy for Schools* (2003) §5.10, which names Setswana among thirteen.
+  `tn` added, four more `notYet` names from the same list, and the note says which claim rests on
+  which instrument. **Zimbabwe:** the "constitution embraces only two nationally, Shona and English"
+  line the issue asked us to *sharpen the comment with* is **not in the Act** — §6(3)(a) requires all
+  sixteen to be "treated equitably". Rejected, recorded in the note, and a test now pins the phrase
+  out. **Mozambique: deferred, deliberately.** The instrument is in hand (Arts. 9–10: Portuguese
+  official, national languages unnamed), but the entry cannot be wired honestly: the tests require
+  English in every entry and English is not official there; `ts` needs a government list naming
+  Xichangana plus the Changana↔Xitsonga citation; and `lead` is required with no honest candidate.
+  All three are #19's, parked under SA-first. Written up in `mz-mozambique.md` as the first entry to
+  wire when #19 lands. The four research files and `countries/README.md` carry the resolutions and the
+  new primary sources (Constitute texts; the 2003 policy PDF, read directly).
+  Verified: typecheck clean · **207/207** (204 before) · `build:web` green.
 
 - **2026-09-18 (#36)** — **South Africa has twelve official languages, and the app said eleven in seventeen
   places.** Issue #36. The Constitution Eighteenth Amendment Act, 2023 added South African Sign

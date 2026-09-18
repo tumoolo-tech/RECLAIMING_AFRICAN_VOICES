@@ -31,7 +31,11 @@
 | **Lomwe** | Indigenous | No | [1] |
 | **Swahili** | Spoken in the north | No | [1] |
 
-**Official-language instrument:** `[NEEDS SOURCE]`.
+**Official-language instrument:** Constitution of the Republic of Mozambique, 2004, **Article 10** —
+"The official language in the Republic of Mozambique shall be Portuguese." **Article 9** esteems
+"national languages as cultural and educational heritage" **without naming any** [5]. So Tsonga's
+status is "a national language" only in Article 9's generic sense; **no constitutional list exists** to
+cite for it, the same finding as Namibia ([`na-namibia.md`](na-namibia.md)).
 
 **Languages Ubuntu Heritage does not have:** Portuguese, Makhuwa, Sena, Lomwe, Swahili.
 
@@ -54,6 +58,19 @@ research has produced, and the strongest candidate for LANG-03.**
 ⚠️ **But note the honest complication:** Makhuwa is the largest indigenous language [1], not Tsonga.
 Leading with Xitsonga because it is the one the app happens to speak would repeat the Zimbabwe
 technicality — so the entry must carry the same explicit comment.
+
+⏸️ **Deferred, 2026-09-19 (issue #25) — deliberately not wired.** The other three #25 items were
+corrections inside the existing `country-languages.ts` shape; this one is a **new entry that the shape
+cannot hold honestly**, for three reasons that are all issue #19's (parked under the SA-first decision):
+1. `country-languages.test.ts` requires English in every entry's `supported`, and **English is not official
+   here** — Portuguese is [5]. Adding `en` would be a false claim; changing the test is a design call.
+2. `supported` means *official or nationally recognised*. Article 9 names nothing, so `ts` needs a
+   government list (the Ministry of Education's bilingual-education languages, which include Xichangana
+   `[NEEDS SOURCE]`) **and** the same-language citation Changana ↔ Xitsonga (ISO 639-3 `tso`; Xitswa
+   `tsc` and Xironga `rng` are separate) `[NEEDS SOURCE]`.
+3. `lead` is required, and the only candidate is `ts` — a UI switch into unreviewed Xitsonga for a
+   Portuguese-speaking reader. That is the "`lead` must be allowed to be none" hole, #19.
+**When #19 lands, `mz` is the first entry to wire**, with the instrument above already in hand.
 
 ---
 
@@ -187,8 +204,9 @@ site rather than only a colonial one.
 
 ## Open questions
 
-- [ ] 🔴 **Confirm Tsonga = Xitsonga = Shangani**, reusing the app's existing Zimbabwe citation. **If it
-      holds, wire `mz` — the strongest LANG-03 candidate this research has produced.**
+- [ ] 🔴 **Confirm Changana = Xitsonga (ISO 639-3 `tso`)** and find the government list that names
+      Xichangana — then wire `mz` **once #19 allows an entry without English and without a forced
+      `lead`**. The instrument (Arts. 9–10) is in hand; deferred 2026-09-19, see Languages.
 - [ ] 🔴 **"African rhythms inside a European form"** — Craveirinha, Kourouma, Silá, Tutuola, Vilakazi.
       **Write this up once. It is a submission-narrative item.**
 - [ ] 🔴 **The Gaza Empire and the Mfecane** — connects directly to *Mhudi*.
@@ -212,3 +230,6 @@ site rather than only a colonial one.
    List of Mozambican writers), the **Centre for the Study of Contemporary Women's Writing** (Institute
    of Languages, Cultures and Societies), the University of Porto's Mozambican Literature course page,
    and Books Africana. The CCWW and Wikipedia entries are the checkable ones.
+5. Constitution of the Republic of Mozambique, 2004, Articles 9–10 —
+   constituteproject.org/constitution/Mozambique_2007 — Portuguese as the official language; national
+   languages esteemed but not named. **Primary text, as consolidated by Constitute.**

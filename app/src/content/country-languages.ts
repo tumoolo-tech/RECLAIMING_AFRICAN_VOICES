@@ -57,10 +57,16 @@ export const countryLanguages: Record<string, CountryLanguages> = {
       "Botswana: English is the official language and Setswana the national language (Constitution of Botswana; Government of Botswana).",
   },
   ls: {
+    // Five official languages since August 2025, not two. The 1993 text named Sesotho and English;
+    // the Tenth Amendment rewrote §3(1). isiXhosa is the same language as South Africa's `xh`.
+    // SiPhuthi is NOT siSwati (`ss`) — a Nguni language, closely related, but its own; it goes in
+    // `notYet`, not `supported`, for the same reason Zimbabwe's Ndebele does. "Sign language" is
+    // what the Act says, generically — no name is invented for it here.
     lead: "st",
-    supported: ["st", "en"],
-    notYet: [],
-    sourceNote: "Constitution of Lesotho, 1993, §3(1) — Sesotho and English are the official languages.",
+    supported: ["st", "en", "xh"],
+    notYet: ["SiPhuthi", "Sign language"],
+    sourceNote:
+      "Constitution of Lesotho, 1993, §3(1), as substituted by the Tenth Amendment to the Constitution Act, 2025 (Act No. 2 of 2025, published 13 August 2025) — the official languages are Sesotho, English, isiXhosa, isiPhuthi and sign language. Before the Amendment §3(1) named Sesotho and English only. Sesotho leads as the first-named official language in §3(1).",
   },
   sz: {
     lead: "ss",
@@ -69,11 +75,27 @@ export const countryLanguages: Record<string, CountryLanguages> = {
     sourceNote: "Constitution of the Kingdom of Eswatini, 2005, §3(1) — siSwati and English are the official languages.",
   },
   na: {
+    // Two instruments, two different claims. The Constitution names ONE language (English) and no
+    // list of national languages at all — Article 3(3) only lets Parliament permit others regionally.
+    // "Recognised" here therefore means the Ministry's school-language list, which is a government
+    // source, not the Constitution; the sourceNote says which claim rests on which. Setswana is on
+    // that list, and it is the same language as the app's `tn` — it was missing from this entry
+    // until the countries/ research caught it (na-namibia.md).
     lead: "en",
-    supported: ["en", "af"],
-    notYet: ["Oshiwambo", "Otjiherero", "Khoekhoegowab", "RuKwangali", "German"],
+    supported: ["en", "af", "tn"],
+    notYet: [
+      "Oshiwambo (Oshindonga, Oshikwanyama)",
+      "Otjiherero",
+      "Khoekhoegowab",
+      "Rukwangali",
+      "Rumanyo",
+      "Thimbukushu",
+      "Silozi",
+      "Ju|'hoansi",
+      "German",
+    ],
     sourceNote:
-      "Constitution of Namibia, Article 3(1) — English is the sole official language. Afrikaans remains a widely used lingua franca, and the languages listed are among those spoken at home.",
+      "Constitution of Namibia, Article 3(1) — English is the sole official language; the Constitution names no other language. The Ministry of Basic Education, Sport and Culture, 'The Language Policy for Schools in Namibia' (Discussion Document, January 2003), §5.10, lists the first-language-level school languages: Afrikaans, English, German, Ju|'hoansi, Khoekhoegowab, Oshikwanyama, Oshindonga, Otjiherero, Rukwangali, Rumanyo, Setswana, Silozi and Thimbukushu. Afrikaans and Setswana are on that list and are languages this app speaks; English leads because it is the official language.",
   },
   zw: {
     // Of Zimbabwe's sixteen officially recognised languages, these are the ones that are the SAME
@@ -81,11 +103,17 @@ export const countryLanguages: Record<string, CountryLanguages> = {
     // `lead` is English on an honest technicality: Zimbabwe's two largest languages are Shona and
     // Ndebele, and Ubuntu Heritage has neither. English leads because it is the most used of the
     // languages we actually speak there — not because it is the country's main language.
+    //
+    // CHECKED AND REJECTED (issue #25, 2026-09-19): the countries/ research relayed an encyclopaedia
+    // line that the Constitution "only embraces two of them nationally, Shona and English". It is
+    // not in the Act. §6(3)(a) says the opposite — the State must "ensure that all officially
+    // recognised languages are treated equitably". The technicality above stays exactly as narrow as
+    // it was; it must not be widened into a claim the instrument contradicts.
     lead: "en",
     supported: ["en", "ve", "ts", "st", "tn", "xh"],
     notYet: ["Shona", "Ndebele", "Chewa", "Chibarwe", "Kalanga", "Nambya", "Ndau", "Tonga", "Koisan", "Zimbabwean Sign Language"],
     sourceNote:
-      "Constitution of Zimbabwe Amendment (No. 20) Act, 2013, §6 — sixteen officially recognised languages. Zimbabwe's Shangani corresponds to Xitsonga; its Ndebele is Northern Ndebele, a different language from South Africa's isiNdebele.",
+      "Constitution of Zimbabwe Amendment (No. 20) Act, 2013, §6(1) — sixteen officially recognised languages, which §6(3)(a) requires the State to treat equitably; the Constitution ranks none of them above the others. Zimbabwe's Shangani corresponds to Xitsonga; its Ndebele is Northern Ndebele, a different language from South Africa's isiNdebele.",
   },
 };
 
