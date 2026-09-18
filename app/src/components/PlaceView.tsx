@@ -15,6 +15,7 @@ import type { Place } from "../content/places";
 import { colors, spacing, radius, fonts, type } from "../theme/tokens";
 import { Icon } from "../ui";
 import { t } from "../i18n";
+import { LanguageNote } from "./LanguageNote";
 import type { LangCode } from "../i18n/languages";
 
 const UI = {
@@ -75,6 +76,9 @@ export function PlaceView({
 
           <ScrollView style={{ maxHeight: 420 }} contentContainerStyle={{ padding: spacing.md }}>
             {place ? <Text style={s.what}>{place.what}</Text> : null}
+            {/* A place's prose is English by design (SP-015). Say so rather than let a reader who
+                picked isiZulu assume this is their language. */}
+            <LanguageNote lang={lang} />
 
             {footer}
 
