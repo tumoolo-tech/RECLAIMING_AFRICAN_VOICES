@@ -83,6 +83,12 @@ export const places: Place[] = [
   // ── Western Cape ───────────────────────────────────────────────────────────────────────────────
   {
     id: "robben-island",
+    image: {
+      file: "robben-island.webp",
+      credit: "Moheen Reeyad",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Maximum_Security_Prison,_Robben_Island_(02).jpg",
+    },
     name: "Robben Island",
     cityId: "cape-town",
     landmarkLabel: "Robben Island",
@@ -94,6 +100,12 @@ export const places: Place[] = [
   },
   {
     id: "district-six",
+    image: {
+      file: "district-six.webp",
+      credit: "Mike Peel",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:District_Six_Museum,_Cape_Town_2018_04.jpg",
+    },
     name: "District Six",
     cityId: "cape-town",
     landmarkLabel: "District Six",
@@ -104,6 +116,12 @@ export const places: Place[] = [
   },
   {
     id: "table-mountain",
+    image: {
+      file: "table-mountain.webp",
+      credit: "SkyPixels",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Cape_Town_City.jpg",
+    },
     name: "Table Mountain",
     cityId: "cape-town",
     landmarkLabel: "Table Mountain",
@@ -115,6 +133,12 @@ export const places: Place[] = [
   },
   {
     id: "dorp-street",
+    image: {
+      file: "dorp-street.webp",
+      credit: "Steven Morrow",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Oak_trees,_Dorp_Street,_Stellenbosch.jpg",
+    },
     name: "Dorp Street",
     cityId: "stellenbosch",
     landmarkLabel: "Dorp Street",
@@ -125,6 +149,12 @@ export const places: Place[] = [
   },
   {
     id: "jonkershoek",
+    image: {
+      file: "jonkershoek.webp",
+      credit: "KodachromeFan",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Jonkershoek_Valley_Twin_Peaks.jpg",
+    },
     name: "Jonkershoek",
     cityId: "stellenbosch",
     landmarkLabel: "Jonkershoek",
@@ -137,6 +167,12 @@ export const places: Place[] = [
   // ── Gauteng ────────────────────────────────────────────────────────────────────────────────────
   {
     id: "constitution-hill",
+    image: {
+      file: "constitution-hill.webp",
+      credit: "Mihi tr",
+      licence: "CC BY 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Eternal_Flame_on_Constitution_Hill_in_Johannesburg.JPG",
+    },
     name: "Constitution Hill",
     cityId: "johannesburg",
     landmarkLabel: "Constitution Hill",
@@ -148,6 +184,12 @@ export const places: Place[] = [
   },
   {
     id: "apartheid-museum",
+    image: {
+      file: "apartheid-museum.webp",
+      credit: "NJR ZA",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:South_Africa-Johannesburg-Apartheid_Museum001.jpg",
+    },
     name: "Apartheid Museum",
     cityId: "johannesburg",
     landmarkLabel: "Apartheid Museum",
@@ -231,6 +273,12 @@ export const places: Place[] = [
   // ── Northern Cape ──────────────────────────────────────────────────────────────────────────────
   {
     id: "the-big-hole",
+    image: {
+      file: "the-big-hole.webp",
+      credit: "Rudolph Botha",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Big_Hole_Kimberley.jpg",
+    },
     name: "The Big Hole",
     cityId: "kimberley",
     landmarkLabel: "The Big Hole",
@@ -252,6 +300,12 @@ export const places: Place[] = [
   },
   {
     id: "mcgregor-museum",
+    image: {
+      file: "mcgregor-museum.webp",
+      credit: "flowcomm",
+      licence: "CC BY 2.0",
+      source: "https://commons.wikimedia.org/wiki/File:McGregor_Museum,_Kimberley_(4527868638).jpg",
+    },
     name: "McGregor Museum",
     cityId: "kimberley",
     landmarkLabel: "McGregor Museum",
@@ -274,6 +328,12 @@ export const places: Place[] = [
   // ── Eastern Cape ───────────────────────────────────────────────────────────────────────────────
   {
     id: "donkin-reserve",
+    image: {
+      file: "donkin-reserve.webp",
+      credit: "Portiatn",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Donkin_Reserve,_Port_Elizabeth.JPG",
+    },
     name: "Donkin Reserve & Lighthouse",
     cityId: "gqeberha",
     landmarkLabel: "Donkin Reserve & lighthouse",
@@ -284,6 +344,12 @@ export const places: Place[] = [
   },
   {
     id: "route-67",
+    image: {
+      file: "route-67.webp",
+      credit: "Suzi-k",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Port_Elizabeth_Nelson_Mandela_quote_in_St_Marys_terrace.JPG",
+    },
     name: "Route 67",
     cityId: "gqeberha",
     landmarkLabel: "Route 67",
@@ -305,6 +371,12 @@ export const places: Place[] = [
   },
   {
     id: "st-georges-park",
+    image: {
+      file: "st-georges-park.webp",
+      credit: "PaddyBriggs (original uploader, English Wikipedia)",
+      licence: "Public domain",
+      source: "https://commons.wikimedia.org/wiki/File:Sahara_Oval_St_George%27s,_uploaded_2005.jpg",
+    },
     name: "St George's Park",
     cityId: "gqeberha",
     landmarkLabel: "St George's Park",
@@ -315,6 +387,12 @@ export const places: Place[] = [
   },
   {
     id: "nelson-mandela-museum",
+    image: {
+      file: "nelson-mandela-museum.webp",
+      credit: "Xufanc",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Mthatha-NMM1813.JPG",
+    },
     name: "Nelson Mandela Museum",
     cityId: "mthatha",
     landmarkLabel: "Nelson Mandela Museum",
@@ -335,6 +413,12 @@ export const places: Place[] = [
   },
   {
     id: "qunu",
+    image: {
+      file: "qunu.webp",
+      credit: "Salym Fayad",
+      licence: "CC BY 2.0",
+      source: "https://commons.wikimedia.org/wiki/File:Qunu,_South_Africa.jpg",
+    },
     name: "Qunu",
     cityId: "mthatha",
     landmarkLabel: "Qunu",
@@ -366,6 +450,12 @@ export const places: Place[] = [
   },
   {
     id: "cathedral-of-st-michael-and-st-george",
+    image: {
+      file: "cathedral-of-st-michael-and-st-george.webp",
+      credit: "Tim Giddings (English Wikipedia)",
+      licence: "Public domain",
+      source: "https://commons.wikimedia.org/wiki/File:Grahamstown_Cathedral.JPG",
+    },
     name: "Cathedral of St Michael & St George",
     cityId: "makhanda",
     landmarkLabel: "Cathedral of St Michael & St George",
@@ -421,6 +511,12 @@ export const places: Place[] = [
   },
   {
     id: "pmb-city-hall",
+    image: {
+      file: "pmb-city-hall.webp",
+      credit: "Johan Pretorius",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Pietermaritzburg_City_Hall.JPG",
+    },
     name: "City Hall",
     cityId: "pietermaritzburg",
     landmarkLabel: "City Hall (red-brick)",
@@ -451,6 +547,12 @@ export const places: Place[] = [
   },
   {
     id: "emakhosini",
+    image: {
+      file: "emakhosini.webp",
+      credit: "JMK",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Gees_van_eMakhosini-monument,_eMakhosini.jpg",
+    },
     name: "Emakhosini",
     cityId: "ulundi",
     landmarkLabel: "Emakhosini — the valley of the kings",
@@ -473,6 +575,12 @@ export const places: Place[] = [
   // ── Free State ─────────────────────────────────────────────────────────────────────────────────
   {
     id: "waaihoek-wesleyan-church",
+    image: {
+      file: "waaihoek-wesleyan-church.webp",
+      credit: "KeMang??",
+      licence: "CC0",
+      source: "https://commons.wikimedia.org/wiki/File:Waaihoek_Wesleyan_Church_01.jpg",
+    },
     name: "Waaihoek Wesleyan Church",
     cityId: "bloemfontein",
     landmarkLabel: "Waaihoek (ANC founding site)",
@@ -484,6 +592,12 @@ export const places: Place[] = [
   },
   {
     id: "naval-hill",
+    image: {
+      file: "naval-hill.webp",
+      credit: "Graham Maclachlan",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Naval_Hill,_Bloemfontein,_9301,_South_Africa_-_panoramio.jpg",
+    },
     name: "Naval Hill",
     cityId: "bloemfontein",
     landmarkLabel: "Naval Hill & Nelson Mandela statue",
@@ -494,6 +608,12 @@ export const places: Place[] = [
   },
   {
     id: "national-womens-memorial",
+    image: {
+      file: "national-womens-memorial.webp",
+      credit: "Linton Brothers (historic photograph)",
+      licence: "Public domain",
+      source: "https://commons.wikimedia.org/wiki/File:The_National_Womens_Memorial,_Bloemfontein_in_South_Africa.jpg",
+    },
     name: "National Women's Memorial",
     cityId: "bloemfontein",
     landmarkLabel: "the National Women's Memorial",
@@ -504,6 +624,12 @@ export const places: Place[] = [
   },
   {
     id: "oliewenhuis-art-museum",
+    image: {
+      file: "oliewenhuis-art-museum.webp",
+      credit: "Ymblanter",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Bloemfontein_Oliewenhuis_Art_Museum_seen_from_the_south.jpg",
+    },
     name: "Oliewenhuis Art Museum",
     cityId: "bloemfontein",
     landmarkLabel: "Oliewenhuis Art Museum",
@@ -550,6 +676,12 @@ export const places: Place[] = [
   // ── Mpumalanga ─────────────────────────────────────────────────────────────────────────────────
   {
     id: "makhonjwa-mountains",
+    image: {
+      file: "makhonjwa-mountains.webp",
+      credit: "MaruAttwood",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Baberton_greenstone_belt_view.jpg",
+    },
     name: "Barberton Makhonjwa Mountains",
     cityId: "barberton",
     landmarkLabel: "the Makhonjwa Mountains (UNESCO)",
@@ -612,6 +744,12 @@ export const places: Place[] = [
   },
   {
     id: "magaliesberg",
+    image: {
+      file: "magaliesberg.webp",
+      credit: "Humphrey1938",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Magaliesberg_mountains_27.jpg",
+    },
     name: "The Magaliesberg",
     cityId: "rustenburg",
     landmarkLabel: "the Magaliesberg",
@@ -622,6 +760,12 @@ export const places: Place[] = [
   },
   {
     id: "pilanesberg-national-park",
+    image: {
+      file: "pilanesberg-national-park.webp",
+      credit: "NJR ZA",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Pilanesberg-Lenong_view-001.jpg",
+    },
     name: "Pilanesberg National Park",
     cityId: "rustenburg",
     landmarkLabel: "Pilanesberg National Park",

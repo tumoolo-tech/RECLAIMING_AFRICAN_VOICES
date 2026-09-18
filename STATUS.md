@@ -297,6 +297,45 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
 
 ## 🗒️ Log
 
+- **2026-09-19 (the photographs — 28 of 49, and the 21 that stay honest)** — PAGE-04. Every place
+  was searched on Wikimedia Commons; **28 now carry a real licensed photograph** with photographer,
+  licence and file page recorded. The other **21 keep the line the page already shows** — *"No
+  licensed photograph of this place yet — we do not illustrate real places with AI."*
+
+  **The looking is the work, and it is worth reporting what it caught.** Thirty-odd files were
+  downloaded; **ten were rejected after being viewed**, every one of which the metadata had passed:
+
+  | rejected | what it actually was |
+  |---|---|
+  | `table-mountain` | burnt fynbos on the plateau — on the mountain, unrecognisable as it (replaced) |
+  | `1820-settlers-monument` | a bronze settler couple; Makhanda's monument is a 1974 modernist building |
+  | `moses-mabhida-stadium` | the right stadium, twice, **under construction with cranes** — the entry says it opened in 2009 |
+  | `victoria-street-market` | a Durban spice stall titled "curry market". Probably that market; probably is not a source |
+  | `algoa-bay` | the bay, shot through an aircraft window with the wing across a third of the frame |
+  | `phoenix-settlement` | a photograph **of a lantern slide** of a 1900s group portrait, sprocket holes and all |
+  | `mafikeng-museum` | a shopping block in Mahikeng with a college sign — not the old Town Hall |
+  | `tatham-art-gallery` | a Draper painting **hanging in** the gallery, not the gallery |
+  | `ondini` | a portrait of Zibhebhu kaMaphitha |
+  | `sol-plaatje-house` | a 1923 photograph of Sol Plaatje the man |
+
+  A licence check and a filename check cannot tell you whether an image shows the place. Only
+  opening it can, and that is why `fetch-place-photo.mjs` prints the record to paste rather than
+  writing it (SP-086).
+
+  **Retrying with a different search term is worth doing.** The Nelson Mandela Museum and Qunu were
+  both written off in the first pass as having no usable Commons file; a second term found a good
+  photograph of each. Emakhosini, Waaihoek, Magaliesberg, Pilanesberg and the Makhonjwa range came
+  in the same way.
+
+  **Commons genuinely has nothing** for the remaining 21 — searched repeatedly under several terms:
+  Sol Plaatje House, William Humphreys Art Gallery, Egazini, Mvezo, the 1820 Settlers Monument,
+  Phoenix Settlement, Victoria Street Market, Moses Mabhida, Pietermaritzburg Station, Tatham,
+  oNdini, the Ulundi battlefield, Bakone Malapa, the Irish House, Dzata, Eureka City, the Lowveld
+  garden, Mafikeng Museum, the Barolong royal kraal, Boekenhoutfontein, Algoa Bay. Filling these
+  needs a photographer, an institution's own images, or a permissions email — **not a better query.**
+
+  218/218 tests, typecheck clean.
+
 - **2026-09-19 (a place is a page)** — **Places stop being a bottom sheet.** Tumo asked for
   locations like Vilakazi Street to have their own page, with pictures and a story of their own.
 
@@ -328,8 +367,9 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   un-importable (`SP-088`). A test pins every named file to a real entry, and was mutation-tested
   with an unregistered file, an empty credit and a bad source URL.
 
-  **208 tests, typecheck clean.** Still open in Phase 9: sourcing the photographs, mapping URLs to
-  the route so a place can actually be shared, and longer stories now that there is room.
+  **208 tests, typecheck clean.** Still open in Phase 9: sourcing the photographs *(done for 28 of
+  49 — see the entry above)*, mapping URLs to the route so a place can actually be shared, and
+  longer stories now that there is room.
 
 - **2026-09-19 (#34)** — ***Indaba, My Children* is in copyright until 2070, and the Ledger never
   fingerprinted a single work.** Two findings, one fix. **One:** Vusamazulu Credo Mutwa died on
