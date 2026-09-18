@@ -70,17 +70,28 @@ That is the whole of the new work. Four things, and the first two are data.
 | **T5** | **Referral URLs carry no user identifiers, ever.** No query parameters, no click IDs, no fingerprints. | See §7 — this forecloses conversion tracking, deliberately. |
 | **T6** | **Pure-logic resolvers, unit-tested under `node --test`.** | Matches the existing 179 pure-logic tests, which run with no dependencies installed. |
 
-### Needs Tumo before the relevant task starts
+### Answered by Tumo, 2026-09-18 — full register in [sim_plan.md §4](sim_plan.md#4-the-decision-register)
 
-| # | Question | Blocks |
-|---|---|---|
-| **T7** | **Where does this surface in the nav?** [13-architecture-v2-plan.md](13-architecture-v2-plan.md) **D1** locks the nav to `Journey · Watch · Atlas · Archive · Kids · Schools`. A "Visit" room would break D1; surfacing inside Atlas and Provinces would not. | TOUR-06 onward |
-| **T8** | **Pilot breadth.** Soweto alone, or Soweto plus one more heritage-dense area? The pitch §8 says "one or two additional." | TOUR-05 |
-| **T9** | **Who owns partner relationships** day to day once links exist and start going stale. | TOUR-11 |
+| # | Question | **Decision** | Was blocking |
+|---|---|---|---|
+| **T7** | **Where does this surface in the nav?** [13-architecture-v2-plan.md](13-architecture-v2-plan.md) **D1** locks the nav to `Journey · Watch · Atlas · Archive · Kids · Schools`. A "Visit" room would break D1; surfacing inside Atlas and Provinces would not. | **Inside Atlas + Provinces. No new room** — D1 stands and [shell/nav.ts](../app/src/components/shell/nav.ts) is not edited. | TOUR-06 onward — **unblocked** |
+| **T8** | **Pilot breadth.** Soweto alone, or Soweto plus one more heritage-dense area? The pitch §8 says "one or two additional." | **Soweto only** for v1 — the content is already in `provinces.ts` and `articles.ts`, so no new research gates the mechanism. | TOUR-05 — **unblocked** |
+| **T9** | **Who owns partner relationships** day to day once links exist and start going stale. | **Tumo owns it**, and runs the freshness check **before every demo or send-out** rather than on a schedule — honest for a solo project with a handful of links. Revisit when a partner wants a formal agreement, or links exceed ~20. | TOUR-11 — **unblocked** |
+
+### Nothing is still open
+
+Every question this document parked has been answered. The full record — including the options that
+were rejected and why — is [sim_plan.md §8](sim_plan.md#8-decisions-resolved-on-2026-09-18--and-what-was-rejected).
 
 ---
 
 ## 5. The data model
+
+> **The shape below is the original design sketch. The shipping shape is
+> [sim_plan.md §4.4](sim_plan.md#44-stage-a--the-place-type)**, which differs in three ways decided on
+> 2026-09-18: `coords` is **kept and filled** (SP-014), a place carries **`alsoListedIn`** for cities
+> that list it without owning it (SP-017), and **`landmarkLabel`** pins each place to the exact
+> `provinces.ts` string it corresponds to (SP-016).
 
 Two new files, both pure data plus pure functions.
 
@@ -176,7 +187,9 @@ pitch wording should soften before it is sent.**
 
 ## 8. Open items
 
-- **T7, T8, T9** above.
+- **Nothing from this document is still open.** T7, T8 and T9 were all answered on 2026-09-18, along
+  with six decisions this plan hadn't reached. [sim_plan.md](sim_plan.md) is the document the build
+  is run from and holds the full register.
 - **The art pivot.** AI illustration stays for now, by Tumo's decision (2026-09-17), and the pitch
   and walkthrough have been reworded to say so honestly rather than to claim a pivot that has not
   happened. Images are AI-generated, labelled "Artistic interpretation" in 11 languages, and never
