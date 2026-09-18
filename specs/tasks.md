@@ -278,6 +278,40 @@ paid for out of a 40 000-character month.
       passage per cast voice, and an honest answer to whether the emotion helps the text or acts on
       top of it
 
+## Phase 8 — Languages: measure the gap before closing it (2026-09-18)
+
+The i18n framework is done and enforced: `ui-coverage.test.ts` fails the build if a button label is
+missing one of the 11 languages. **The history is a different story** — 248 English content strings
+against 82 Setswana and none at all in the other nine. That gap had no number, no test, and no
+disclosure on most screens, while the picker offered 11 languages everywhere.
+
+This phase adds no translations. It makes the gap **visible, un-regressable and admitted**, so the
+next person to claim "multilingual" has a real number to put behind it.
+
+- [x] LANG-04 `scripts/check-languages.mjs` + `npm run check:languages` — per-language coverage,
+      the widest Setswana gaps, and what is English by design. Exits 0 always (SP-083): poor
+      coverage is the known state, not a new failure
+- [x] LANG-05 `i18n/coverage.ts` — the counting in **one** module so the report and the ratchet can
+      never disagree about the numbers (SP-082)
+- [x] LANG-06 `i18n/content-coverage.test.ts` — a **ratchet**, not a target (SP-081). Fails only
+      when coverage drops; the floor is written as plain numbers so raising it is a deliberate,
+      reviewable commit. Mutation-tested: deleting one `tn` string turns it red
+- [x] LANG-07 `components/LanguageNote.tsx` — discloses an English fallback on surfaces
+      `resolveText` cannot speak for, starting with the 49 places (English by SP-015). **Does not
+      promise a translation is coming** (SP-084)
+- [ ] LANG-08 **Extend the disclosure to the remaining content screens.** Only CinematicReader,
+      WatchItemScreen and now PlaceView tell a reader they are seeing English. Provinces, Heroes,
+      Presidents, National Days, Journey, Kids and Schools still fall back silently
+- [ ] LANG-09 **Run the machine-draft pipeline.** `npm run gen:claude-drafts` is built and has never
+      run — it needs `ANTHROPIC_API_KEY` in `app/.env`, which only Tumo can add. Drafts render as
+      `draft`, never as reviewed
+- [ ] LANG-10 **`quiz.ts` is the worst single gap** — 84 strings, zero translated, and a quiz a
+      reader cannot read is worse than one that is absent
+- [ ] LANG-11 **Review the AI-assisted `tn` drafts with a Setswana speaker.** `provinces.ts` already
+      carries `NOTE(setswana): tn fields are AI-assisted DRAFTS — review`, and the same is true of
+      every `tn` string this session added. Counting them as coverage is honest only while they are
+      labelled as drafts
+
 ## Phase 7 — Heritage tourism: a story becomes a place you can stand in (planned 2026-09-17, not started)
 
 Plan: [docs/15-heritage-tourism-plan.md](../docs/15-heritage-tourism-plan.md). Source documents:

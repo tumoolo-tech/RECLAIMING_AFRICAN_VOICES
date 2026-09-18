@@ -46,6 +46,7 @@
     "ingest": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingest.mjs",
     "supabase:check": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/supabase-check.mjs",
     "check:place-links": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-place-links.mjs",
+    "check:languages": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-languages.mjs",
     "gen:drafts": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-draft-translations.mjs",
     "gen:claude-drafts": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-claude-translations.mjs",
     "gen:images": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-scene-images.mjs",

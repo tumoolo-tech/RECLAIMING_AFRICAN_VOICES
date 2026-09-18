@@ -48,7 +48,7 @@ _Last updated: 2026-09-18 (#36) — by Furn (via Claude). Previous update: 2026-
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
 | **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 done** (the "12 official languages" fix, this branch) · week-1 next: #45 #43 #34 #35 #25 #51 |
-| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10's screen-reader audit.** 49 places live across 18 cities · freshness script shipped · pitch corrected. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places, the ~14 `[VERIFY]` sources, the 4 conflated strings, Thulamela's city, and the team-size line in the pitch. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10.** 49 places live · freshness script · pitch corrected. **Phase 8 started:** the content-translation gap is now measured and ratcheted. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places · ~14 `[VERIFY]` sources · 4 conflated strings · Thulamela's city · the pitch's team-size line · and `ANTHROPIC_API_KEY` if the draft pipeline (LANG-09) should run. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -296,6 +296,45 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-18 (languages)** — **The multilingual claim now has a number behind it, and it is not
+  a flattering one.**
+
+  The framework was never the problem. `ui-coverage.test.ts` genuinely enforces all 11 languages
+  across the UI chrome, and does it well. **The history is the gap: 248 English content strings
+  against 82 Setswana (33%) and zero in the other nine languages.** `quiz.ts` alone is 84 strings
+  with none translated. None of that was measured, no test protected it, and on every content screen
+  except the two literary readers a reader who picked isiZulu simply got English with nothing saying
+  so — the app quietly implying a translation existed.
+
+  Three things, and deliberately **no new translations**. `npm run check:languages` reports coverage
+  per language, names the widest Setswana gaps, and lists what is English *by design* — places,
+  provinces and articles, where SP-015 keeps sourced historical prose in one language on purpose. A
+  **ratchet** test (`content-coverage.test.ts`) fails only when coverage goes *down*, because
+  demanding 100% is exactly what would invite machine-translated history passed off as reviewed. And
+  `LanguageNote` discloses the English fallback on surfaces `resolveText` cannot speak for, starting
+  with the 49 places.
+
+  Two calls worth recording. The counting lives in **one** module imported by both the report and
+  the ratchet (`SP-082`) — if each had its own regex the numbers would drift, and the moment they
+  disagreed neither could be quoted. And the note **does not say a translation is coming**
+  (`SP-084`): for nine languages coverage is zero, and "coming soon" on a screen that has said so
+  for a year is its own small dishonesty.
+
+  All three mutation-tested: deleting one Setswana string turns the ratchet red; dropping Tshivenḓa
+  from the new component turns the chrome sweep red. **205 tests, typecheck clean.**
+
+  The report also prints the honest sentence to use in a pitch or against the rubric: *the interface
+  is fully localised into all 11 official languages; content translation is under way, Setswana
+  leads at 33%, and the app tells a reader when they are seeing English instead.* That is defensible.
+  "Multilingual" on its own was not.
+
+  **Built directly on #36, which landed while this was in flight.** That PR established the honest
+  form of the claim — *eleven of the twelve* — and a guard against the derived shape
+  `${…} official languages`. This work used the wrong phrasing in its report until that landed; the
+  report now says "eleven of the twelve official languages" and names South African Sign Language as
+  the one not yet served. The guard is also extended to cover `scripts/`, because a script that
+  prints a sentence into a pitch can make the same false claim a component can.
 
 - **2026-09-18 (#36)** — **South Africa has twelve official languages, and the app said eleven in seventeen
   places.** Issue #36. The Constitution Eighteenth Amendment Act, 2023 added South African Sign
