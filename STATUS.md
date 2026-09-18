@@ -4,7 +4,7 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-19 (#25) — by Furn (via Claude). Previous update: 2026-09-18 (#36)._
+_Last updated: 2026-09-19 (#34) — by Furn (via Claude). Previous update: 2026-09-19 (#25)._
 
 > **⚠️ Open question, and it sits above everything else on this board: what happened to the
 > hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
@@ -47,7 +47,7 @@ _Last updated: 2026-09-19 (#25) — by Furn (via Claude). Previous update: 2026-
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 merged (PR #69) · #25 done (this branch)** — three of four corrections applied, Mozambique deferred to #19 · week-1 next: #45 #43 #34 #35 #51 |
+| **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 merged (#69) · #25 merged (#71) · #34 done (this branch)** — every module now carries `rights`; *Indaba* is in copyright, the Ledger describes what it actually hashes · week-1 next: #45 #43 #35 #51 |
 | **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10.** 49 places live · freshness script · pitch corrected. **Phase 8 started:** the content-translation gap is now measured and ratcheted. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places · ~14 `[VERIFY]` sources · 4 conflated strings · Thulamela's city · the pitch's team-size line · and `ANTHROPIC_API_KEY` if the draft pipeline (LANG-09) should run. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
@@ -296,6 +296,33 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-19 (#34)** — ***Indaba, My Children* is in copyright until 2070, and the Ledger never
+  fingerprinted a single work.** Two findings, one fix. **One:** Vusamazulu Credo Mutwa died on
+  25 March 2020; under the Copyright Act 98 of 1978 (life + 50) the book is protected to the end of
+  2070, and for a year README, docs/10, docs/11, three specs and the demo script called the canon
+  "public domain". `services/ingest/rights.ts` had encoded exactly this rule since July and had never
+  been run against the canon it sat beside. **Two, found on the way:** `chain/anchor.mjs` hashes
+  `JSON.stringify(module)` — the app's own two scenes, blurbs and drafts — not the original text. The
+  comment said "canonicalise the public work"; the Ledger screen told readers "each text" was
+  tamper-evident and "minted as a heritage certificate" (every `mint` is `pending`). The honest claim
+  is better than the false one: *what the app says about a work cannot be quietly changed since
+  anchoring.* That is now what the screen says, in eleven languages.
+  **The fix is a required field.** `Module.rights: { status, authorDied?, basis }` — required, so
+  `tsc` listed all ten modules and the ingest draft the moment it existed; an optional field is the
+  field Indaba would have skipped. `RightsStatus` gained `"in-copyright"`, which `canIngest` refuses
+  with no new code — verbatim reproduction of a protected work is what the gate exists to stop, while
+  a module of the app's *own words about* the work is a different act. Indaba: `in-copyright`,
+  basis = a summary in our own words, no passage reproduced (checked: the only borrowed phrase is the
+  three-word title), not public domain. Plaatje (d. 1932), Mqhayi (d. 1945), Vilakazi (d. 1947):
+  `public-domain` with the arithmetic. The six Atlas modules: `original`. New `rights.test.ts`
+  runs `isPublicDomainByYear` over every PD claim and pins Indaba; **mutation-tested** — relabelling
+  Indaba `public-domain` turns three tests red, naming the year. The basis renders on the Ledger
+  card, the Watch page's provenance block and the About screen. docs/04 records the basis as *the
+  project's stated basis, not a legal opinion*, and names the next step: approach the Mutwa estate.
+  The devnet memo needed no correction — it never claimed rights; only the words around it did.
+  Verified: typecheck clean · **217/217** (207 before) · `build:web` green · new strings in the
+  bundle, "minted as a heritage certificate" out.
 
 - **2026-09-18 (languages)** — **The multilingual claim now has a number behind it, and it is not
   a flattering one.**

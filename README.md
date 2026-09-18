@@ -25,8 +25,10 @@ A single Expo app (web + Android + iOS) that does four things, humanities first:
    provinces, presidents, national days — plus a walkable **Journey** through the history (1652 → today).
 3. **Gives the archive back.** A POPIA-compliant **Community Archive** where elders' stories are recorded,
    owned, and erasable by the people who make them.
-4. **Proves provenance.** An on-chain **Heritage Ledger** notarises the public-domain canon (hashes +
-   citations only — never anyone's personal data).
+4. **Proves provenance.** An on-chain **Heritage Ledger** notarises the app's own adaptations of four
+   foundational works — three public domain, one (Mutwa, d. 2020) in copyright and summarised in our
+   own words — as hashes + citations only, never anyone's personal data. Each work states its rights
+   on screen.
 
 ## How we approached it
 
