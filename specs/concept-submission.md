@@ -70,7 +70,8 @@ grounded heritage Atlas, democratises the archive, treats indigenous languages a
 embeds **decolonial + ethical practice** — community ownership, consent, and the right to erasure — into
 the architecture itself. It deliberately leans on **African-built AI** (Lelapa, Botlhale) rather than
 only importing foreign models, so the tools that reclaim African voices are themselves African. It also
-**notarises the provenance of the public-domain canon on a public blockchain** — hashes and citations
+**notarises its own adaptations of the canon on a public blockchain** — three of the four works are
+public domain; Mutwa's is in copyright and summarised in the app's own words — hashes and citations
 only, never anyone's personal data — so the record of *what these works are and where they come from* is
 permanent and independently verifiable. And because it runs entirely on **free-tier infrastructure with
 zero monthly cost**, it is **sustainable beyond the hackathon** — a living platform, not a throwaway

@@ -19,7 +19,21 @@ export const indaba: Module = {
     "'Indaba, My Children' — chapter summary (bookey.app)",
     "'Vusamazulu Credo Mutwa' — Wikipedia",
     "'Creation Myths in Indaba, My Children' (MISJ Vol.1)",
-  ],
+  ],  // NOT public domain — and for a year the project said it was (issue #34). Vusamazulu Credo Mutwa
+  // died on 25 March 2020; under the Copyright Act 98 of 1978 (life + 50) the work is in copyright
+  // until the end of 2070. What the app does is permitted for a different reason: the two scenes
+  // below SUMMARISE the book's ideas and Mutwa's stated purpose in the project's own words, cite
+  // their sources, and reproduce no passage — the only borrowed phrase is the three-word title. Ideas
+  // are not protected expression; the text is. Nothing of Mutwa's text is on-chain either: the
+  // Heritage Ledger fingerprints THIS module, not the book. This is the project's stated basis, not
+  // a legal opinion; docs/04 records that approaching the estate/publisher is the proper next step.
+  rights: {
+    status: "in-copyright",
+    authorDied: 2020,
+    basis:
+      "In copyright until 2070 (Mutwa d. 2020; Copyright Act 98 of 1978, life + 50). The scenes are a summary in the project's own words of the book's ideas and the author's stated purpose; no passage is reproduced. Not public domain.",
+  },
+
   scenes: [
     {
       id: "ninavanhu-ma",

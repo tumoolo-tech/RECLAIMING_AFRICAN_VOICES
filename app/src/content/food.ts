@@ -25,7 +25,13 @@ export const food: Module = {
     "Standard references on Cape Malay cuisine (bobotie, bredie, koesisters).",
     "Standard references on Durban's Indian cuisine (bunny chow, breyani).",
     "Standard references on indigenous staples (pap, umngqusho / samp & beans, morogo).",
-  ],
+  ],  // Not built on one work: authored by the project from the references above, in its own words, with
+  // no source text reproduced. The project's own content licence is issue #50.
+  rights: {
+    status: "original",
+    basis: "Authored by the project from the cited references, in its own words; no source text is reproduced.",
+  },
+
   scenes: [
     {
       id: "braai",

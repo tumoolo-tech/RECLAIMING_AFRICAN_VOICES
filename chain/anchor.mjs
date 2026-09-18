@@ -1,8 +1,14 @@
-// Anchor Maloba's literary canon on-chain (Solana devnet) as tamper-evident provenance.
+// Anchor the app's ADAPTATIONS of its literary canon on-chain (Solana devnet) as tamper-evident provenance.
+//
+// WHAT IS HASHED (issue #34): `provenanceFor(mod)` fingerprints JSON.stringify(module) — the app's own
+// scenes, blurbs and drafts as published — NOT the original work. The guarantee this buys is "what
+// the app says about a work has not been quietly changed since anchoring". It is not a fingerprint of
+// *Mhudi*. And the canon is not all public domain: Mutwa (d. 2020) is in copyright until 2070; the
+// Indaba module is a summary in the app's own words, and no passage of the book is on-chain.
 //
 // POPIA-SAFE BY DESIGN: this anchors ONLY a content hash + IPFS CID + public bibliographic metadata
-// for the PUBLIC literary canon (Plaatje, Mqhayi, Mutwa, Vilakazi) — never personal data, never a
-// community member's recording. Personal data stays in erasable off-chain storage. See
+// for the app's adaptations of the canon (Plaatje, Mqhayi, Mutwa, Vilakazi) — never personal data,
+// never a community member's recording. Personal data stays in erasable off-chain storage. See
 // docs/11-blockchain-heritage-plan.md §2.
 //
 // Custodial model: a project keypair (chain/.keypair.json, gitignored) pays the tiny devnet fees and
@@ -113,7 +119,8 @@ async function mintCertificate(connection, payer, recipient) {
 }
 
 async function provenanceFor(mod) {
-  // Canonicalise the public work, then hash it (SHA-256) and content-address it (IPFS CID).
+  // Canonicalise the app's module for this work (NOT the work itself — see the header), then hash it
+  // (SHA-256) and content-address it (IPFS CID).
   const canonical = JSON.stringify(mod);
   const buf = Buffer.from(canonical, "utf8");
   const sha256 = createHash("sha256").update(buf).digest("hex");

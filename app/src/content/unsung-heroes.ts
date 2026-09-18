@@ -24,7 +24,13 @@ export const unsungHeroes: Module = {
     "Wikipedia — 'Nyabêla'; South African History Online — 'Ndebele'",
     "SciELO South Africa — 'James Anta: Missionary, Martyr and unsung Hero…'",
     "South African History Online — 'The June 16 Soweto Youth Uprising'",
-  ],
+  ],  // Not built on one work: authored by the project from the references above, in its own words, with
+  // no source text reproduced. The project's own content licence is issue #50.
+  rights: {
+    status: "original",
+    basis: "Authored by the project from the cited references, in its own words; no source text is reproduced.",
+  },
+
   scenes: [
     {
       id: "galeshewe",

@@ -52,5 +52,12 @@ export function toDraftModule(source: SourceRights, chapters: Chapter[]): Module
     audience: NEEDS_ADAPTATION,
     scenes,
     references: source.basis ? [source.basis] : [],
+    // The source's rights travel into the draft unchanged — a module built by ingest is only ever
+    // built from a work `canIngest` cleared, so its status is the source's status (#34).
+    rights: {
+      status: source.rights,
+      authorDied: source.authorDied,
+      basis: source.basis ?? `${source.rights} — basis not yet written; see services/ingest/rights.ts`,
+    },
   };
 }

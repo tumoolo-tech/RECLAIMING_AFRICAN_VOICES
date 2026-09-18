@@ -53,6 +53,15 @@ by an indigenous cultural custodian. The technology is in service of *these* wor
 - **Module focus — "Myth & Origin" visual novel:** cinematic depictions of the cosmology (ideal for
   generative visuals), framed as artistic interpretation.
 - **Audience:** children + adults — visually driven, mythological storytelling.
+- **Rights — in copyright, not public domain (issue #34, 2026-09-19).** Mutwa died on 25 March 2020;
+  under the Copyright Act 98 of 1978 (life + 50) the work is protected until the end of 2070. The
+  project's basis for the module is that its two scenes **summarise the book's ideas and the author's
+  stated purpose in the project's own words**, cite their sources, and reproduce no passage (the only
+  borrowed phrase is the three-word title); the Heritage Ledger fingerprints the module, not the book.
+  That is the project's stated basis, not a legal opinion. **Proper next step:** approach the Mutwa
+  estate / publisher for permission or a partnership — which is also the right story to tell about a
+  living tradition. Until then, no verbatim quotation from the book is added to the module, and the
+  Ingestion Library (`services/ingest/rights.ts`) refuses it by construction.
 
 ## Pillar 4 — B.W. Vilakazi, *Inkondlo kaZulu* (1935)
 

@@ -26,7 +26,13 @@ export const traditions: Module = {
     "Standard references on ancestral belief (Badimo / Amadlozi) across Sotho-Tswana & Nguni.",
     "Standard references on initiation (ulwaluko, Domba, Umemulo) and on traditional healing (sangoma / inyanga).",
     "Indigenous Knowledge Systems research — sacred sites (Lake Fundudzi, Machovhela).",
-  ],
+  ],  // Not built on one work: authored by the project from the references above, in its own words, with
+  // no source text reproduced. The project's own content licence is issue #50.
+  rights: {
+    status: "original",
+    basis: "Authored by the project from the cited references, in its own words; no source text is reproduced.",
+  },
+
   scenes: [
     {
       id: "ancestors",

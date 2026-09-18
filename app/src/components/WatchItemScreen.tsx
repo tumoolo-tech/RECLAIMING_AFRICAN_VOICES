@@ -79,6 +79,10 @@ const UI = {
     en: "Sources & provenance", tn: "Metswedi le tshimologo", af: "Bronne en herkoms", zu: "Imithombo nemvelaphi", xh: "Imithombo nemvelaphi",
     nso: "Methopo le tshimologo", st: "Mehlodi le tshimoloho", ss: "Imitfombo nemvelaphi", ts: "Tihlovo ni masungulo", nr: "Imithombo nemvelaphi", ve: "Zwiko na vhubvo",
   },
+  rights: {
+    en: "Rights", tn: "Ditshwanelo", af: "Regte", zu: "Amalungelo", xh: "Amalungelo",
+    nso: "Ditokelo", st: "Ditokelo", ss: "Emalungelo", ts: "Timfanelo", nr: "Amalungelo", ve: "Pfanelo",
+  },
   adaptedFrom: {
     en: "Adapted from", tn: "E tswa mo go", af: "Verwerk uit", zu: "Kususelwa ku", xh: "Kususelwa ku",
     nso: "E tšwa go", st: "E nkilwe ho", ss: "Kutsatfwe ku", ts: "Swi humesiwe eka", nr: "Kuthethwe ku", ve: "Zwo dzhiwa kha",
@@ -408,6 +412,10 @@ export function WatchItemScreen({
 
         <Text style={styles.provLabel}>{t(UI.adaptedFrom, lang)}</Text>
         <Text style={styles.provText}>{plain(module.source)}</Text>
+
+        {/* #34 — whose work this is and on what basis the app adapts it; one of the four is in copyright. */}
+        <Text style={styles.provLabel}>{t(UI.rights, lang)}</Text>
+        <Text style={styles.provText}>{module.rights.basis}</Text>
 
         <Text style={styles.provLabel}>{t(UI.perScene, lang)}</Text>
         {module.scenes.map((s, i) => (

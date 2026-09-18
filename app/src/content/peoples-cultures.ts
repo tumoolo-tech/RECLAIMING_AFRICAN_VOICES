@@ -27,7 +27,13 @@ export const peoplesCultures: Module = {
     "Standard references on the Sotho-Tswana (Hurutshe, Kwena, Rolong; Kgotla; letsema).",
     "Standard references on the Nguni (Xhosa, Zulu, Ndebele) and on the Vhavenḓa and Vatsonga.",
     "South African History Online — peoples of South Africa.",
-  ],
+  ],  // Not built on one work: authored by the project from the references above, in its own words, with
+  // no source text reproduced. The project's own content licence is issue #50.
+  rights: {
+    status: "original",
+    basis: "Authored by the project from the cited references, in its own words; no source text is reproduced.",
+  },
+
   scenes: [
     {
       id: "two-families",
