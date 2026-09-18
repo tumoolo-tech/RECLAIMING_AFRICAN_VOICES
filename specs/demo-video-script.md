@@ -55,8 +55,9 @@ erasure are built into the architecture, not bolted on."*
 ## Shot 6 — Provenance + close (2:40–2:55)
 
 **Do:** Open the **Heritage Ledger** → tap a **"Verify on Solana"** link (or just show it).
-**Say:** *"The provenance of the public-domain canon is notarised on-chain — hashes and citations only,
-never anyone's personal data — so the record is permanent and verifiable."*
+**Say:** *"Our adaptation of each work is notarised on-chain — hashes and citations only, never
+anyone's personal data — so what the app says about a text can't be quietly changed. Three of the
+four are public domain; the fourth is in copyright and we summarise it in our own words."*
 **Close on the Home gallery. Say:** *"Zero cost. Community-owned. On African terms — and built with
 African AI. That's Maloba."*
 

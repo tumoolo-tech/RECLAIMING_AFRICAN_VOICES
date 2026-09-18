@@ -33,8 +33,12 @@ content off-chain, and we do **not** turn people's voices or heritage into specu
    goes on-chain. Personal recordings stay in **erasable** storage (Supabase/local); we anchor only a
    hash. Delete the audio → the orphan hash is not personal data → erasure still works. ✔
 2. **Two content classes, two permanence policies:**
-   - **The literary canon** (Plaatje, Mqhayi, Mutwa, Vilakazi — *public-domain / cited, not personal
-     data*) → **permanent** (Arweave + provenance cNFT). Safe and perfect.
+   - **The app's adaptations of the literary canon** (Plaatje, Mqhayi, Mutwa, Vilakazi — *cited, not
+     personal data*) → **permanent** (Arweave + provenance cNFT). What is hashed is the app's module,
+     not the work (`chain/anchor.mjs` fingerprints `JSON.stringify(module)`). **Not all public
+     domain** — corrected in issue #34: Plaatje (d. 1932), Mqhayi (d. 1945) and Vilakazi (d. 1947)
+     are; Mutwa (d. 2020) is in copyright until 2070, and the Indaba module is a summary in the app's
+     own words with no passage reproduced. Each module carries `rights` (see `content/types.ts`).
    - **Community oral histories** (personal data) → **erasable** off-chain; on-chain only a
      hash-anchor **with explicit consent**, and only if the contributor opts into public provenance.
 3. **Cost / "100% free" caveat.** Devnet = free (perfect for the hackathon demo). Mainnet + Arweave

@@ -70,7 +70,8 @@ is protected by **Supabase Row-Level Security + anonymous authentication + hCapt
 recordings are readable by no one but their owner; only recordings the user chooses to share become
 public.
 
-**Verifiable provenance (blockchain, POPIA-safe).** The public-domain canon is notarised on a public
+**Verifiable provenance (blockchain, POPIA-safe).** The app's adaptations of the canon — three works
+public domain, one (Mutwa) in copyright and summarised in our own words — are notarised on a public
 blockchain (Solana devnet) — content hashes (SHA-256) + IPFS references + citations only, **never any
 personal data** — so the record of what these works are and where they come from is permanent and
 independently verifiable.

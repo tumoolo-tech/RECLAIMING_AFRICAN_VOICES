@@ -15,7 +15,8 @@ narrative or the demo overclaims — the integrity rule (*truth only*) applies t
 foundational indigenous literature and heritage: it reads four canonical texts as dual-mode
 (Child/Adult) illustrated scenes, maps the heritage around them in a cited Cultural Atlas and a walkable
 history Journey, lets communities record and **own** their own oral histories under POPIA consent, and
-notarises the public-domain canon on a public blockchain. Humanities first; technology subordinate.
+notarises its own adaptations of the canon (three works public domain, Mutwa's in copyright and
+summarised in the app's own words) on a public blockchain. Humanities first; technology subordinate.
 
 ## 2. How we approached it
 
