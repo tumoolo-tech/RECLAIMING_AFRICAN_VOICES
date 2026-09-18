@@ -4,7 +4,11 @@
 //
 // Pure logic → unit-tested under `node --test`.
 
-export type RightsStatus = "public-domain" | "licensed" | "unverified";
+// "in-copyright" was added for issue #34: a work whose author died fewer than 50 years ago. It is
+// deliberately NOT accepted by `canIngest` — verbatim reproduction of such a work is exactly what the
+// gate exists to stop. A Module may still exist for it (see `ModuleRights` in content/types.ts) when
+// the app's text is its own words about the work, which is a different act from reproducing it.
+export type RightsStatus = "public-domain" | "in-copyright" | "licensed" | "unverified";
 
 export type SourceRights = {
   /** Stable slug, e.g. "mhudi". Drives file paths + the draft Module id. */

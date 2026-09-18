@@ -18,7 +18,13 @@ export const vilakazi: Module = {
     "'B.W. Vilakazi: the poet as inspired prophet' (journals.co.za)",
     "Prof. N. Zondi — 'Revisiting the poetry of Benedict Wallet Vilakazi' (UP)",
     "'B.W. Vilakazi and the birth of the Zulu novel' (Semantic Scholar)",
-  ],
+  ],  // Public domain. B.W. Vilakazi died on 26 October 1947; life + 50 → public domain from 1 January 1998.
+  rights: {
+    status: "public-domain",
+    authorDied: 1947,
+    basis: "Public domain since 1998 (Vilakazi d. 1947; Copyright Act 98 of 1978, life + 50). The scenes are the project's own adaptation of the poetry.",
+  },
+
   scenes: [
     {
       id: "mouth-to-page",
