@@ -1,0 +1,29 @@
+# Line endings — one repo, more than one operating system, one answer.
+#
+# WHY THIS EXISTS. Without it, any tool that writes a file on Windows silently
+# converts LF to CRLF, and the next commit rewrites EVERY line of that file. It
+# happened on 2026-09-18: a forty-line edit to STATUS.md produced a 2438-line
+# diff, and a 1435-line change looked like 3107. A diff nobody can read is a
+# review nobody can do.
+#
+# `text=auto eol=lf` means: git decides what is text, stores it as LF in the
+# repository, and checks it out as LF everywhere — including Windows, which every
+# editor and tool in this project's chain handles (Node, Expo, tsc, VS Code).
+
+* text=auto eol=lf
+
+# Shell scripts must be LF. A CRLF shebang line is not executable — the kernel
+# looks for `/bin/bash` and finds `/bin/bash\r`.
+*.sh text eol=lf
+
+# Binary: never normalised, never diffed as text. `text=auto` detects these
+# anyway; naming the formats this repo actually carries makes it explicit rather
+# than dependent on heuristics.
+*.mp3  binary
+*.mp4  binary
+*.webm binary
+*.webp binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.pdf  binary
