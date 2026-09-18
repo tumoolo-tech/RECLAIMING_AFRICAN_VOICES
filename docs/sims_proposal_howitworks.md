@@ -1,10 +1,16 @@
-# Maloba: End-to-End Walkthrough
+# Ubuntu Heritage: End-to-End Walkthrough
 
-**Purpose:** internal working document — how the product actually functions, step by step, from a
-user opening the app through to a booked heritage experience. Complements the Department of Tourism
+**Purpose:** internal working document — the product's intended flow, step by step, from a user
+opening the app through to a booked heritage experience. Complements the Department of Tourism
 pitch ([sims_proposal.md](sims_proposal.md)), which makes the case for *why*; this document shows
 *how*. For what actually gets built, in what order, against the code that already exists, see
 [15-heritage-tourism-plan.md](15-heritage-tourism-plan.md).
+
+> **Built vs intended — read this first.** Steps 1–3 and 5 below are **built and live**: 49 sourced
+> heritage places across 18 cities, reachable from a story, a city or the map. **Step 4, the
+> booking, is not built.** The data model and the surfaces for it exist; zero operator links do,
+> because no operator URL may enter the repo until a human has opened and verified it. Steps written
+> in the present tense below describe the design, not a shipped feature, unless marked otherwise.
 
 ---
 
@@ -23,13 +29,17 @@ The story is presented as told — in the words of the community contributor (or
 transcript) or drawn from licensed literature — with clear attribution to who told it or where it came
 from. If any part of the story is uncertain, it's marked as such rather than filled in.
 
-**Step 3 — The link to a real place.** Every story surfaces one or more real, visitable locations tied
-to it — a museum, a street, a heritage site, a walking/bike tour route. This is shown directly beside
-the story, not buried in a separate section.
+**Step 3 — The link to a real place.** *(Built.)* A story surfaces the real, visitable locations
+tied to it — a museum, a street, a heritage site. This is shown directly beside the story, not
+buried in a separate section. Places the reader can reach also appear as tappable landmarks on every
+city screen. A place only appears once it carries a source someone can check; unsourced landmarks
+stay as plain text rather than becoming somewhere the app sends you.
 
-**Step 4 — The bookable action.** The user can act on that link immediately: view details on the
-museum/site, or go straight to booking a linked experience (e.g. a Soweto bike tour) through the
-partner's own booking flow or a referral link.
+**Step 4 — The bookable action.** *(Designed, not built.)* The intent: view details on the
+museum or site, or go straight to the operator's own booking page via a referral link. What exists
+today is the model for it and the panel that would show it; what does not exist is a single verified
+operator link. **A place with nothing verified says nothing about tickets** — the app never implies
+a booking it cannot honour.
 
 **Step 5 — Optional depth.** From here the user can keep exploring outward — related stories, nearby
 locations, the same event from another contributor's perspective — without ever needing to "finish" a
@@ -40,7 +50,7 @@ storyline.
 ## 2. The content pipeline (how a story gets into the app)
 
 This is the process that turns a real person's memory or a piece of literature into a published
-Maloba entry. Every entry must pass through all of these stages — none are skipped, regardless of how
+Ubuntu Heritage entry. Every entry must pass through all of these stages — none are skipped, regardless of how
 strong the story is.
 
 **Stage 1 — Sourcing**
@@ -95,13 +105,14 @@ experience there — a museum's own ticketing, a local tour operator, a heritage
 user to the operator's own booking page), a formal partnership agreement, or — longer term — a direct
 booking integration inside the app.
 
-**Step 4 — Attach to content.** The partner/location is linked to every relevant story, so a user
-encountering the history from any entry point (date, person, topic, map) reaches the same booking
-path.
+**Step 4 — Attach to content.** The partner/location would be linked to every relevant story, so a
+user encountering the history from any entry point (date, person, topic, map) reaches the same
+booking path. The place↔story registry that does this is built; it currently carries no partners.
 
-**Step 5 — Maintain.** Partner details, availability, and pricing are not static — this needs a light
-ongoing process to keep links current so the app never sends a user to a dead or outdated booking
-path.
+**Step 5 — Maintain.** Partner details, availability and pricing are not static, so links need
+keeping current. This is built: `npm run check:place-links` checks every outbound link and reports
+what needs a human. It deliberately does not edit anything itself — a server answering a request is
+not the same fact as a person confirming the tour still runs.
 
 ---
 
@@ -109,7 +120,7 @@ path.
 
 | Stack piece | Role in this flow |
 |---|---|
-| WatermelonDB (local) + Supabase (cloud) | Stores stories, consent records, location/partner links; offline-first so reading works without connectivity, syncing when available |
+| WatermelonDB (local) + Supabase (cloud) | Stores stories and consent records; offline-first so reading works without connectivity, syncing when available. Places and story↔place links ship in the app bundle rather than the database, so they work offline with no sync at all. **No partner links are stored — none exist yet** |
 | Gemini Flash | Language adaptation/translation of verified content — not used to generate historical claims |
 | Lelapa AI / Vulavula | Indigenous-language speech-to-text and translation for oral history capture |
 | POPIA consent flow | Gate before any recording; tied to Stage 2 of the content pipeline |

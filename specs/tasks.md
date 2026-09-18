@@ -398,14 +398,26 @@ still empty pending TOUR-05a sign-off, so none of this renders anything in the s
 
 ### Stage C — keeping it true
 
-- [ ] TOUR-11 `scripts/check-place-links.mjs` — HEAD each `visit.url`, stamp `lastChecked`, set
-      `status`. A `"dead"` link is **hidden, not shown hopefully**. Manual/reported, **not** a
+- [x] TOUR-11 `scripts/check-place-links.mjs` — HEAD each URL (GET on fallback), report `lastChecked` and
+      `status` — but **never write them** (SP-076: a 200 and a human verification are different facts).
+      A `"dead"` link is **hidden, not shown hopefully**. Manual/reported, **not** a
       required CI check: it hits third-party hosts and would make `main` flaky. It **reports and
       never rewrites `places.ts`** (SP-047). Exposed as `npm run check:place-links`, and running it
       is a step in the pre-send checklist — Tumo owns it (T9, SP-056)
-- [ ] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
-      A test fails if a referral URL ever grows one
-- [ ] TOUR-13 **State what the app cannot claim.** The pitch §3 calls the contribution "direct,
+- [x] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
+      A test fails if a referral URL ever grows one. Landed early in Stage A and mutation-tested
+      then; `check-place-links.mjs` now checks the same rule independently, before a URL is even
+      fetched — two checks on the one POPIA rule is proportionate when the second runs immediately
+      before a document goes to a department. **Strengthened:** a new test makes SP-039 structural —
+      no component may call `window.open`/`Linking.openURL` directly, with the six pre-existing call
+      sites (Heritage Ledger, SiteFooter) grandfathered by name. Known debt is listed and may not be
+      added to, exactly as the 25 unlabelled pre-v2 controls are handled
+- [x] TOUR-13 **State what the app cannot claim** — done as an honest pass over both partnership
+      docs, not just §3, because the same false claim sat in §6 ("visibly routes visitors *and
+      spend*"). Present-tense claims for the unbuilt booking step are now marked as intent; the
+      product is renamed Maloba → Ubuntu Heritage; the team-size byline is a placeholder for Tumo.
+      **The limitation is stated as a principle rather than hidden** — "Ubuntu Heritage does not and
+      will not track who went", with the reason. Original note: the pitch §3 calls the contribution "direct,
       traceable"; under T5 the *traceable* half is false. Attribution needs per-person tracking,
       which is what [POPIA compliance](../docs/05-popia-compliance.md) exists to prevent — and would
       apply to minors in Kids mode. v1 can honestly report places and operators linked, not

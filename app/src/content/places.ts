@@ -7,10 +7,11 @@
 //
 // INTEGRITY (AGENTS.md §4): `sources` is REQUIRED, so a place with no citation does not compile. An
 // unsourced landmark stays a bare string in `provinces.ts` rather than being promoted into an entity
-// with invented provenance. `coords` is required for the same reason it is sourced: a wrong
-// coordinate sends a real person to the wrong corner of Soweto (SP-052).
+// with invented provenance. `coords` is OPTIONAL (SP-073) — a third of these places have no single
+// point by nature — but where one is given it is a sourced factual claim like any other, because a
+// wrong coordinate sends a real person to the wrong place (SP-052).
 //
-// Decisions: docs/sim_plan.md §4.4 · seeded in TOUR-05b, after the review sheet is signed off.
+// Decisions: docs/sim_plan.md §4.4 · seeded in TOUR-05b from design/places-content.md.
 
 /** What kind of thing this is. No "other" — an escape hatch is where unclassifiable junk collects. */
 export type PlaceKind = "museum" | "street" | "site" | "route" | "monument" | "church";

@@ -4,7 +4,7 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-18 — by Tumo (via Claude). Previous update: 2026-09-17._
+_Last updated: 2026-09-18 (Stage C) — by Tumo (via Claude). Previous update: 2026-09-17._
 
 > **⚠️ Open question, and it sits above everything else on this board: what happened to the
 > hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
@@ -47,7 +47,7 @@ _Last updated: 2026-09-18 — by Tumo (via Claude). Previous update: 2026-09-17.
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A done, Stage B built, 49 places live (TOUR-01–09 done, 10 partial), 10 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Stage C** (TOUR-11–13), plus Tumo's ruling on the three access-restricted places and the ~14 `[VERIFY]` sources. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10's screen-reader audit.** 49 places live across 18 cities · freshness script shipped · pitch corrected. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places, the ~14 `[VERIFY]` sources, the 4 conflated strings, Thulamela's city, and the team-size line in the pitch. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -295,6 +295,51 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-18 (Stage C)** — **The tourism layer stops rotting, and the pitch stops overclaiming.
+  Phase 7 complete bar one line.**
+
+  `npm run check:place-links` exists (TOUR-11). Two jobs, and the order is deliberate: it prints the
+  layer's honest numbers from data alone **before** any network call, so a flaky host cannot cost
+  Tumo the figures an hour before a meeting; then it checks every outbound link and tells a human
+  what to do. Three calls worth keeping. **It will not stamp `lastChecked`** — a 200 and a human
+  verification are different facts, and letting a green ping refresh that date would quietly turn
+  SP-021's human guarantee into a ping log with nobody deciding to drop it (`SP-076`). **A 403 is
+  never reported as dead**, because a bot filter refusing a script is not evidence an operator
+  folded, and saying so would have the tool manufacture a death and hand a human a wrong edit
+  (`SP-077`). **Three exit codes, not two** — in a pre-send checklist "the wifi was bad" must not
+  read like "you are about to demo a dead booking link" (`SP-078`). It also gained `--probe <url>`,
+  which is the other half of SP-021: check a candidate before it enters the repo (`SP-079`).
+
+  Verified against the real network, not mocked: a 200 exits 0, a 404 exits 1, and a URL carrying
+  `?ref=&click=` is refused **without being fetched**. A full run over four temporary fixtures
+  produced one ok, one gone, one **200-but-verification-expired** — red on the date, not the status
+  code — and one unverified, exiting 1. Fixtures reverted, `experiences.ts` hash-identical,
+  `places.ts` never touched: SP-047 demonstrated rather than asserted.
+
+  TOUR-12 was already done and merely unticked; it is now also **structural** (`SP-080`). No
+  component may call `window.open`/`Linking.openURL` directly, with the six pre-existing sites
+  grandfathered **by name** — the same way the 25 unlabelled pre-v2 controls are handled. Mutation-
+  tested both ways: a new offender turns it red, and emptying the allowlist *also* turns it red,
+  which proves the list is load-bearing rather than matching nothing.
+
+  **TOUR-13 went wider than the task, on Tumo's call.** The task named §3's "direct, *traceable*",
+  but the identical false claim sat in §6 — "visibly routes visitors *and spend*" — and the pitch
+  described a booking step that does not exist, in the present tense. Both partnership documents now
+  separate what is built from what a partnership would unlock, the product is renamed **Maloba →
+  Ubuntu Heritage**, and the team-size byline is a placeholder for Tumo rather than a guess. The
+  limitation is now stated as a principle instead of hidden: *"Ubuntu Heritage does not and will not
+  track who went"*, with the POPIA reasoning and the Kids-mode consequence spelled out. That is a
+  stronger pitch than the one that overclaimed.
+
+  Housekeeping worth naming, because it was this phase's own rot: `sim_plan.md` §3 still said **"0 of
+  13 started, 179 tests"** while ten were done; `places.ts`'s header still said `coords` was required
+  after SP-073 made it optional; and `experiences.ts` documented `lastChecked` as "stamped by" the
+  script that must never stamp it. All three corrected. And the **pre-send checklist that SP-056 and
+  §12 have both required since this morning, and which never existed, is now `sim_plan.md` §13.**
+
+  **202 tests, typecheck clean.** Phase 7 is complete except TOUR-10's screen-reader audit, which no
+  test in this repo can perform.
 
 - **2026-09-18 (planning)** — **The two decisions that were blocking Phase 7 are made, and the build
   plan is written.**
