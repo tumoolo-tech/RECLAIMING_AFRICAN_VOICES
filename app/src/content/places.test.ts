@@ -104,15 +104,40 @@ test("an experience's cities are derived from its places, never stored", () => {
 
 // ── Integrity: over the real registries ──────────────────────────────────────────────────────────
 
-test("every place is grounded: a source, a coordinate, and a real reason to exist", () => {
+test("every place is grounded: a source and a real reason to exist", () => {
   for (const p of places) {
     assert.ok(p.sources.trim().length > 10, `${p.id} needs a real source, not a stub`);
     assert.ok(p.what.trim().length > 20, `${p.id} needs a grounded line on why it matters`);
-    assert.ok(Number.isFinite(p.coords.lat) && Number.isFinite(p.coords.lng), `${p.id} needs a coordinate`);
+  }
+});
+
+test("a coordinate is optional — but a given one must be inside South Africa", () => {
+  // SP-073 made coords optional because a third of these places have no single point by nature.
+  // That is NOT a licence for a sloppy one: where a coordinate is given it is a factual claim under
+  // SP-052, and a wrong one sends a real person to the wrong place.
+  for (const p of places) {
+    if (!p.coords) continue;
+    assert.ok(Number.isFinite(p.coords.lat) && Number.isFinite(p.coords.lng), `${p.id}: malformed coordinate`);
     assert.ok(
       p.coords.lat >= -35 && p.coords.lat <= -22 && p.coords.lng >= 16 && p.coords.lng <= 33,
-      `${p.id} has a coordinate outside South Africa — a wrong one sends a real person to the wrong place`,
+      `${p.id} has a coordinate outside South Africa`,
     );
+  }
+});
+
+test("no experience may lead to a sacred, access-restricted place", () => {
+  // SP-072. Lake Fundudzi is among the most sacred Venda sites and access is controlled by its
+  // custodians. A booking path to it would be this layer overriding a living custom — a harm that
+  // acts on the world, not merely a claim that is wrong. Enforced in the DATA rather than the UI, so
+  // no component can route around it.
+  const restricted = new Set(places.filter((p) => p.access === "sacred-restricted").map((p) => p.id));
+  for (const e of experiences) {
+    for (const id of e.placeIds) {
+      assert.ok(
+        !restricted.has(id),
+        `experience "${e.id}" lists "${id}", which is access-restricted by its custodians — no booking path may reach it`,
+      );
+    }
   }
 });
 

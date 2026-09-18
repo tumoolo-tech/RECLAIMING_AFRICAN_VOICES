@@ -340,7 +340,11 @@ text-read tests, and **no outbound booking link in Kids mode** — are `SP-014`/
       Vilakazi Street is `direct`; mathematics → an Egyptian site is `thematic` and renders as
       "related", never "visit this". The rule is recorded with its reasoning, not inferred per entry
 - [~] TOUR-05a **The review sheet** — [design/places-content.md](../design/places-content.md) is
-      **drafted and awaiting Tumo**. Four places researched; Mandela House grounded on the Soweto
+      **drafted across all cities and awaiting Tumo**. Scope widened to every landmark (SP-069);
+      `coords` made optional (SP-073) which unblocked it; six strings that are not places stay
+      strings (SP-071); ~55 of 67 drafted, ~40 grounded. **`Place.access: "sacred-restricted"` added
+      with a test that no `Experience` may list such a place** (SP-072) — Lake Fundudzi and Thathe
+      Vondo forest. Earlier note: Four places researched; Mandela House grounded on the Soweto
       Heritage Trust's own record, the memorial on SAHO. Three findings need Tumo: **no coordinate can
       be sourced to SP-054 standard** (SP-067, blocks all four), **a street has no coordinate**
       (SP-068), and the "only street in the world to have housed two Nobel laureates" superlative is

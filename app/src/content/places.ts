@@ -33,9 +33,18 @@ export type Place = {
   kind: PlaceKind;
   /** Why it matters — sourced prose. English only, like the rest of `src/content` (SP-015). */
   what: string;
-  /** A factual claim like any other, and cited in `sources` accordingly (SP-014, SP-052). */
-  coords: { lat: number; lng: number };
-  /** REQUIRED. Where the history AND the coordinate come from. No source, no place (T4). */
+  /** OPTIONAL (SP-073), and not as a convenience: a third of this app's places have no single point
+   *  by nature — the Magaliesberg is a range, Algoa Bay a bay, the Msunduzi a river, District Six a
+   *  district, Vilakazi a street. Where a coordinate IS given it is a sourced factual claim like any
+   *  other (SP-052), because a wrong one sends a real person to the wrong place. */
+  coords?: { lat: number; lng: number };
+  /** Absent means open. `"sacred-restricted"` marks a place whose access is controlled by its
+   *  custodians — Lake Fundudzi and Thathe Vondo forest are the first two. Such a place may be
+   *  described, but **no `Experience` may list it** (enforced by a test in `places.test.ts`), so no
+   *  booking path can reach it. A "plan a visit" button on a sacred site would be this layer
+   *  overriding a living custom (SP-072). */
+  access?: "sacred-restricted";
+  /** REQUIRED. Where the history — and the coordinate, if given — come from. No source, no place (T4). */
   sources: string;
 };
 
