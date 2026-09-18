@@ -201,6 +201,27 @@ test("no referral URL carries a user identifier — ever", () => {
   }
 });
 
+test("every place photograph is a real, licensed, resolvable image — never an AI one", () => {
+  // A place with no photograph is normal and fine. A place that NAMES one must actually have it,
+  // and must carry the credit and licence, because CC BY-SA attribution is an obligation rather
+  // than a courtesy — and because "licensed real photograph" is the whole reason places are
+  // allowed a picture at all when literary scenes get AI illustration.
+  //
+  // place-images.ts is read as TEXT: it `require()`s image binaries, so importing it here would
+  // fail under `node --test` for exactly the reason provinces.ts does (SP-032).
+  const registry = readFileSync(new URL("./place-images.ts", import.meta.url), "utf8");
+  for (const p of places) {
+    if (!p.image) continue;
+    assert.ok(p.image.credit.trim().length > 0, `${p.id}: a licensed photograph must credit its photographer`);
+    assert.ok(p.image.licence.trim().length > 0, `${p.id}: a photograph must record its licence`);
+    assert.ok(/^https?:\/\//.test(p.image.source), `${p.id}: the licence claim must be checkable — give the source URL`);
+    assert.ok(
+      registry.includes(`"${p.image.file}"`),
+      `${p.id} names the image "${p.image.file}", which has no entry in place-images.ts — it would render blank`,
+    );
+  }
+});
+
 test("openExternal is the only NEW way out of the app", () => {
   // SP-039 made leaving the app one function's job, because `noopener,noreferrer` is
   // security-relevant: without it the opened page gets a handle on our window via

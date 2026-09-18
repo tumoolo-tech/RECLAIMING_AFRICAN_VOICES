@@ -51,6 +51,27 @@ export type Place = {
   access?: "sacred-restricted" | "living-residence";
   /** REQUIRED. Where the history — and the coordinate, if given — come from. No source, no place (T4). */
   sources: string;
+  /** A REAL PHOTOGRAPH of this place, licensed for reuse — never an AI image.
+   *
+   *  An AI picture of Vilakazi Street depicts a real, identifiable address that this app is
+   *  actively telling someone to travel to. The existing disclosure ("artistic interpretation …
+   *  not depictions of real people") was written for literary scenes and does not cover that: a
+   *  reader would take an invented street for a photograph of the street. So places carry licensed
+   *  photographs or nothing at all.
+   *
+   *  `file` is a NAME, not a `require()`. Resolving assets here would make this module import
+   *  image binaries and stop it loading under `node --test` — the exact trap that keeps
+   *  `provinces.ts` un-importable (SP-032). `place-images.ts` maps the name to the asset and is
+   *  imported only by components. A test pins every `file` to a real entry in that map. */
+  image?: {
+    file: string;
+    /** Photographer, as the licence requires them to be credited. */
+    credit: string;
+    /** e.g. "CC BY-SA 4.0". Recorded because reuse terms are a fact we must be able to show. */
+    licence: string;
+    /** Where it came from, so the licence claim is checkable. */
+    source: string;
+  };
 };
 
 /** TOUR-05b. Seeded 2026-09-18 from design/places-content.md — every entry below names a real

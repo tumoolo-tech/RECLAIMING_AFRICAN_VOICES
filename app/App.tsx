@@ -24,6 +24,9 @@ import { ArchiveScreen } from "./src/components/ArchiveScreen";
 import { HeritageLedgerScreen } from "./src/components/HeritageLedgerScreen";
 import { AtlasScreen } from "./src/components/AtlasScreen";
 import { ProvincesScreen, ProvinceScreen, CityScreen } from "./src/components/ProvincesScreens";
+import { PlaceScreen } from "./src/components/PlaceScreen";
+import { PlaceBookings } from "./src/components/VisitPanel";
+import { placeById } from "./src/content/places";
 import { provinceById, cityById } from "./src/content/provinces";
 import { PresidentsScreen, PresidentScreen } from "./src/components/PresidentsScreens";
 import { presidentById } from "./src/content/presidents";
@@ -76,6 +79,7 @@ type Route =
   | { name: "provinces" }
   | { name: "province"; id: string }
   | { name: "city"; id: string }
+  | { name: "place"; id: string }
   | { name: "presidents" }
   | { name: "president"; id: string }
   | { name: "days" }
@@ -95,13 +99,29 @@ type Route =
 
 // Route-name groupings for the shell. Deliberately `Set<string>` (see the note in App below).
 const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero"]);
-const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "presidents", "president", "days", "totems", "heroes", "hero", "reader"]);
+const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader"]);
 const ARCHIVE_ROOMS = new Set(["archive", "heritage", "about"]);
 const WATCH_ROOMS = new Set(["watch", "watchItem"]);
 const ROOT_ROOMS = new Set(["home", "journey", "watch", "kids", "schools", "passport", "countries"]);
 // Routes whose React key must include the id, so moving between two of them remounts (and re-fades)
 // rather than reusing the previous item's mounted state.
-const KEYED_ROUTES = new Set(["reader", "province", "city", "president", "hero", "watchItem"]);
+const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem"]);
+
+// One place, as a page. Extracted for the same reason StageRoute is: inlining a component in the
+// route switch is what made the type-checker recurse over the union, not the union itself.
+function PlaceRoute({ id, lang, onBack, onOpenPlace }: { id: string; lang: Lang; onBack: () => void; onOpenPlace: (id: string) => void }) {
+  const place = placeById(id);
+  if (!place) return null;
+  return (
+    <PlaceScreen
+      place={place}
+      lang={lang}
+      onBack={onBack}
+      onOpenPlace={onOpenPlace}
+      footer={<PlaceBookings placeId={place.id} lang={lang} />}
+    />
+  );
+}
 
 // One Journey stage. Lives out here on purpose: inlining it in App's route switch made the
 // type-checker recurse over the (now 24-member) route union until it stopped finishing.
@@ -303,9 +323,18 @@ export default function App() {
         const p = provinceById(route.id);
         return p ? <ProvinceScreen province={p} onBack={back} onOpenCity={(id) => push({ name: "city", id })} lang={lang} /> : null;
       }
+      case "place":
+        return (
+          <PlaceRoute
+            id={route.id}
+            lang={lang}
+            onBack={back}
+            onOpenPlace={(id) => push({ name: "place", id })}
+          />
+        );
       case "city": {
         const c = cityById(route.id);
-        return c ? <CityScreen city={c} onBack={back} onArchive={() => push({ name: "archive" })} lang={lang} /> : null;
+        return c ? <CityScreen city={c} onBack={back} onArchive={() => push({ name: "archive" })} onOpenPlace={(id) => push({ name: "place", id })} lang={lang} /> : null;
       }
       case "presidents":
         return <PresidentsScreen onBack={back} onOpen={(id) => push({ name: "president", id })} lang={lang} />;
