@@ -18,7 +18,13 @@ export const ityalaLamawele: Module = {
   references: [
     "'The conception and application of justice in S.E.K. Mqhayi's Ityala Lamawele' (SciELO SA / Tydskrif vir Letterkunde)",
     "'Ityala lamawele' — Wikipedia",
-  ],
+  ],  // Public domain. S.E.K. Mqhayi died on 29 July 1945; life + 50 → public domain from 1 January 1996.
+  rights: {
+    status: "public-domain",
+    authorDied: 1945,
+    basis: "Public domain since 1996 (Mqhayi d. 1945; Copyright Act 98 of 1978, life + 50). The scenes are the project's own adaptation of the work.",
+  },
+
   scenes: [
     {
       id: "the-lawsuit",

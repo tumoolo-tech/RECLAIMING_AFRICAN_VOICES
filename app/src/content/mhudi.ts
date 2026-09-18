@@ -19,7 +19,14 @@ export const mhudi: Module = {
     "Tim Couzens & Brian Willan — criticism of Mhudi (enotes.com)",
     "Sol Plaatje University — 'Mhudi: A century later' (BKO Magazine)",
     "'Plotting South African history: narrative in Sol Plaatje's Mhudi' (journals.co.za)",
-  ],
+  ],  // Public domain. Sol T. Plaatje died on 19 June 1932; Copyright Act 98 of 1978, life + 50 → the
+  // work entered the public domain on 1 January 1983. The scenes are the project's own adaptation.
+  rights: {
+    status: "public-domain",
+    authorDied: 1932,
+    basis: "Public domain since 1983 (Plaatje d. 1932; Copyright Act 98 of 1978, life + 50). The scenes are the project's own adaptation of the novel.",
+  },
+
   scenes: [
     {
       id: "forest-home",
