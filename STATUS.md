@@ -458,7 +458,20 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   guarantee is in the data rather than in a component someone might forget. Mutation-tested: a tour
   booking Lake Fundudzi turns the suite red.
 
-  ~55 of 67 drafted, ~40 grounded to the SP-054 standard, the rest marked `[VERIFY]` or
+  **All 67 are now drafted** — the last 22 turned up the two findings that matter most. **Thathe Vondo
+  forest is a stronger case than Lake Fundudzi, not a weaker one**: ordinary Venda people may not walk
+  in it, and the taboo extends to visitors, so the app would be inviting people into a place the
+  community itself does not enter. And **Bumbane Great Place is the home of the reigning aBaThembu
+  king** — a living residence and a seat of living authority, currently the subject of a succession
+  dispute, not a heritage site. `Place.access` now carries `"sacred-restricted" | "living-residence"`
+  and the guard blocks on `access` being set **at all**, so a category added later is protected by
+  default rather than by someone remembering (SP-074, SP-075).
+
+  Nine places are recommended to stay bare strings on top of the six that are not places — commercial
+  attractions and geographic features with no story the repo can tell, because a card that says
+  nothing is worse than a plain chip. That leaves about **45 ready to seed** on sign-off.
+
+  ~55 grounded to the SP-054 standard, the rest marked `[VERIFY]` or
   `[NEEDS SOURCE]` rather than guessed. Two happy findings: **Sol Plaatje turns up twice** — his house
   museum in Kimberley and a dedicated display in the Mafikeng Museum, where he kept his siege diary —
   so the literary core reaches the tourism layer in three cities now, counting Vilakazi Street. Two

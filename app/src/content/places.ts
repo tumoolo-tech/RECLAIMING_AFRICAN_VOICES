@@ -38,12 +38,16 @@ export type Place = {
    *  district, Vilakazi a street. Where a coordinate IS given it is a sourced factual claim like any
    *  other (SP-052), because a wrong one sends a real person to the wrong place. */
   coords?: { lat: number; lng: number };
-  /** Absent means open. `"sacred-restricted"` marks a place whose access is controlled by its
-   *  custodians — Lake Fundudzi and Thathe Vondo forest are the first two. Such a place may be
-   *  described, but **no `Experience` may list it** (enforced by a test in `places.test.ts`), so no
-   *  booking path can reach it. A "plan a visit" button on a sacred site would be this layer
-   *  overriding a living custom (SP-072). */
-  access?: "sacred-restricted";
+  /** Absent means open. Any value here means **no `Experience` may list this place** — enforced by a
+   *  test in `places.test.ts`, so no booking path can reach it and no component can route around it.
+   *
+   *  `"sacred-restricted"` — access is governed by custom, not by opening hours. Thathe Vondo forest
+   *    is the clearest case: ordinary Venda people may not walk in it, and that taboo extends to
+   *    visitors. Lake Fundudzi is the same. A "plan a visit" button here would be this layer
+   *    overriding a living custom (SP-072).
+   *  `"living-residence"` — someone's home and a seat of living authority, not a heritage site.
+   *    Bumbane Great Place is the residence of the reigning aBaThembu king (SP-074). */
+  access?: "sacred-restricted" | "living-residence";
   /** REQUIRED. Where the history — and the coordinate, if given — come from. No source, no place (T4). */
   sources: string;
 };

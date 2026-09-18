@@ -125,12 +125,16 @@ test("a coordinate is optional — but a given one must be inside South Africa",
   }
 });
 
-test("no experience may lead to a sacred, access-restricted place", () => {
-  // SP-072. Lake Fundudzi is among the most sacred Venda sites and access is controlled by its
-  // custodians. A booking path to it would be this layer overriding a living custom — a harm that
-  // acts on the world, not merely a claim that is wrong. Enforced in the DATA rather than the UI, so
-  // no component can route around it.
-  const restricted = new Set(places.filter((p) => p.access === "sacred-restricted").map((p) => p.id));
+test("no experience may lead to an access-restricted place", () => {
+  // SP-072 / SP-074. Two kinds, one rule. Thathe Vondo forest is a holy forest where Venda kings are
+  // buried and ordinary Venda people may not walk — a taboo that extends to visitors; Lake Fundudzi
+  // is the same. Bumbane Great Place is the home of the reigning aBaThembu king. A booking path to
+  // either kind would be a harm that ACTS on the world rather than merely asserting something false.
+  //
+  // Checked on `access` being set at all, not on a specific value, so a new category added later is
+  // protected by default rather than by remembering to update this test. Enforced in the DATA, so no
+  // component can route around it.
+  const restricted = new Set(places.filter((p) => p.access !== undefined).map((p) => p.id));
   for (const e of experiences) {
     for (const id of e.placeIds) {
       assert.ok(

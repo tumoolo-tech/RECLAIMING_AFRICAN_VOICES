@@ -22,9 +22,9 @@ string** (SP-028) — a normal outcome, not a failure.
 | Unique (dedup via `alsoListedIn`) | **73** |
 | Not places — stay strings (SP-071) | **6** |
 | **Real target** | **67** |
-| **Drafted below** | **~55** |
-| Grounded to SP-054 standard | ~40 |
-| Marked `[VERIFY]` or `[NEEDS SOURCE]` | ~15 |
+| **Drafted below** | **67 — all of them** |
+| Grounded to SP-054 standard | ~55 |
+| Marked `[VERIFY]` or `[NEEDS SOURCE]` | ~14 |
 
 **`coords` is now optional (SP-073)**, so nothing is blocked. **I have supplied no coordinates at
 all** — none could be sourced to SP-054 standard, and under SP-052 a coordinate is a factual claim.
@@ -34,19 +34,23 @@ Add them later, per place, where a real one exists.
 
 ## ⚠️ Decisions still needed
 
-### 1. Sacred sites — SP-072, and the most important thing on this page
+### 1. Places that must never carry a booking path — SP-072 / SP-074, the most important thing here
 
-**Lake Fundudzi** is among the most sacred sites of the Venda, and **access is traditionally
-controlled by its custodians**. **Thathe Vondo forest** carries the same caution — it is a holy
-forest. A "plan a visit" button on either would be this app's tourism layer overriding a living
-custom.
+Three places came out of this research that are **not tourist sites**, in two different ways:
 
-I have added `access?: "sacred-restricted"` to `Place` and **a test that fails if any `Experience`
-lists such a place** — so the guarantee lives in the data, not in a component someone might forget.
+| Place | Why |
+|---|---|
+| **Thathe Vondo forest** | A holy forest where chiefs of the Thathe clan are buried. **Ordinary Venda people may not walk in it, and the taboo extends to visitors.** The strongest case here — the app would be inviting people into a place the community itself does not enter |
+| **Lake Fundudzi** | Among the most sacred Venda sites; access is governed by its custodians, with protocols for approaching it |
+| **Bumbane Great Place** | **The home of the reigning aBaThembu king** — a living residence and a seat of living authority, currently the subject of a succession dispute. Not heritage; someone's house |
+
+`Place` now carries `access?: "sacred-restricted" | "living-residence"`, and **a test fails if any
+`Experience` lists a place with `access` set at all** — so a category added later is protected by
+default rather than by someone remembering. The guarantee is in the data, not in a component.
 Mutation-tested: a tour booking Lake Fundudzi turns the suite red.
 
-**Your call:** is describing these places at all the right thing, even without a booking path? I have
-drafted them. If the answer is no, they stay strings.
+**Your call:** is describing these places at all the right thing, even with no booking path? I have
+drafted all three. If the answer is no for any of them, it stays a bare string.
 
 ### 2. Four strings conflate several places
 
@@ -119,7 +123,10 @@ not as a place you can stand in.
 
 *Sources:* Stellenbosch Heritage Foundation, *Stellenbosch history*.
 
-**`jonkershoek`** · `site` — **not researched.**
+**`jonkershoek`** · `site`
+> The valley south-east of the town, about 11,000 hectares, now a CapeNature reserve. Jan Andriessen — known as Jan de Jonkheer, from whom the valley takes its name — held the original grant. In 1817 Lord Charles Somerset granted the land to Wouter Eduard Wium on condition that he plant oaks, and the great oaks there are the result.
+
+*Sources:* CapeNature, *Jonkershoek Nature Reserve*.
 
 ## Gauteng
 
@@ -130,7 +137,12 @@ not as a place you can stand in.
 
 *Sources:* Constitution Hill, *The history of Constitution Hill* · South African History Online.
 
-**`apartheid-museum`** · **`gold-reef-city`** — **not researched.**
+**`apartheid-museum`** · `museum`
+> Opened in 2001, the first institution in the world built specifically to document apartheid. Twenty-two exhibition areas trace the rise and fall of the system between 1948 and 1994. It was built as a condition of the 1995 casino-licence bid for the adjacent Gold Reef City, and funded by it.
+
+*Sources:* Apartheid Museum, *About Us* · South African History Online. **Note:** sources disagree on whether it opened in March or November 2001, so **no month appears above**.
+
+**`gold-reef-city`** — **recommend leaving as a string.** A casino and theme park on an old gold mine. Like Sun City, a commercial attraction in a list otherwise made of museums, memorials and sacred places. Its one heritage tie — funding the Apartheid Museum next door — is already carried by that entry.
 
 ### Soweto
 
@@ -171,7 +183,10 @@ not as a place you can stand in.
 
 *Sources:* McGregor Museum record. **[VERIFY]** — wants the museum's own page.
 
-**`william-humphreys-art-gallery`** — **not researched.**
+**`william-humphreys-art-gallery`** · `museum`
+> Opened in 1952 and named for William Benbow Humphreys (1889–1965), who in 1948 gave the City of Kimberley most of his collection of sixteenth- and seventeenth-century Dutch and Flemish Old Masters, British and French paintings and antique furniture. South African works assembled by the Kimberley Athenaeum, and the Max Greenberg Bequest, form the rest of the core collection.
+
+*Sources:* William Humphreys Art Gallery record · South African Tourism. **[VERIFY]** — wants the gallery's own page.
 
 ## Eastern Cape
 
@@ -187,7 +202,17 @@ not as a place you can stand in.
 
 *Sources:* Nelson Mandela Bay Tourism, *Route 67* · South African Tourism.
 
-**`algoa-bay`** · **`st-georges-park`** · **`the-boardwalk`** — **not researched.** *(`"the boardwalk"` may be the commercial Boardwalk complex — check before promoting it.)*
+**`algoa-bay`** · `site`
+> The bay where the British settlers landed: between December 1819 and April 1820 twenty-one vessels carried roughly 4,000 of them here, the first — the *Chapman* — on 10 April 1820. Its warm shallow water is also a calving ground for southern right whales and a nursery for humpback calves, and it was designated a Whale Heritage Area in June 2021.
+
+*Sources:* Nelson Mandela Bay Tourism, *Historical Port Elizabeth* · Wildlife Heritage Areas, *Algoa Bay Whale Heritage Area* (2021).
+
+**`st-georges-park`** · `site`
+> Established in 1859, the oldest park in the city. Its cricket ground came into use in 1889 and hosted **South Africa's first Test match** in March that year. The club it serves, formally constituted in 1843, is among the oldest in the country.
+
+*Sources:* St George's Park history (Nelson Mandela University) · ICC, *St George's Park*. **[VERIFY]**
+
+**`the-boardwalk`** — **recommend leaving as a string.** The lowercase string most likely means the commercial Boardwalk casino complex, which is not heritage. If a different boardwalk is meant, the string needs clarifying first.
 
 ### Mthatha
 
@@ -196,7 +221,24 @@ not as a place you can stand in.
 
 *Sources:* Dept. of Sport, Arts and Culture, *Nelson Mandela Museum*. *See conflation note above.*
 
-**`qunu`** · **`mvezo`** · **`bumbane-great-place`** — **not researched**, pending the conflation call.
+**`mvezo`** · `site`
+> The village on the plateau above the Mbashe River where Nelson Mandela was born on 18 July 1918, and where his umbilical cord is buried in Xhosa tradition. His father was stripped of his chieftaincy by the colonial administration while Mandela was an infant, and the family left.
+
+*Sources:* Dept. of Sport, Arts and Culture, *Nelson Mandela Museum* — Mvezo is one of its three sites.
+
+**`qunu`** · `site`
+> Where Mandela's mother took the family after his father's death, and where he spent the childhood he later called the happiest part of his life. It is where he chose to be buried.
+
+*Sources:* Dept. of Sport, Arts and Culture, *Nelson Mandela Museum*.
+
+**`bumbane-great-place`** · `site` · **`access: "living-residence"`** — ⚠️ **SP-074**
+> The Great Place of the aBaThembu, about 40km from Mthatha — **the residence of the reigning king.**
+
+*Sources:* **[VERIFY]** — what I found is news reporting on a succession dispute, not a heritage record.
+
+> **⚠️ This is not a heritage site. It is someone's home and the seat of a living monarchy**, currently the subject of a family and succession dispute. Routing visitors there is a different kind of wrong from the sacred sites but needs the same remedy: **no `Experience` may list it**, enforced by the same test. **Your call whether it belongs in the app at all.**
+>
+> Separately, the research surfaced **Mqhekezweni** — the Great Place where the regent Jongintaba raised Mandela after his father's death. *That* is the Mandela-associated Great Place, and `provinces.ts` does not list it.
 
 ### Makhanda
 
@@ -234,7 +276,14 @@ not as a place you can stand in.
 
 *Sources:* South African History Online, *Moses Mabhida Stadium*.
 
-**`golden-mile`** · **`ushaka-marine-world`** · **`victoria-street-market`** — **not researched to standard.** *(Victoria Street Market is culturally significant to Durban's Indian community and deserves a proper source, not a tourism blurb.)*
+**`victoria-street-market`** · `site`
+> Indian indentured labourers and market gardeners traded along Victoria Street between 1860 and 1910 — some two thousand of them, mostly selling vegetables from carts. The municipality allocated the ground and established a market in 1910 to house them. It burned down in 1973, in circumstances some traders believed suspicious, and they were moved to a hall alongside the African Market. The present market was rebuilt on the original site and reopened in July 1990. It supports around 180 traders.
+
+*Sources:* Victoria Street Market, *History* · Goolam Vahed, *The Victoria Street Early Morning Squatters Market, 1910–* (via South African History Online). **A published academic history — among the best-sourced entries here.**
+
+**`ushaka-marine-world`** — **recommend leaving as a string.** A 16-hectare theme park opened 30 April 2004. Commercial, not heritage.
+
+**`golden-mile`** — **recommend leaving as a string.** A real place, but the repo has no history for it beyond "it is a beachfront", and a card that says only that is worse than a plain chip.
 
 ### Pietermaritzburg
 
@@ -248,7 +297,12 @@ not as a place you can stand in.
 
 *Sources:* **[VERIFY]** — *see superlative note; the "largest brick building" claim is unevidenced.*
 
-**`tatham-art-gallery`** · **`msunduzi-river`** — **not researched.**
+**`tatham-art-gallery`** · `museum`
+> Founded in 1903 through Ada Susan Tatham's fundraising, and housed in the old Supreme Court building. Until 1923 it held British painting; between 1923 and 1926 Colonel Robert Whitwell gave more than four hundred works, including Impressionist and Post-Impressionist pieces. **From 1983 it began acquiring work by contemporary Black South African artists and ceramists**, and now holds southern African ceramics, beadwork, basketry and carving alongside a strong KwaZulu-Natal focus.
+
+*Sources:* Tatham Art Gallery collection history. **[VERIFY]** — wants the gallery's own page.
+
+**`msunduzi-river`** — **recommend leaving as a string.** A river, with no discrete story in the repo and no single point. It gives the municipality its name, which belongs in `City.origins`.
 
 ### Ulundi
 
@@ -286,7 +340,10 @@ not as a place you can stand in.
 
 *Sources:* **[VERIFY]** — wants the Anglo-Boer War Museum's own record, which adjoins the memorial.
 
-**`oliewenhuis-art-museum`** — **not researched.**
+**`oliewenhuis-art-museum`** · `museum`
+> A mansion on Grant's Hill designed in 1935 by William Mollison of Public Works and completed in 1941. It was the Governor-General's residence from 1942, hosted King George VI and his family for three days in 1947, and became an official presidential residence after 1961. It is now the Free State's only art museum, devoted to South African artists.
+
+*Sources:* South African History Online, *Oliewenhuis Art Museum*.
 
 ### Welkom
 
@@ -307,7 +364,12 @@ not as a place you can stand in.
 
 *Sources:* South African Tourism, Vhembe District / Greater Mapungubwe Heritage Route. **[VERIFY]** — wants SAHRA or the Dzata Museum.
 
-**`thathe-vondo-forest`** · `site` · **`access: "sacred-restricted"`** — **not researched.** Sacred; same caution.
+**`thathe-vondo-forest`** · `site` · **`access: "sacred-restricted"`** — ⚠️ **the strongest case on this page**
+> The holy forest in the mountains above Lake Fundudzi, where chiefs of the Thathe clan are buried. Tradition holds it is guarded by a white lion protecting the graves.
+
+*Sources:* South African History Online, *Thathe Vondo Holy Forest, Limpopo* · the published Vhavenda holy-forest literature.
+
+> **⚠️ A stronger case than Lake Fundudzi, not a weaker one (SP-075).** The restriction is not merely on outsiders: **ordinary Venda people may not walk in the forest**, and the taboo extends to visitors. Any "visit" affordance would be this app inviting people into a place the community itself does not enter.
 
 **`thulamela`** — **see finding 3.** In the northern Kruger, not Thohoyandou.
 
@@ -327,7 +389,12 @@ not as a place you can stand in.
 
 ### Mbombela
 
-**`lowveld-national-botanical-garden`** · **`mbombela-stadium`** — **not researched.**
+**`lowveld-national-botanical-garden`** · `site`
+> One of South Africa's nine national botanical gardens, at the confluence of the Crocodile and Nels rivers. Established in 1969 and opened on 10 September 1971; 159 hectares holding more than 600 naturally occurring plant species. Managed by SANBI.
+
+*Sources:* SANBI, *Lowveld National Botanical Garden*.
+
+**`mbombela-stadium`** — **recommend leaving as a string.** Built for the 2010 World Cup, its eighteen roof supports said to resemble giraffes. Architecturally distinctive, but the repo has no heritage claim to make about it.
 
 ## North West
 
@@ -343,7 +410,7 @@ not as a place you can stand in.
 
 *Sources:* South African History Online, *Mahikeng* · Mahikeng Local Municipality, *History*.
 
-**`cookes-lake`** — **not researched.**
+**`cookes-lake`** — **[NEEDS SOURCE].** I could not ground this against any heritage or municipal record. **Recommend leaving as a string** until someone with local knowledge can say what it is.
 
 ### Rustenburg
 
@@ -352,16 +419,41 @@ not as a place you can stand in.
 
 *Sources:* The Heritage Portal, *The Kruger Houses at Boekenhoutfontein* · Paul Kruger Country House Museum.
 
-**`magaliesberg`** · **`pilanesberg-national-park`** — **not researched.**
+**`magaliesberg`** · `site`
+> One of the oldest mountain ranges on earth, roughly 2.3 billion years old — quartzite, shale, chert and dolomite laid down in an inland basin about two billion years ago, later tilted by the upwelling that formed the Bushveld Igneous Complex. A UNESCO biosphere reserve of 357,870 hectares where two great African biomes meet, holding 443 bird species, nearly half of all species in the subregion. It adjoins the Cradle of Humankind.
+
+*Sources:* UNESCO Man and the Biosphere Programme, *Magaliesberg*.
+
+**`pilanesberg-national-park`** · `site`
+> Set in the crater of a long-extinct volcano, a rare formation dated to about 1.3 billion years ago.
+
+*Sources:* **[VERIFY]** — the dating is consistent across sources but I have found no park or SANParks record for it.
+
 **`sun-city`** — **see finding 3.** Recommend leaving as a string.
 
 ---
 
 ## What remains
 
-Roughly **12 places not yet researched**, plus about **15 marked `[VERIFY]`** where I have a source
-but want a better one — an institution's own page rather than a summary. The `[VERIFY]` ones are
-usable if you accept the source; the `[NEEDS SOURCE]` ones are not.
+**Every landmark has now been looked at.** What is left is judgement, not research.
 
-**Nothing here is blocked any more.** `coords` optional (SP-073) removed the structural blocker, and
-the sacred-site guard is in place and tested.
+**~14 entries marked `[VERIFY]`** — I have a source but want the institution's own page rather than a
+summary. Usable if you accept the source as it stands.
+
+**3 marked `[NEEDS SOURCE]`** — `castle-of-good-hope`, `bo-kaap`, `cookes-lake`. Not usable.
+
+**9 I recommend leaving as bare strings**, on top of the six that are not places at all:
+`gold-reef-city` · `sun-city` · `ushaka-marine-world` · `golden-mile` · `mbombela-stadium` ·
+`the-boardwalk` · `msunduzi-river` · `cookes-lake` · `rhodes-university` *(the last only because one
+line is not enough for a place with that name and that history)*. Most are commercial attractions or
+geographic features with no story the repo can tell. **A card that says nothing is worse than a plain
+chip.**
+
+**3 need a decision about whether they belong at all:** `bumbane-great-place`, a living royal
+residence, and the two sacred Venda sites. All three are protected in code regardless — no
+`Experience` can reach them.
+
+That leaves roughly **45 places ready to seed** on your approval.
+
+**Nothing is blocked.** `coords` optional (SP-073) removed the structural blocker; the
+restricted-access guard is in place and mutation-tested.
