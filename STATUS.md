@@ -4,7 +4,7 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-18 (Stage C) — by Tumo (via Claude). Previous update: 2026-09-17._
+_Last updated: 2026-09-18 (#36) — by Furn (via Claude). Previous update: 2026-09-18 (Stage C)._
 
 > **⚠️ Open question, and it sits above everything else on this board: what happened to the
 > hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
@@ -47,6 +47,7 @@ _Last updated: 2026-09-18 (Stage C) — by Tumo (via Claude). Previous update: 2
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
+| **🧾 Audit backlog — [issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)** (40 issues, ordered; **South Africa first**, continental group parked 18 Sep) | 🟡 **#36 done** (the "12 official languages" fix, this branch) · week-1 next: #45 #43 #34 #35 #25 #51 |
 | **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Phase 7 complete bar TOUR-10's screen-reader audit.** 49 places live across 18 cities · freshness script shipped · pitch corrected. TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: the 3 access-restricted places, the ~14 `[VERIFY]` sources, the 4 conflated strings, Thulamela's city, and the team-size line in the pitch. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
@@ -295,6 +296,28 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-18 (#36)** — **South Africa has twelve official languages, and the app said eleven in seventeen
+  places.** Issue #36. The Constitution Eighteenth Amendment Act, 2023 added South African Sign
+  Language; `countries/za-south-africa.md` had cited it since August and `country-languages.ts` had
+  SASL under `notYet` — the research knew, the copy did not. Worst of the seventeen was
+  [CountriesScreen.tsx](app/src/components/CountriesScreen.tsx): `` `${LANGUAGES.length} official
+  languages` `` — the app's registry count rendered *as* a constitutional claim, which would have read
+  "12 official languages" the day Swahili landed, right number for the wrong reason. It is now a real
+  UI string in all eleven languages, `%n of the 12 official languages`, with the two numbers kept from
+  different sources on purpose. The `za` `sourceNote` names the Amendment; the chatbot's answer says
+  "eleven of the twelve" and names the one not served; the two tests that were titled "all eleven
+  official" are renamed and the `za` test now **pins** SASL under `notYet`. New guard,
+  [`i18n/claims.test.ts`](app/src/i18n/claims.test.ts): fails the build on the literal claim in either
+  word order **and on the derived shape** — any `${…} official languages` interpolation — because no
+  number-matching pattern can see the bug that was actually shipped. Scoped to `src/`; docs were fixed
+  by hand (README, docs/07, three specs, the i18n skill) and the wider docs lint stays with #51.
+  **Not done here, deliberately:** captions and transcripts — the half of #36 that would actually
+  serve a Deaf reader. That is a separate PR (mechanism first; anthem lyrics as the first public-domain
+  content) and the film/poem transcripts wait on the media-rights register (#35), because
+  transcribing media that may be replaced is wasted work. Verified from a clean `npm ci`: typecheck
+  clean · **204/204** tests (201 before) · `build:web` green · the new string is in the bundle and the
+  old one is not.
 
 - **2026-09-18 (Stage C)** — **The tourism layer stops rotting, and the pitch stops overclaiming.
   Phase 7 complete bar one line.**

@@ -58,7 +58,8 @@ the site's own grounded content.
 
 ## Languages
 
-The **entire interface switches across all 11 official South African languages**. Literary content is
+The **entire interface switches across eleven of South Africa's twelve official languages** — South
+African Sign Language, the twelfth since 2023, is the one not yet served. Literary content is
 **human-reviewed in English + Setswana**; the other nine languages are shown as **machine-draft,
 clearly labelled "unreviewed,"** pending native-speaker review — never passed off as authoritative.
 
