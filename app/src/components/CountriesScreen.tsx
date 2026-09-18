@@ -102,6 +102,17 @@ const UI = {
     en: "54 nations", tn: "Dinaga di le 54", af: "54 nasies", zu: "Izizwe ezingu-54", xh: "Izizwe ezingama-54",
     nso: "Dinaga tše 54", st: "Dinaha tse 54", ss: "Tive letingu-54", ts: "Matiko ya 54", nr: "Iintjhaba ezingu-54", ve: "Mashango a 54",
   },
+  // %n = how many languages the app speaks (LANGUAGES.length). The "12" is a sourced fact and stays
+  // literal: South Africa has had twelve official languages since the Constitution Eighteenth
+  // Amendment Act, 2023 added South African Sign Language (countries/za-south-africa.md, source 1).
+  // The two numbers have different sources and must never be the same variable — the old line here
+  // rendered the registry count AS the constitutional claim, and was wrong from the day SASL passed.
+  languagesFact: {
+    en: "%n of the 12 official languages", tn: "%n ya dipuo tsa semmuso di le 12", af: "%n van die 12 amptelike tale",
+    zu: "%n kwezilimi ezisemthethweni ezingu-12", xh: "%n kwiilwimi ezisemthethweni ezili-12",
+    nso: "%n ya maleme a semmušo a 12", st: "%n ya dipuo tsa semmuso tse 12", ss: "%n kwetilwimi letisemtsetfweni letingu-12",
+    ts: "%n wa tindzimi ta ximfumo ta 12", nr: "%n kwamalimi asemthethweni angu-12", ve: "%n ya nyambo dza tshiofisi dza 12",
+  },
 };
 
 /** The cinematic backdrop for the live country — existing cached art, nothing newly generated. */
@@ -192,7 +203,7 @@ export function CountriesScreen({
           <Text style={styles.cinemaTag}>MANTSWE A MALOBA — VOICES OF YESTERDAY</Text>
 
           <View style={styles.facts}>
-            <Fact icon={<Icon.MessageCircle size={14} color={colors.dsBlue} />} text={`${LANGUAGES.length} official languages`} />
+            <Fact icon={<Icon.MessageCircle size={14} color={colors.dsBlue} />} text={t(UI.languagesFact, lang).replace("%n", String(LANGUAGES.length))} />
             <Fact icon={<Icon.Route size={14} color={colors.dsBlue} />} text={`${historyTrail.length} milestones · 1652 → today`} />
             <Fact icon={<Icon.BookOpen size={14} color={colors.dsBlue} />} text="4 great books · the Cultural Atlas" />
             <Fact icon={<Icon.Map size={14} color={colors.dsBlue} />} text="9 provinces · totems · national days" />

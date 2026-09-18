@@ -48,7 +48,7 @@ const UI = {
   },
 };
 
-// First-class language chooser for all 11 official SA languages (setswana-i18n skill: indigenous
+// First-class language chooser for the 11 spoken official SA languages (the twelfth, Sign Language, is named under notYet) (setswana-i18n skill: indigenous
 // languages are peers, not a "secondary" dropdown). Lists each language by its own name (endonym).
 // Languages with human-reviewed story text are marked ✓; the rest currently show English text and
 // say so in the Reader — we never pass machine/absent translations off as authoritative.

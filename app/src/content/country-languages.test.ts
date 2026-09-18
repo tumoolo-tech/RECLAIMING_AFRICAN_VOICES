@@ -53,10 +53,17 @@ test("English is offered everywhere it is mapped — it is the app's guaranteed 
   }
 });
 
-test("South Africa carries all eleven official languages", () => {
+test("South Africa carries the eleven spoken official languages, and names the twelfth", () => {
   const za = languagesFor("za");
   assert.ok(za);
-  assert.equal(za.supported.length, 11, "the Constitution names eleven; the picker must show eleven");
+  assert.equal(za.supported.length, 11, "the 1996 Constitution lists eleven spoken languages; the picker must show all eleven");
+  // Eighteenth Amendment Act, 2023: South African Sign Language is the twelfth official language.
+  // It cannot be a LangCode yet (nothing to render), so it MUST be named under notYet — otherwise
+  // the picker implies the country has eleven.
+  assert.ok(
+    za.notYet.includes("South African Sign Language"),
+    "SASL is an official language since 2023 and must be named as the one we do not yet serve",
+  );
 });
 
 test("Zimbabwe's Ndebele is NOT mapped to South Africa's isiNdebele", () => {
