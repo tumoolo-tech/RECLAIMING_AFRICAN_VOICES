@@ -28,6 +28,7 @@ Read in order, or jump to what you need. Governance lives at the repo root
 |-----|--------------|
 | [Department of Tourism pitch](sims_proposal.md) | The *why* — history as the reason to travel, not a side-benefit |
 | [End-to-end walkthrough](sims_proposal_howitworks.md) | The *how* — user journey, content pipeline, partner flow |
+| [**sim_plan**](sim_plan.md) | The *build*, and **the decision register** — all three stages to decision level, every choice numbered with its reason, 6 still open. **Start here to write code** |
 
 > **Naming note:** the product was renamed **Maloba → Ubuntu Heritage** (2026-07-03). Some deeper docs
 > below still use the working name "Maloba"; the on-chain provenance memos keep the historical name
