@@ -12,11 +12,17 @@ import { join, relative } from "node:path";
 // rendered as a false claim about the Constitution. This test fails the build if the phrase comes
 // back anywhere a reader can see it: a component, a content file, or the chatbot's knowledge base.
 //
-// SCOPE — `src/` only. Docs are fixed by hand and belong to the wider docs lint (issue #51).
-// STATUS.md's log is history and is deliberately not scanned. Test files are skipped so this test
-// can quote the phrase it forbids.
+// SCOPE — `src/` and `scripts/`. Docs are fixed by hand and belong to the wider docs lint (issue
+// #51). STATUS.md's log is history and is deliberately not scanned. Test files are skipped so this
+// test can quote the phrase it forbids.
+//
+// `scripts/` was added after `check-languages.mjs` printed the derived claim in a block captioned
+// "honest phrasing for a pitch or a rubric" — the single worst place for it, since that text is
+// written to be copied into a document going outside the project. A build-time script is not
+// shipped to a user, but its OUTPUT is quoted by a human, so the same rule has to reach it.
 
 const SRC = new URL("../", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
+const SCRIPTS = new URL("../../scripts/", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 
 // Two shapes are forbidden.
 //  1. The LITERAL claim — "11 official languages", "eleven official South African languages" —
@@ -33,14 +39,14 @@ function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
     if (statSync(p).isDirectory()) walk(p, out);
-    else if (/\.(ts|tsx)$/.test(name) && !/\.test\.tsx?$/.test(name)) out.push(p);
+    else if (/\.(ts|tsx|mjs)$/.test(name) && !/\.test\.tsx?$/.test(name)) out.push(p);
   }
   return out;
 }
 
 test("nothing in src/ claims South Africa has eleven official languages — it has twelve", () => {
   const hits: string[] = [];
-  for (const file of walk(SRC)) {
+  for (const file of [...walk(SRC), ...walk(SCRIPTS)]) {
     const lines = readFileSync(file, "utf8").split("\n");
     lines.forEach((line, i) => {
       if (FORBIDDEN.test(line)) hits.push(`${relative(SRC, file)}:${i + 1}: ${line.trim().slice(0, 100)}`);
