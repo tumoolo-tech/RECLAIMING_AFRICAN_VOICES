@@ -56,11 +56,13 @@ exists ([doc 15 §2](15-heritage-tourism-plan.md#2-what-already-exists-do-not-re
 
 | | |
 |---|---|
-| Tasks | `TOUR-01`…`TOUR-13`, **0 of 13 started** |
-| Baseline to protect | **179 unit tests passing**, `npm run typecheck` clean |
+| Tasks | `TOUR-01`…`TOUR-13`, **13 of 13 done** (TOUR-10 partial — see below) |
+| Tests | **202 passing**, `npm run typecheck` clean · was 179 at the start of this phase |
+| Live in the app | **49 sourced places across 18 of 19 cities** · 2 story→place links · **0 experiences** |
 | CI gate | [pr-checks.yml](../.github/workflows/pr-checks.yml) — typecheck + tests on every PR into `main` |
-| Decisions | 12 inherited · 63 new · **0 open** |
-| Waiting on you | **8 citations + 4 coordinates to review**, and the thematic link candidates (§5) — all after TOUR-05 drafts them, none blocking the start |
+| Decisions | 12 inherited · 77 registered |
+| **Not closed** | **TOUR-10** — a11y labels are written and confirmed in the accessibility tree, but there has been no audit with a real screen reader. Gate B's screen-reader line is open |
+| Waiting on you | The 3 access-restricted places · ~14 `[VERIFY]` sources · the 4 conflated strings · Thulamela's city · the team-size line in the pitch |
 
 ---
 
@@ -213,6 +215,11 @@ was free to fix: types written, no data yet.
 | **SP-073** | **`coords` becomes OPTIONAL.** A place needs sourced prose and a citation; a coordinate is carried only where one honestly exists. **Supersedes SP-014, and resolves SP-067 and SP-070** | Tumo, 2026-09-18. Not a volume concession — a structural one. A third of the 67 places have **no single point by nature**: the Magaliesberg and Makhonjwa are ranges, Algoa Bay a bay, the Msunduzi a river, District Six and Bo-Kaap districts, Qunu and Mvezo villages, Vilakazi and Dorp streets. Keeping it required would have blocked roughly a third of the sweep **including Vilakazi Street, which the entire pitch rests on**. Where a coordinate IS given it remains a sourced factual claim under SP-052 | Locked |
 | **SP-074** | **`access` gains `"living-residence"`, and the guard now blocks on `access` being set at all** rather than on one value. **Bumbane Great Place is the home of the reigning aBaThembu king** — not a heritage site | Found researching the last 22. Bumbane is a living royal residence, currently the subject of a succession dispute; routing visitors to it would be sending tourists to someone's home and to a seat of living authority. A different kind of wrong from the sacred sites, but the same remedy. Checking `access !== undefined` means a category added later is protected by default rather than by someone remembering to update the test | Proposed |
 | **SP-075** | **Thathe Vondo forest is the strongest case for SP-072, not a weaker one** | The research found the taboo does not merely restrict outsiders: **ordinary Venda people may not walk in the forest**, and it extends to visitors. Venda kings and chiefs of the Thathe clan are buried there. Any "visit" affordance would be this app inviting people into a place the community itself does not enter | Locked |
+| **SP-076** | **The freshness script never stamps `lastChecked`, and SP-047 is the second reason, not the first** | A 200 and a human verification are **different facts**. A server answering proves a server answered; it does not prove the tour still runs, at that price, on those days. If a green HTTP check refreshed that date, the field would quietly stop meaning "a person checked" (SP-021) and start meaning "a machine pinged" — the guarantee would evaporate with nobody deciding to drop it. The script prints the line to paste and leaves the decision with a person | Proposed |
+| **SP-077** | **A `403` is never reported as dead**, and a redirect-to-home-page is amber rather than red | A bot filter refusing an honest user-agent is not evidence an operator folded; reporting it dead would have the script manufacture a death and hand a human a wrong edit. Redirect-to-home is the most valuable thing the check catches beyond a naive status check, but it has real false positives — and a false red trains people to ignore reds, which is SP-046's own reasoning applied one level down | Proposed |
+| **SP-078** | **Three exit codes, not two:** `0` nothing needs a human · `1` the repo is making a claim it cannot support · `2` the check could not complete | In a pre-send checklist, "the wifi was bad" must not read identically to "you are about to demo a dead booking link". That distinction is the whole value of the run | Proposed |
+| **SP-079** | **`--probe <url>` checks a candidate URL that is not in the repo yet** | The other half of SP-021. No operator URL may enter `experiences.ts` until a human has opened it — this puts a candidate through the same checks, including the T5 identifier rule, without having to add it to find out | Proposed |
+| **SP-080** | **SP-039 becomes structural**: no component may call `window.open`/`Linking.openURL` directly, with the six pre-existing sites grandfathered **by name** | A convention nobody can check decays. Naming the debt rather than loosening the pattern is how this repo already treats its 25 unlabelled pre-v2 controls: removing a name is allowed, adding one is the failure. Mutation-tested both ways — a new offender turns it red, and emptying the allowlist also turns it red, which proves the list is load-bearing rather than matching nothing | Proposed |
 | **SP-067** | **No coordinate can be sourced to SP-054 standard.** None of the four institutions publish decimal coordinates — museums publish street addresses. The candidates are Wikipedia, which SP-054 does not admit | *(Resolved by SP-073.)* Found doing the research, not anticipated when SP-014 chose to fill `coords`. By our own rule (SP-052: a coordinate is a factual claim) these cannot ship as they stand. **(a)** Tumo verifies each against an official map at the published street address, cited as such · **(b)** amend SP-054 to admit Wikipedia for locational facts only · **(c)** reverse SP-014 and drop `coords`. **Blocks TOUR-05b entirely.** Default if unanswered: **(a)** — keeps SP-054 intact, ~10 minutes of work | **Superseded → SP-073** |
 | **SP-068** | **A street has no coordinate.** `vilakazi-street` can only carry a *representative* point, not a fact about the street | *(Resolved by SP-073 — a street simply carries no coordinate.)* The same shape problem that made a bike tour an `Experience` rather than a `Place` of `kind: "route"`, arriving now for a `street`. Either use the Mandela House corner and say so in `sources`, or make `coords` optional after all — which partly reopens SP-014 | **Open** — blocks `vilakazi-street` only |
 | **SP-063** | Retargeted by SP-058, unchanged in substance: **SP-018** (ships with zero records) now means `experiences.ts` ships empty · **SP-019** (`unverified` until `live`) is now `Experience.status` · **T5**, **SP-034**, **SP-047**, **SP-049** and **SP-056** all now operate on `Experience.url` | Recorded so the retargeting is deliberate rather than something read into the old rows later | Proposed |
@@ -390,7 +397,24 @@ All thirteen tasks closed, all three gates passed, and:
 
 ---
 
-## 13. Document changelog
+## 13. The pre-send checklist
+
+SP-056 and §12 both require this and it did not exist until Stage C. Run it before any demo, or
+before any document goes outside the project.
+
+1. **`npm run check:place-links`.** Exit 0 or stop. A `✗` means the repo is making a claim it cannot
+   support; exit 2 means the check could not complete, which is *not* the same thing and is not a
+   reason to send.
+2. **Act on anything dead by hand.** The script never edits — a dead link becomes
+   `status: "dead"`, kept not deleted (SP-049).
+3. **Take your numbers from that run, not from memory.** The inventory it prints is exactly what §10
+   permits claiming. If a figure is not in that output, do not put it in the document.
+4. **Check no `[VERIFY]` source is load-bearing** for any claim in what you are sending. Those are
+   sourced but not to the standard SP-054 sets.
+5. **Re-read for tense.** The build moves faster than the prose; "does" and "will" drift.
+6. **Fill the team-size line** in `sims_proposal.md` — it currently carries a placeholder on purpose.
+
+## 14. Document changelog
 
 | Date | Change |
 |---|---|

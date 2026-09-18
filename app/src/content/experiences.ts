@@ -41,7 +41,9 @@ export type Experience = {
   kind: ExperienceKind;
   /** The places it visits, in route order → `places.ts` Place.id. One stop is normal. */
   placeIds: string[];
-  /** ISO date, stamped by `npm run check:place-links` (TOUR-11). */
+  /** ISO date: when a HUMAN last opened this URL and confirmed the offer is real.
+   *  `npm run check:place-links` reports on this date but deliberately never writes it — a server
+   *  answering is not the same fact as a person confirming (SP-076). */
   lastChecked: string;
   status: ExperienceStatus;
 };
