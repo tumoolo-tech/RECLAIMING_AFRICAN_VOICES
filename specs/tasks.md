@@ -277,3 +277,69 @@ paid for out of a 40 000-character month.
 - [ ] VOICE-07 **Listen and judge**, as with EL-05: no test in this repo can hear a performance. One
       passage per cast voice, and an honest answer to whether the emotion helps the text or acts on
       top of it
+
+## Phase 7 — Heritage tourism: a story becomes a place you can stand in (planned 2026-09-17, not started)
+
+Plan: [docs/15-heritage-tourism-plan.md](../docs/15-heritage-tourism-plan.md). Source documents:
+[sims_proposal.md](../docs/sims_proposal.md) (the pitch) and
+[sims_proposal_howitworks.md](../docs/sims_proposal_howitworks.md) (the walkthrough).
+
+The app already tells you Vilakazi Street housed two Nobel laureates. It cannot tell you that you can
+walk down it on Tuesday, or who will take you there. **That gap is this whole phase** — a linking
+layer over content that is already researched, sourced and on screen, not a new product.
+
+**Only four things genuinely don't exist:** nothing models a bookable operator or experience;
+`landmarks` is a bare `string[]` (Soweto already lists the pitch's own four landmarks that way); no
+relation joins a story to a place; and nothing would notice a dead booking link. Everything else —
+the places, the sourced stories, the consent flow, the rights gate in
+[ingest/rights.ts](../app/src/services/ingest/rights.ts) — is built.
+
+**Three decisions are Tumo's and block specific tasks:** where this sits in the nav (Architecture v2
+**D1** locks the six rooms, so a "Visit" room would break it — T7), pilot breadth (T8), and who owns
+partner relationships as links go stale (T9).
+
+### Stage A — the data layer (no UI; pure logic, `node --test`)
+
+- [ ] TOUR-01 `content/places.ts` — `Place` + `VisitInfo` types per [plan §5](../docs/15-heritage-tourism-plan.md).
+      A place is first-class and a booking is an attribute of it (T2): a tour operator folding must
+      not delete Vilakazi Street. `sources` is **required** — a place without one does not ship
+- [ ] TOUR-02 `content/place-links.ts` — the story↔place registry as **one** table keyed by
+      `ContentRef`, *not* a `places` field added to `articles`/`journey`/`heroes`/`presidents`/
+      `national-days` and the four literary modules (T3 — that would touch every content file)
+- [ ] TOUR-03 Resolvers + tests — `placesForContent`, `contentForPlace`, `citiesWithPlaces`. Pure
+      functions, no imports, so they run with no dependencies installed like the existing 179
+- [ ] TOUR-04 **Write down the editorial rule for `direct` vs `thematic`.** This answers the
+      walkthrough's own open question — how tightly must a story relate to a place? Mandela →
+      Vilakazi Street is `direct`; mathematics → an Egyptian site is `thematic` and renders as
+      "related", never "visit this". The rule is recorded with its reasoning, not inferred per entry
+- [ ] TOUR-05 **Migrate Soweto out of `landmarks: string[]`** — `"Vilakazi Street"`,
+      `"Hector Pieterson Memorial"`, `"Mandela House"`, `"Regina Mundi Church"` become the first four
+      `Place` records, and `time-soweto-photograph` → `hector-pieterson-memorial` the first `direct`
+      link. **An unsourced landmark stays a string** rather than being promoted into an entity with
+      invented provenance. Needs T8 for breadth
+
+### Stage B — the surfaces (needs T7 answered first)
+
+- [ ] TOUR-06 `VisitPanel` — shown **beside** the story, not in a separate tab; the walkthrough's
+      Step 3 is explicit that burying it defeats the mechanism
+- [ ] TOUR-07 Place detail — what it is, where it is, its sources, and the outbound link when there
+      is one
+- [ ] TOUR-08 Landmarks become tappable on the Provinces screen, reusing the existing
+      [provinces.ts](../app/src/content/provinces.ts) `City` shape
+- [ ] TOUR-09 Strings for every new surface in **all 11 languages** — strings are data, never
+      hardcoded (setswana-i18n rule); the coverage test must show no untranslated new key
+- [ ] TOUR-10 a11y labels on every new control. Note the 25 pre-v2 unlabelled controls already on the
+      board — do not add to them
+
+### Stage C — keeping it true
+
+- [ ] TOUR-11 `scripts/check-place-links.mjs` — HEAD each `visit.url`, stamp `lastChecked`, set
+      `status`. A `"dead"` link is **hidden, not shown hopefully**. Manual/reported, **not** a
+      required CI check: it hits third-party hosts and would make `main` flaky. Needs T9
+- [ ] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
+      A test fails if a referral URL ever grows one
+- [ ] TOUR-13 **State what the app cannot claim.** The pitch §3 calls the contribution "direct,
+      traceable"; under T5 the *traceable* half is false. Attribution needs per-person tracking,
+      which is what [POPIA compliance](../docs/05-popia-compliance.md) exists to prevent — and would
+      apply to minors in Kids mode. v1 can honestly report places and operators linked, not
+      conversions. **The pitch wording should soften before it is sent**
