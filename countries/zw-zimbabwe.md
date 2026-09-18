@@ -50,9 +50,18 @@ that English leads "on an honest technicality" because Shona and Ndebele are the
 and the app has neither. **Source [1] says the constitution itself elevates Shona and English above
 the other fourteen.** If that holds, **the honest technicality is even narrower than the comment
 claims** — English is not merely the biggest language the app happens to have, it is one of two the
-constitution treats as national. `[NEEDS SOURCE]` to verify against the Act itself; **if confirmed,
-the code comment should be updated.** **This is the one place where this research directly improves
-data already shipping.**
+constitution treats as national.
+
+❌ **Checked against the Act, 2026-09-19 (issue #25) — and it does not hold.** §6 was read in full [5].
+§6(1) lists the sixteen; §6(2) lets Parliament add more; **§6(3)(a) requires the State to "ensure that
+all officially recognised languages are treated equitably"**; §6(4) obliges the State to promote all
+of them. **Nothing in the section elevates Shona and English above the other fourteen.** Source [1]'s
+"only embraces two nationally" is an editorial gloss — perhaps describing practice — and is not a
+constitutional fact. **The app's comment was therefore left exactly as narrow as it was**, and its
+`sourceNote` now carries §6(3)(a) plus a note that this gloss was checked and rejected
+([`country-languages.ts`](../app/src/content/country-languages.ts)). A test pins that the phrase
+never enters the note. This is the one of the four #25 items that went the *opposite* way from the
+research — which is what verifying the instrument is for.
 
 ⚠️ **Chewa appears in Zimbabwe's sixteen** [1] — and in Zambia's regional languages
 ([`zm-zambia.md`](zm-zambia.md)) and Malawi's ([`mw-malawi.md`](mw-malawi.md)). **The Chewa / Nyanja /
@@ -182,9 +191,9 @@ Victoria Falls**, **shared with Zambia** ([`zm-zambia.md`](zm-zambia.md)). ⚠�
 
 ## Open questions
 
-- [ ] 🔴 **Verify "the constitution embraces only Shona and English nationally"** against the 2013 Act.
-      **If confirmed, update the comment in [`country-languages.ts`](../app/src/content/country-languages.ts)**
-      — the one place this research directly improves shipping data.
+- [x] ~~🔴 **Verify "the constitution embraces only Shona and English nationally"** against the 2013 Act.~~
+      **Checked 2026-09-19: not in the Act — §6(3)(a) says the opposite. Not applied; the code comment
+      stays as it was. See Languages.**
 - [ ] 🔴 **The colonial misattribution of Great Zimbabwe.** Possibly the best single illustration of
       this project's integrity rule anywhere in the folder.
 - [ ] 🔴 **The BSAC across Zimbabwe, Zambia and Botswana** — one company, three outcomes. Write once.
@@ -207,3 +216,7 @@ Victoria Falls**, **shared with Zambia** ([`zm-zambia.md`](zm-zambia.md)). ⚠�
    replacing "God Bless Africa"**.
 3. *(reserved — no World Heritage source was fetched for Zimbabwe)*
 4. *(reserved — no literature search was run for Zimbabwe; see Open questions)*
+5. Constitution of Zimbabwe Amendment (No. 20) Act, 2013, §6 —
+   constituteproject.org/constitution/Zimbabwe_2013 — the sixteen officially recognised languages
+   (§6(1)) and the equitable-treatment duty (§6(3)(a)). **Primary text, as consolidated by Constitute.
+   Read in full for issue #25; it contradicts source [1]'s "only two nationally" line.**
