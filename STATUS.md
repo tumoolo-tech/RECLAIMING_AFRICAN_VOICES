@@ -47,7 +47,7 @@ _Last updated: 2026-09-18 — by Tumo (via Claude). Previous update: 2026-09-17.
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A 4 of 5 + Stage B built, sweep widened to all 67 places (TOUR-01–09 done, 10 partial), 9 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: review [design/places-content.md](design/places-content.md) and answer SP-067 — nothing renders in the shipped app until the registries are seeded. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A done, Stage B built, 49 places live (TOUR-01–09 done, 10 partial), 10 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Stage C** (TOUR-11–13), plus Tumo's ruling on the three access-restricted places and the ~14 `[VERIFY]` sources. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -476,6 +476,22 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   museum in Kimberley and a dedicated display in the Mafikeng Museum, where he kept his siege diary —
   so the literary core reaches the tourism layer in three cities now, counting Vilakazi Street. Two
   superlatives are flagged as repeated everywhere and evidenced nowhere. **201 tests, typecheck clean.**
+
+  **TOUR-05b: 49 places seeded, across 18 of the 19 cities.** Tumo's instruction was to seed what has
+  sources, so that is what shipped — every entry names a real one, and the `landmarkLabel` cross-check
+  against `provinces.ts` passed on the first run, em-dash and all. **The chips are now live in the
+  app**, which is what was asked for three turns ago.
+
+  What was held back is the point. Three entries could not be grounded at all (`castle-of-good-hope`,
+  `bo-kaap`, `cookes-lake`). Nine have no story this repo can tell — Sun City, Gold Reef City, uShaka,
+  the Golden Mile, a stadium, a river — and a card that says nothing is worse than a plain chip. Six
+  are not places. Three are access-restricted and wait on Tumo. All of them stay bare strings, which
+  is exactly what SP-028 is for, and the app is honest in every one of those cases.
+
+  **One miss, found and fixed in the same pass:** Polokwane had been researched and then left out of
+  the sheet entirely, while I claimed every landmark had been looked at. It had not. Bakone Malapa and
+  the Irish House are now written up and seeded, which took the count from 47 to 49 and the coverage
+  from 17 cities to 18. Only Welkom now has no place, and that is deliberate.
 
   **Stage B, built against a throwaway fixture that was never committed.** Two new
   components (`VisitPanel`, `PlaceView`), one extracted helper (`services/openExternal` — leaving the

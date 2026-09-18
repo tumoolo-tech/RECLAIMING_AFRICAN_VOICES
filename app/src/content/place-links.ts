@@ -60,8 +60,33 @@ export type PlaceLink = {
   why: string;
 };
 
-/** Seeded in TOUR-05b — deliberately empty until the review sheet is signed off (SP-053). */
-export const PLACE_LINKS: PlaceLink[] = [];
+/** TOUR-05b. Seeded 2026-09-18.
+ *
+ *  Only `article` links are here, because `article` is the only content type a surface currently
+ *  reads — `VisitPanel` is wired into `ArticleReader` and nowhere else yet. Links for `president`,
+ *  `hero`, `day` and the literary `module`s would be dead data today, and dead data rots.
+ *
+ *  The city screen does NOT use this registry: it resolves places through `landmarkLabel` against
+ *  `provinces.ts`, so a `city:` link would be redundant.
+ *
+ *  One `thematic` candidate is deliberately NOT seeded and awaits Tumo's ruling — `module:vilakazi`
+ *  → `vilakazi-street`, on the grounds that the street is named after the poet whose Inkondlo
+ *  kaZulu is one of this app's four literary pillars. Arguable both ways, and §9 says an arguable
+ *  link is thematic, not direct (SP-030, SP-055). */
+export const PLACE_LINKS: PlaceLink[] = [
+  {
+    ref: { kind: "article", id: "time-soweto-photograph" },
+    placeId: "hector-pieterson-memorial",
+    relation: "direct",
+    why: "The article is about Sam Nzima's photograph of Hector Pieterson's death on 16 June 1976; this is the place that memorialises him and that day.",
+  },
+  {
+    ref: { kind: "article", id: "herstory-soweto-erasure" },
+    placeId: "hector-pieterson-memorial",
+    relation: "direct",
+    why: "The article is about the same uprising and the same photograph, arguing Antoinette Sithole is remembered as Hector's sister rather than as a protester in her own right.",
+  },
+];
 
 // ── Resolvers ────────────────────────────────────────────────────────────────────────────────────
 //
