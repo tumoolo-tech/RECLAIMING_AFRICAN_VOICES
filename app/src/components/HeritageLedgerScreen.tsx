@@ -3,11 +3,16 @@ import { View, Text, Pressable, StyleSheet, Linking } from "react-native";
 import { Lang } from "../content/types";
 import { t } from "../i18n";
 import { HERITAGE_ANCHORS, explorerUrl, explorerAddressUrl, shortHash } from "../content/heritage";
+import { moduleById } from "../content";
 import { Screen, ScreenHeader, Card, Body, Title, Meta, Muted, Icon } from "../ui";
 import { colors, spacing, radius, type, fonts } from "../theme/tokens";
 
-// The Heritage Ledger — Maloba's on-chain provenance. Each foundational work is content-fingerprinted
-// (SHA-256 + IPFS CID) and anchored on a public Solana ledger: tamper-evident, permanent, verifiable
+// The Heritage Ledger — the app's on-chain provenance. What is fingerprinted (SHA-256 + IPFS CID) and
+// anchored on Solana is each module AS THE APP PUBLISHES IT — chain/anchor.mjs hashes
+// JSON.stringify(module) — not the original work. So the guarantee is "what the app says about this
+// work has not been quietly changed", which is true and useful; "the text is tamper-evident" was
+// neither (issue #34). Each card also shows the work's rights status from module.rights, because one
+// of the four is in copyright and the screen used to imply all were public.
 // by anyone. POPIA-safe: only public works + hashes go on-chain — never a person's recording.
 // See docs/11-blockchain-heritage-plan.md. Built on the UI kit.
 
@@ -16,31 +21,38 @@ const UI = {
     en: "Heritage Ledger", tn: "Rekoto ya Boswa", af: "Erfenisregister", zu: "Irejista Yamagugu", xh: "Irejista Yelifa",
     nso: "Rejista ya Bohwa", st: "Rejista ya Lefa", ss: "Irejista Yelifa", ts: "Rejista ya Ndzhaka", nr: "Irejista Yelifa", ve: "Rejista ya Ifa",
   },
+  // Issue #34. What the ledger fingerprints is chain/anchor.mjs's `JSON.stringify(mod)` — this app's
+  // own adaptation module, NOT the original text. And one of the four works is in copyright. Both
+  // facts are said here, in the reader's language, instead of "each text" and "public works".
   intro: {
-    en: "Every foundational work here is fingerprinted (SHA-256 + IPFS content ID), anchored on a public blockchain, and minted as a heritage certificate token held in a wallet. That makes each text tamper-evident, permanently verifiable, and owned by the community — history no one can quietly alter or erase.",
-    tn: "Tiro nngwe le nngwe ya motheo mo e na le letshwao (SHA-256 + IPFS), e tshwaretswe mo blockchain ya setšhaba, mme e dirilwe setifikeiti mo sekhwameng — hisitori e e sa kake ya fetolwa kgotsa ya phimolwa ke ope.",
-    af: "Elke grondliggende werk hier kry 'n vingerafdruk (SHA-256 + IPFS inhoud-ID), word op 'n openbare blockchain veranker, en as 'n erfenissertifikaat-token in 'n beursie gemunt. Dit maak elke teks knoeibestand, permanent verifieerbaar, en deur die gemeenskap besit — geskiedenis wat niemand stilweg kan verander of uitvee nie.",
-    zu: "Wonke umsebenzi oyisisekelo lapha unikwa isigxivizo (SHA-256 + IPFS content ID), umiswe kublockchain yomphakathi, futhi wenziwe ithokheni yesitifiketi samagugu esigcinwe kuwolethi. Lokhu kwenza umbhalo ngamunye ubonakalise ukuphazanyiswa, uqinisekiswe unomphela, futhi ube ngowomphakathi — umlando okungekho muntu ongawuguqula noma awususe ngasese.",
-    xh: "Wonke umsebenzi osisiseko apha unikwa uphawu (SHA-256 + IPFS content ID), umiswe kwiblockchain yoluntu, kwaye wenziwe ithokheni yesatifikethi selifa esigcinwe kwisipaji. Oku kwenza umbhalo ngamnye ubonakalalise ukuphazamiseka, uqinisekiswe ngokusisigxina, kwaye ube ngoluntu — imbali ekungekho mntu unokuyitshintsha okanye ayicime ngasese.",
-    nso: "Mošomo o mongwe le o mongwe wa motheo mo o newa leswao (SHA-256 + IPFS content ID), o tiišeditšwe go blockchain ya setšhaba, gomme o dirilwe setifikeiti sa bohwa se se bolokilwego ka sekhwameng. Se se dira gore sengwalwa se sengwe se bontšhe go šielwa, se netefatšwe ka mo go sa felego, gomme se be sa setšhaba — histori yeo motho a ka se e fetošego goba a e phumole ka sephiri.",
-    st: "Mosebetsi o mong le o mong wa motheo mona o fuoa letshwao (SHA-256 + IPFS content ID), o tiisitsoe blockchaining ya setjhaba, mme o entsoe setifikeiti sa lefa se bolokiloeng ka sepatjheng. Sena se etsa hore mongolo o mong o bontshe ho fetoloa, o netefatsoe ka ho sa feleng, mme o be oa setjhaba — histori eo ho seng motho ea ka e fetolang kapa a e hlakolang ka sekhutu.",
-    ss: "Wonkhe umsebenti losisekelo lapha uniketwa luphawu (SHA-256 + IPFS content ID), umiswe kublockchain yemmango, futsi wentiwe ithokheni yesitifiketi semagugu lesigcinwe kuwolethi. Loku kwenta umbhalo ngamunye ukhombise kuphazanyiswa, ucinisekiswe unaphakadze, futsi ube ngewemmango — umlandvo lokungekho muntfu longawuguciula nome awususe ngasese.",
-    ts: "Ntirho wun'wana ni wun'wana wa masungulo laha wu nyikiwa xikombiso (SHA-256 + IPFS content ID), wu simekiwa eka blockchain ya mani na mani, naswona wu endliwa thokheni ya xitifikheti xa ndzhaka lexi hlayisiweke eka xikhwama. Leswi swi endla leswaku matsalwa yin'wana yi kombisa ku cinca, yi tiyisisiwa hilaha ku nga heriki, naswona yi va ya vaaki — matimu lawa ku nga riki na munhu la nga ma cincaka kumbe a ma sula hi xihundla.",
-    nr: "Woke umsebenzi osisekelo lapha unikelwa uphawu (SHA-256 + IPFS content ID), umiswe kublockchain yomphakathi, begodu wenziwe ithokheni yesitifiketi samagugu esigcinwe kuwolethi. Lokhu kwenza umtlolo munye ukhombise ukuphazanyiswa, uqinisekiswe unomphela, begodu ube ngowomphakathi — umlando okungekho muntu ongawutjhugulula namkha awususe ngasese.",
-    ve: "Mushumo muṅwe na muṅwe wa mutheo hafha u ṋewa tshiga (SHA-256 + IPFS content ID), wo khwaṱhisedzwa kha blockchain ya tshitshavha, nahone wo itwa thokheni ya tshithifiketsi tsha ifa tsho vhulungwaho kha tshikhwama. Zwenezwi zwi ita uri maṅwalwa maṅwe a sumbedze u shandulwa, a khwaṱhisedzwe lini na lini, nahone a vhe a tshitshavha — ḓivhazwakale ine a hu na muthu a nga i shandulaho kana a i sisaho nga tshiphiri.",
+    en: "What is fingerprinted here is this app's own adaptation of each work — the scenes as published — not the original text. Each adaptation carries a SHA-256 hash and an IPFS content ID anchored on a public blockchain, so anyone can check that what the app says about a work has not been quietly changed since. Three of the four works are public domain; one, Indaba, My Children, is still in copyright and is summarised here in our own words.",
+    tn: "Se se tshwailweng fano ke phetolelo ya app eno ya tiro nngwe le nngwe — ditiragalo jaaka di phasaladitswe — e seng mokwalo wa ntlha. Phetolelo nngwe le nngwe e na le hash ya SHA-256 le IPFS content ID e e tshwaretsweng mo blockchain ya setšhaba, gore mongwe le mongwe a ka netefatsa gore se app e se buang ka tiro ga se a fetolwa ka sephiri. Ditiro di le tharo tsa tse nne ke tsa setšhaba; nngwe, Indaba, My Children, e sa ntse e na le tshwanelo ya mokwadi mme e sobokantswe fano ka mafoko a rona.",
+    af: "Wat hier 'n vingerafdruk kry, is hierdie app se eie verwerking van elke werk — die tonele soos gepubliseer — nie die oorspronklike teks nie. Elke verwerking dra 'n SHA-256-hash en 'n IPFS-inhoud-ID wat op 'n openbare blockchain veranker is, sodat enigiemand kan nagaan dat wat die app oor 'n werk sê nie stilweg verander is nie. Drie van die vier werke is in die openbare domein; een, Indaba, My Children, is steeds onder kopiereg en word hier in ons eie woorde opgesom.",
+    zu: "Okunikwa isigxivizo lapha ukuhlelwa kwale-app kwawo wonke umsebenzi — izigcawu njengoba zishicilelwe — hhayi umbhalo wokuqala. Ukuhlelwa ngakunye kuphethe i-hash ye-SHA-256 ne-IPFS content ID emiswe kublockchain yomphakathi, ukuze noma ubani ahlole ukuthi lokho i-app ekushoyo ngomsebenzi akushintshiwe ngasese. Imisebenzi emithathu kwemine ingeyomphakathi; owodwa, Indaba, My Children, usenelungelo lombhali futhi ufingqwe lapha ngamazwi ethu.",
+    xh: "Oko kunikwa uphawu apha kukuhlengahlengiswa kwale app komsebenzi ngamnye — iimeko njengoko zipapashiwe — hayi umbhalo wokuqala. Uhlengahlengiso ngalunye luphethe i-hash ye-SHA-256 ne-IPFS content ID emiswe kwiblockchain yoluntu, ukuze nabani na akhangele ukuba oko i-app ikuthethayo ngomsebenzi akutshintshwanga ngasese. Imisebenzi emithathu kwemine yeyoluntu; omnye, Indaba, My Children, usenelungelo lokushicilela kwaye ushwankathelwe apha ngamazwi ethu.",
+    nso: "Seo se swaiwago mo ke phetolelo ya app ye ya mošomo wo mongwe le wo mongwe — ditiragalo bjalo ka ge di phatlaladitšwe — e sego sengwalwa sa mathomo. Phetolelo ye nngwe le ye nngwe e na le hash ya SHA-256 le IPFS content ID yeo e tiišeditšwego go blockchain ya setšhaba, gore mang le mang a hlahlobe gore seo app e se bolelago ka mošomo ga se sa fetošwa ka sephiri. Mešomo ye meraro ya ye mene ke ya setšhaba; o tee, Indaba, My Children, o sa na le tokelo ya mongwadi gomme o akaretšwa mo ka mantšu a rena.",
+    st: "Se tshwauoang mona ke phetolelo ya app ena ya mosebetsi o mong le o mong — liketsahalo joalo ka ha li phatlalalitsoe — eseng mongolo oa pele. Phetolelo e 'ngoe le e 'ngoe e na le hash ea SHA-256 le IPFS content ID e tiisitsoeng blockchaining ea setjhaba, e le hore mang kapa mang a ka netefatsa hore seo app e se buang ka mosebetsi ha sea fetoloa ka sekhutu. Mesebetsi e meraro ho e mene ke ea setjhaba; o mong, Indaba, My Children, o sa na le tokelo ea mongoli 'me o akaretsoa mona ka mantsoe a rona.",
+    ss: "Lokuniketwa luphawu lapha kuhlelwa kwale-app kwawo wonkhe umsebenti — tigcawu njengobe tishicilelwe — hhayi umbhalo wekucala. Kuhlelwa ngakunye kuphetse i-hash ye-SHA-256 ne-IPFS content ID lemiswe kublockchain yemmango, kute nobe ngubani ahlole kutsi loko i-app lekushoko ngemsebenti akushintjwanga ngasese. Imisebenti lemitsatfu kulemine ingeyemmango; munye, Indaba, My Children, usenelilungelo lembhali futsi ufinyetwe lapha ngemavi etfu.",
+    ts: "Leswi nyikiwaka xikombiso laha i ku hundzuluxa ka app leyi ka ntirho wun'wana ni wun'wana — swiyimo tanihi leswi swi kandziyisiweke — ku nga ri matsalwa yo sungula. Ku hundzuluxa kun'wana ni kun'wana ku ni hash ya SHA-256 ni IPFS content ID leyi simekiweke eka blockchain ya mani na mani, leswaku un'wana ni un'wana a kambela leswaku leswi app yi swi vulaka hi ntirho a swi cinciwanga hi xihundla. Mintirho yinharhu ya mune i ya mani na mani; wun'we, Indaba, My Children, wa ha ri ni mfanelo ya mutsari naswona wu katsakanyiwile laha hi marito ya hina.",
+    nr: "Okunikelwa uphawu lapha kuhlelwa kwale-app kwawo woke umsebenzi — iingcenye njengombana zigadangisiwe — ingasi umtlolo wokuthoma. Ukuhlelwa ngakunye kuphethe i-hash ye-SHA-256 ne-IPFS content ID emiswe kublockchain yomphakathi, ukuze nanyana ngubani ahlole bona lokho i-app ekutjhoko ngomsebenzi akukatjhugululwa ngasese. Imisebenzi emithathu kwemine ingeyomphakathi; munye, Indaba, My Children, usesenelungelo lomtloli begodu urhunyeziwe lapha ngamezwi wethu.",
+    ve: "Zwine zwa ṋewa tshiga hafha ndi u shandukisa ha app iyi ha mushumo muṅwe na muṅwe — zwiimo sa zwe zwa andadzwa — hu si maṅwalwa a u thoma. U shandukisa huṅwe na huṅwe hu na hash ya SHA-256 na IPFS content ID yo khwaṱhisedzwaho kha blockchain ya tshitshavha, uri muṅwe na muṅwe a ṱole uri zwine app ya zwi amba nga mushumo a zwo ngo shandulwa nga tshiphiri. Mishumo miraru ya miṋa ndi ya tshitshavha; muthihi, Indaba, My Children, u kha ḓi vha na pfanelo ya muṅwali nahone wo pfufhifhadzwa hafha nga maipfi ashu.",
   },
   popia: {
-    en: "Privacy first (POPIA): only public literary works and their hashes are placed on-chain. Community members' personal voice recordings are NEVER put on the blockchain — they stay in private, erasable storage you control.",
-    tn: "Sephiri pele (POPIA): ke ditiro tsa setšhaba fela tse di tsenngwang mo blockchain. Dikgatiso tsa mantswe a batho ga di ke di tsenngwe mo blockchain.",
-    af: "Privaatheid eerste (POPIA): net openbare letterkundige werke en hul hashes word op die ketting geplaas. Gemeenskapslede se persoonlike stemopnames word NOOIT op die blockchain geplaas nie — hulle bly in private, uitveebare berging wat jy beheer.",
-    zu: "Ubumfihlo kuqala (POPIA): imisebenzi yezincwadi yomphakathi kuphela namahashi ayo abekwa kublockchain. Ukuqoshwa kwamazwi omuntu siqu kwamalungu omphakathi AKUFAKWA NEZE kublockchain — kuhlala kusitoreji esiyimfihlo, esisusekayo osilawulayo.",
-    xh: "Ubumfihlo kuqala (POPIA): imisebenzi yoncwadi yoluntu kuphela namahashi ayo abekwa kwityathanga. Ukurekhodwa kwamazwi abucala amalungu oluntu AKUFAKWA konke kwiblockchain — kuhlala kwindawo yokugcina eyimfihlo, enokucinywa oyilawulayo.",
-    nso: "Sephiri pele (POPIA): ke mešomo ya dingwalo ya setšhaba fela le di-hash tša yona tše di bewago go blockchain. Direkoto tša mantšu a motho ka noši a maloko a setšhaba GA di TSENYWE le gatee go blockchain — di dula ka polokelong ya sephiri, ye e ka phumolwago yeo o e laolago.",
-    st: "Lekunutu pele (POPIA): ke mesebetsi ya dingoliloeng ya setjhaba feela le di-hash tsa yona tse behuoang blockchaining. Direkoto tsa mantswe a botho a litho tsa setjhaba HA li KENYUOE le kang blockchaining — li lula polokelong ya lekunutu, e ka hlakoloang eo o e laolang.",
-    ss: "Kuyimfihlo kucala (POPIA): imisebenti yetincwadzi yemmango kuphela nemahashi ayo lebekwa kublockchain. Kubhalwa kwemavi emuntfu siqu emalunga emmango AKUFAKWA nakanye kublockchain — kuhlala kusitoreji lesiyimfihlo, lesisusekako losilawulako.",
-    ts: "Vuxihundla xo sungula (POPIA): i mintirho ya matsalwa ya mani na mani ntsena ni tihashi ta yona leti vekiwaka eka blockchain. Ku rhekhodiwa ka marito ya swirho swa vaaki hi voxe A SWI VEKIWI na kan'we eka blockchain — swi tshama eka vuhlayiselo bya xihundla, lebyi nga suriwaka lebyi u byi lawulaka.",
-    nr: "Ubumfihlo kuthoma (POPIA): imisebenzi yeencwadi yomphakathi kwaphela namahashi wayo abekwa kublockchain. Ukubhalwa kwamezwi womuntu siqu wamalunga womphakathi AKUFAKWA nakanye kublockchain — kuhlala kusitoreji esiyimfihlo, esisusekako osilawulako.",
-    ve: "Vhudzumbe u thoma (POPIA): ndi mishumo ya maṅwalwa a tshitshavha fhedzi na dzihash dzayo dzine dza vhewa kha blockchain. U rekhodwa ha maipfi a muthu nga eṱhe a miraḓo ya tshitshavha A ZWI VHEWI na luthihi kha blockchain — zwi dzula kha vhulungelo ha tshiphiri, hune ha nga siswa hune na ho langa.",
+    en: "Privacy first (POPIA): only the app's adaptations and their hashes go on-chain — public bibliographic data, never a person's data. Community members' voice recordings are NEVER put on the blockchain — they stay in private, erasable storage you control.",
+    tn: "Sephiri pele (POPIA): ke diphetolelo tsa app le di-hash tsa tsone fela tse di tsenngwang mo blockchain — dintlha tsa setšhaba tsa dibuka, e seng dintlha tsa motho. Dikgatiso tsa mantswe a maloko a setšhaba GA DI KE di tsenngwa mo blockchain — di sala mo polokelong ya sephiri e e ka phimolwang e o e laolang.",
+    af: "Privaatheid eerste (POPIA): net die app se verwerkings en hul hashes gaan op die ketting — openbare bibliografiese data, nooit 'n persoon se data nie. Gemeenskapslede se stemopnames word NOOIT op die blockchain geplaas nie — hulle bly in private, uitveebare berging wat jy beheer.",
+    zu: "Ubumfihlo kuqala (POPIA): ukuhlelwa kwe-app kuphela namahashi akho okubekwa kublockchain — imininingwane yomphakathi yezincwadi, hhayi neze imininingwane yomuntu. Ukuqoshwa kwamazwi amalungu omphakathi AKUFAKWA NEZE kublockchain — kuhlala kusitoreji esiyimfihlo, esisusekayo osilawulayo.",
+    xh: "Ubumfihlo kuqala (POPIA): uhlengahlengiso lwe-app kuphela namahashi alo abekwa kwityathanga — iinkcukacha zoluntu zeencwadi, hayi konke iinkcukacha zomntu. Ukurekhodwa kwamazwi amalungu oluntu AKUFAKWA konke kwiblockchain — kuhlala kwindawo yokugcina eyimfihlo, enokucinywa oyilawulayo.",
+    nso: "Sephiri pele (POPIA): ke diphetolelo tša app fela le di-hash tša tšona tše di bewago go blockchain — tshedimošo ya setšhaba ya dipuku, e sego tshedimošo ya motho le gatee. Direkoto tša mantšu a maloko a setšhaba GA di TSENYWE le gatee go blockchain — di dula ka polokelong ya sephiri, ye e ka phumolwago yeo o e laolago.",
+    st: "Lekunutu pele (POPIA): ke liphetolelo tsa app feela le li-hash tsa tsona tse behuoang blockchaining — lintlha tsa setjhaba tsa libuka, eseng lintlha tsa motho le ka mohla. Direkoto tsa mantswe a litho tsa setjhaba HA li KENYUOE le kang blockchaining — li lula polokelong ya lekunutu, e ka hlakoloang eo o e laolang.",
+    ss: "Kuyimfihlo kucala (POPIA): kuhlelwa kwe-app kuphela nemahashi ako lokubekwa kublockchain — imininingwane yemmango yetincwadzi, hhayi nakanye imininingwane yemuntfu. Kubhalwa kwemavi emalunga emmango AKUFAKWA nakanye kublockchain — kuhlala kusitoreji lesiyimfihlo, lesisusekako losilawulako.",
+    ts: "Vuxihundla xo sungula (POPIA): i ku hundzuluxa ka app ntsena ni tihashi ta kona leti vekiwaka eka blockchain — vuxokoxoko bya mani na mani bya tibuku, ku nga ri vuxokoxoko bya munhu na kan'we. Ku rhekhodiwa ka marito ya swirho swa vaaki A SWI VEKIWI na kan'we eka blockchain — swi tshama eka vuhlayiselo bya xihundla, lebyi nga suriwaka lebyi u byi lawulaka.",
+    nr: "Ubumfihlo kuthoma (POPIA): kuhlelwa kwe-app kwaphela namahashi wakho okubekwa kublockchain — imininingwana yomphakathi yeencwadi, ingasi nakanye imininingwana yomuntu. Ukubhalwa kwamezwi wamalunga womphakathi AKUFAKWA nakanye kublockchain — kuhlala kusitoreji esiyimfihlo, esisusekako osilawulako.",
+    ve: "Vhudzumbe u thoma (POPIA): ndi u shandukisa ha app fhedzi na dzihash dzaho dzine dza vhewa kha blockchain — mafhungo a tshitshavha a bugu, hu si mafhungo a muthu na luthihi. U rekhodwa ha maipfi a miraḓo ya tshitshavha A ZWI VHEWI na luthihi kha blockchain — zwi dzula kha vhulungelo ha tshiphiri, hune ha nga siswa hune na ho langa.",
+  },
+  rights: {
+    en: "Rights", tn: "Ditshwanelo", af: "Regte", zu: "Amalungelo", xh: "Amalungelo",
+    nso: "Ditokelo", st: "Ditokelo", ss: "Emalungelo", ts: "Timfanelo", nr: "Amalungelo", ve: "Pfanelo",
   },
   verify: {
     en: "Verify on Solana", tn: "Netefatsa mo Solana", af: "Verifieer op Solana", zu: "Qinisekisa ku-Solana", xh: "Qinisekisa kwiSolana",
@@ -83,6 +95,14 @@ export function HeritageLedgerScreen({ lang, onBack }: { lang: Lang; onBack: () 
             <Meta style={styles.meta}>
               {a.author} · {a.year}
             </Meta>
+
+            {/* #34 — the work's rights, from the module, so "public domain" is a per-work fact not a heading. */}
+            {moduleById(a.id)?.rights ? (
+              <>
+                <Text style={styles.fieldLabel}>{t(UI.rights, lang)}</Text>
+                <Muted style={styles.rightsText}>{moduleById(a.id)!.rights.basis}</Muted>
+              </>
+            ) : null}
 
             <Text style={styles.fieldLabel}>{t(UI.cidLabel, lang)}</Text>
             <Text style={styles.mono}>{shortHash(a.cid, 10, 8)}</Text>
@@ -130,6 +150,7 @@ const styles = StyleSheet.create({
   workTitle: { fontFamily: fonts.serifSemi, fontSize: type.title + 2 },
   card: { marginBottom: spacing.md },
   meta: { marginTop: 2 },
+  rightsText: { marginTop: 2, lineHeight: 18 },
   fieldLabel: {
     color: "rgba(255,255,255,0.5)",
     fontFamily: fonts.bodyBold,

@@ -45,6 +45,10 @@ const UI = {
     nr: "Iinthombe zesigcawu zenziwa yi-AI njengokuhlathulula kobuciko — akusizo iinthombe zomlando namkha ukuvezwa kwabantu bangempela.",
     ve: "Zwifanyiso zwa tshiimo zwi itwa nga AI sa ṱhalutshedzo dza vhutsila — a si zwinepe zwa ḓivhazwakale kana u sumbedza vhathu vha ngoho.",
   },
+  rights: {
+    en: "Rights", tn: "Ditshwanelo", af: "Regte", zu: "Amalungelo", xh: "Amalungelo",
+    nso: "Ditokelo", st: "Ditokelo", ss: "Emalungelo", ts: "Timfanelo", nr: "Amalungelo", ve: "Pfanelo",
+  },
   references: {
     en: "References", tn: "Metswedi", af: "Verwysings", zu: "Izinkomba", xh: "Iimbekiselo",
     nso: "Ditšhupetšo", st: "Ditshupiso", ss: "Tinkhomba", ts: "Swikombiso", nr: "Iinkomba", ve: "Zwiredzwa",
@@ -66,6 +70,8 @@ export function AboutSourcesScreen({ lang, onBack }: { lang: Lang; onBack: () =>
             {m.year ? ` · ${m.year}` : ""}
           </Meta>
           <Muted style={styles.source}>{m.source}</Muted>
+          {/* #34 — rights per work, beside the credit, so the About screen never implies the canon is all public domain. */}
+          <Muted style={styles.rights}>{t(UI.rights, lang)}: {m.rights.basis}</Muted>
           <Meta style={styles.refLabel}>{t(UI.references, lang)}</Meta>
           {m.references.map((r, i) => (
             <Muted key={i} style={styles.refItem}>
@@ -94,6 +100,7 @@ const styles = StyleSheet.create({
   card: { marginBottom: spacing.md },
   meta: { marginTop: 2 },
   source: { fontStyle: "italic", marginTop: spacing.xs },
+  rights: { marginTop: spacing.xs, lineHeight: 18 },
   refLabel: { marginTop: spacing.md },
   refItem: { marginTop: 4 },
   disclaimer: { marginTop: spacing.sm },
