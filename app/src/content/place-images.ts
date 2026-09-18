@@ -26,6 +26,19 @@ export const PLACE_IMAGES: Record<string, ImageSourcePropType> = {
   "hector-pieterson-memorial.webp": require("../../assets/places/photos/hector-pieterson-memorial.webp"),
   "mandela-house.webp": require("../../assets/places/photos/mandela-house.webp"),
   "regina-mundi-church.webp": require("../../assets/places/photos/regina-mundi-church.webp"),
+  "robben-island.webp": require("../../assets/places/photos/robben-island.webp"),
+  "district-six.webp": require("../../assets/places/photos/district-six.webp"),
+  "table-mountain.webp": require("../../assets/places/photos/table-mountain.webp"),
+  "dorp-street.webp": require("../../assets/places/photos/dorp-street.webp"),
+  "jonkershoek.webp": require("../../assets/places/photos/jonkershoek.webp"),
+  "constitution-hill.webp": require("../../assets/places/photos/constitution-hill.webp"),
+  "apartheid-museum.webp": require("../../assets/places/photos/apartheid-museum.webp"),
+  "the-big-hole.webp": require("../../assets/places/photos/the-big-hole.webp"),
+  "mcgregor-museum.webp": require("../../assets/places/photos/mcgregor-museum.webp"),
+  "donkin-reserve.webp": require("../../assets/places/photos/donkin-reserve.webp"),
+  "route-67.webp": require("../../assets/places/photos/route-67.webp"),
+  "st-georges-park.webp": require("../../assets/places/photos/st-georges-park.webp"),
+  "cathedral-of-st-michael-and-st-george.webp": require("../../assets/places/photos/cathedral-of-st-michael-and-st-george.webp"),
 };
 
 export const placeImage = (file: string | undefined): ImageSourcePropType | undefined =>
