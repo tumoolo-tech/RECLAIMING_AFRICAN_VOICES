@@ -26,7 +26,13 @@ export const peoplingOfSa: Module = {
     "Wikipedia — 'Nguni peoples', 'Xhosa people', 'Zulu people', 'Southern Ndebele people'",
     "Wikipedia — 'Sotho people', 'Pedi people'",
     "Genetic & archaeological syntheses of South African Bantu-speaker history (PMC)",
-  ],
+  ],  // Not built on one work: authored by the project from the references above, in its own words, with
+  // no source text reproduced. The project's own content licence is issue #50.
+  rights: {
+    status: "original",
+    basis: "Authored by the project from the cited references, in its own words; no source text is reproduced.",
+  },
+
   scenes: [
     {
       id: "first-people",
