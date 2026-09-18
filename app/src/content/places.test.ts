@@ -104,15 +104,44 @@ test("an experience's cities are derived from its places, never stored", () => {
 
 // ── Integrity: over the real registries ──────────────────────────────────────────────────────────
 
-test("every place is grounded: a source, a coordinate, and a real reason to exist", () => {
+test("every place is grounded: a source and a real reason to exist", () => {
   for (const p of places) {
     assert.ok(p.sources.trim().length > 10, `${p.id} needs a real source, not a stub`);
     assert.ok(p.what.trim().length > 20, `${p.id} needs a grounded line on why it matters`);
-    assert.ok(Number.isFinite(p.coords.lat) && Number.isFinite(p.coords.lng), `${p.id} needs a coordinate`);
+  }
+});
+
+test("a coordinate is optional — but a given one must be inside South Africa", () => {
+  // SP-073 made coords optional because a third of these places have no single point by nature.
+  // That is NOT a licence for a sloppy one: where a coordinate is given it is a factual claim under
+  // SP-052, and a wrong one sends a real person to the wrong place.
+  for (const p of places) {
+    if (!p.coords) continue;
+    assert.ok(Number.isFinite(p.coords.lat) && Number.isFinite(p.coords.lng), `${p.id}: malformed coordinate`);
     assert.ok(
       p.coords.lat >= -35 && p.coords.lat <= -22 && p.coords.lng >= 16 && p.coords.lng <= 33,
-      `${p.id} has a coordinate outside South Africa — a wrong one sends a real person to the wrong place`,
+      `${p.id} has a coordinate outside South Africa`,
     );
+  }
+});
+
+test("no experience may lead to an access-restricted place", () => {
+  // SP-072 / SP-074. Two kinds, one rule. Thathe Vondo forest is a holy forest where Venda kings are
+  // buried and ordinary Venda people may not walk — a taboo that extends to visitors; Lake Fundudzi
+  // is the same. Bumbane Great Place is the home of the reigning aBaThembu king. A booking path to
+  // either kind would be a harm that ACTS on the world rather than merely asserting something false.
+  //
+  // Checked on `access` being set at all, not on a specific value, so a new category added later is
+  // protected by default rather than by remembering to update this test. Enforced in the DATA, so no
+  // component can route around it.
+  const restricted = new Set(places.filter((p) => p.access !== undefined).map((p) => p.id));
+  for (const e of experiences) {
+    for (const id of e.placeIds) {
+      assert.ok(
+        !restricted.has(id),
+        `experience "${e.id}" lists "${id}", which is access-restricted by its custodians — no booking path may reach it`,
+      );
+    }
   }
 });
 

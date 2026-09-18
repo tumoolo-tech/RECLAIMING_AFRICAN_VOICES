@@ -5,19 +5,15 @@ import { colors, spacing, radius, fonts } from "../theme/tokens";
 import { t } from "../i18n";
 import type { LangCode } from "../i18n";
 import { PressScale } from "./Motion";
+import { openExternal } from "../services/openExternal";
+import { VisitPanel, PlaceBookings } from "./VisitPanel";
+import { PlaceView } from "./PlaceView";
+import type { Place } from "../content/places";
 import { articlesForDay, orderedTimeline, type Article } from "../content/articles";
 
-// Open the original article WITHOUT leaving our app. On web the source page can't be shown inside our
-// own frame (publishers send X-Frame-Options/CSP that block cross-origin embedding), so we open it in
-// a NEW browser tab — the reader reads it there and closes the tab, our site still sitting behind it.
-// On native, Linking hands off to the system browser (or an in-app browser tab).
-function openOriginal(url: string) {
-  if (Platform.OS === "web" && typeof window !== "undefined") {
-    window.open(url, "_blank", "noopener,noreferrer");
-    return;
-  }
-  Linking.openURL(url).catch(() => {});
-}
+// Leaving the app now has ONE owner — services/openExternal (SP-039). It was duplicated here and in
+// the visit panel, and `noopener,noreferrer` is security-relevant enough that it should not be copied.
+const openOriginal = openExternal;
 
 // The live publisher page, framed inside our window (web only). Renders a real <iframe> — works only
 // when the publisher doesn't send X-Frame-Options / CSP frame-ancestors that forbid it (we check per
@@ -147,6 +143,8 @@ export function ArticlesPanel({ dayId, lang, hideHeader }: { dayId: string; lang
 export function ArticleReader({ article, lang, onClose }: { article: Article | null; lang: LangCode; onClose: () => void }) {
   const { width } = useWindowDimensions();
   const wide = width >= 760;
+  // Tapping a place in the panel opens the same overlay the city screen uses (SP-035).
+  const [openPlace, setOpenPlace] = useState<Place | null>(null);
   const a = article;
   const canEmbed = !!a?.embedUrl && Platform.OS === "web";
 
@@ -248,6 +246,11 @@ export function ArticleReader({ article, lang, onClose }: { article: Article | n
                 </View>
               ) : null}
 
+              {/* Beside the story, not in a separate tab — the walkthrough's Step 3 is explicit that
+                  burying this defeats the mechanism (SP-038). It renders nothing when the article has
+                  no linked place, so articles without one are untouched. */}
+              <VisitPanel refTo={{ kind: "article", id: a.id }} lang={lang} onOpenPlace={setOpenPlace} />
+
               <View style={s.block}>
                 <Text style={s.blockLabel}>{t(UI.aboutSource, lang)}</Text>
                 <Text style={s.rights}>{a.rights}</Text>
@@ -264,6 +267,12 @@ export function ArticleReader({ article, lang, onClose }: { article: Article | n
           ) : null}
         </View>
       </View>
+      <PlaceView
+        place={openPlace}
+        lang={lang}
+        onClose={() => setOpenPlace(null)}
+        footer={openPlace ? <PlaceBookings placeId={openPlace.id} lang={lang} /> : null}
+      />
     </Modal>
   );
 }

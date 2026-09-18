@@ -340,7 +340,11 @@ text-read tests, and **no outbound booking link in Kids mode** — are `SP-014`/
       Vilakazi Street is `direct`; mathematics → an Egyptian site is `thematic` and renders as
       "related", never "visit this". The rule is recorded with its reasoning, not inferred per entry
 - [~] TOUR-05a **The review sheet** — [design/places-content.md](../design/places-content.md) is
-      **drafted and awaiting Tumo**. Four places researched; Mandela House grounded on the Soweto
+      **drafted across all cities and awaiting Tumo**. Scope widened to every landmark (SP-069);
+      `coords` made optional (SP-073) which unblocked it; six strings that are not places stay
+      strings (SP-071); all 67 drafted, ~55 grounded. **`Place.access: "sacred-restricted"` added
+      with a test that no `Experience` may list such a place** (SP-072, SP-074) — Lake Fundudzi, Thathe
+      Vondo forest, and Bumbane Great Place, which is the reigning aBaThembu king's home. Earlier note: Four places researched; Mandela House grounded on the Soweto
       Heritage Trust's own record, the memorial on SAHO. Three findings need Tumo: **no coordinate can
       be sourced to SP-054 standard** (SP-067, blocks all four), **a street has no coordinate**
       (SP-068), and the "only street in the world to have housed two Nobel laureates" superlative is
@@ -361,18 +365,30 @@ text-read tests, and **no outbound booking link in Kids mode** — are `SP-014`/
 
 ### Stage B — the surfaces (**T7 = inside Atlas + Provinces**; `shell/nav.ts` must not be touched)
 
-- [ ] TOUR-06 `VisitPanel` — shown **beside** the story, not in a separate tab; the walkthrough's
-      Step 3 is explicit that burying it defeats the mechanism
-- [ ] TOUR-07 Place detail — what it is, where it is, its sources, and the outbound link when there
+Built 2026-09-18 against a **throwaway fixture** that was never committed — the real registries are
+still empty pending TOUR-05a sign-off, so none of this renders anything in the shipped app yet.
+
+- [x] TOUR-06 `VisitPanel` — shown **beside** the story, not in a separate tab; the walkthrough's
+      Step 3 is explicit that burying it defeats the mechanism. Splits `direct` ("Visit", may carry a
+      booking) from `thematic` ("Related", never can). Renders nothing when an article has no linked
+      place, so every other article is untouched
+- [x] TOUR-07 Place detail — what it is, where it is, its sources, and the outbound link when there
       is one. **An overlay inside `CityScreen`, not a 25th `Route` member** (SP-035): `App.tsx`
       records that the route union already pushed tsc to the edge. Honest cost: no deep link to a
       place in v1. **Kids mode shows the place and no outbound link at all** (SP-040)
-- [ ] TOUR-08 Landmarks become tappable on the Provinces screen, reusing the existing
-      [provinces.ts](../app/src/content/provinces.ts) `City` shape
-- [ ] TOUR-09 Strings for every new surface in **all 11 languages** — strings are data, never
-      hardcoded (setswana-i18n rule); the coverage test must show no untranslated new key
-- [ ] TOUR-10 a11y labels on every new control. Note the 25 pre-v2 unlabelled controls already on the
-      board — do not add to them
+- [x] TOUR-08 Landmarks become tappable on the Provinces screen, reusing the existing
+      [provinces.ts](../app/src/content/provinces.ts) `City` shape. Pressable **only** where a sourced
+      `Place` exists (SP-044) — matched on the exact `landmarkLabel`, never fuzzily. Verified in a
+      browser against a throwaway fixture: all four Soweto chips became buttons, the other 18 cities
+      unchanged
+- [x] TOUR-09 Strings for every new surface in **all 11 languages** — strings are data, never
+      hardcoded (setswana-i18n rule); the coverage test shows no untranslated new key. **Mutation-
+      tested**: dropping Venda from one `UI` block turns `ui-coverage.test.ts` red
+- [~] TOUR-10 a11y labels on every new control. Note the 25 pre-v2 unlabelled controls already on the
+      board — do not add to them. **Labels written and confirmed exposed** — the accessibility tree
+      reports each chip as `button "Vilakazi Street — open this place"`, which is the mechanism a
+      screen reader reads. **Still open:** no audit with a real screen reader, and the panel's and
+      overlay's controls were not checked the same way. Gate B's screen-reader line is NOT closed
 
 ### Stage C — keeping it true
 

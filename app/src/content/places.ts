@@ -33,9 +33,22 @@ export type Place = {
   kind: PlaceKind;
   /** Why it matters — sourced prose. English only, like the rest of `src/content` (SP-015). */
   what: string;
-  /** A factual claim like any other, and cited in `sources` accordingly (SP-014, SP-052). */
-  coords: { lat: number; lng: number };
-  /** REQUIRED. Where the history AND the coordinate come from. No source, no place (T4). */
+  /** OPTIONAL (SP-073), and not as a convenience: a third of this app's places have no single point
+   *  by nature — the Magaliesberg is a range, Algoa Bay a bay, the Msunduzi a river, District Six a
+   *  district, Vilakazi a street. Where a coordinate IS given it is a sourced factual claim like any
+   *  other (SP-052), because a wrong one sends a real person to the wrong place. */
+  coords?: { lat: number; lng: number };
+  /** Absent means open. Any value here means **no `Experience` may list this place** — enforced by a
+   *  test in `places.test.ts`, so no booking path can reach it and no component can route around it.
+   *
+   *  `"sacred-restricted"` — access is governed by custom, not by opening hours. Thathe Vondo forest
+   *    is the clearest case: ordinary Venda people may not walk in it, and that taboo extends to
+   *    visitors. Lake Fundudzi is the same. A "plan a visit" button here would be this layer
+   *    overriding a living custom (SP-072).
+   *  `"living-residence"` — someone's home and a seat of living authority, not a heritage site.
+   *    Bumbane Great Place is the residence of the reigning aBaThembu king (SP-074). */
+  access?: "sacred-restricted" | "living-residence";
+  /** REQUIRED. Where the history — and the coordinate, if given — come from. No source, no place (T4). */
   sources: string;
 };
 
