@@ -299,6 +299,10 @@ next person to claim "multilingual" has a real number to put behind it.
 - [x] LANG-07 `components/LanguageNote.tsx` — discloses an English fallback on surfaces
       `resolveText` cannot speak for, starting with the 49 places (English by SP-015). **Does not
       promise a translation is coming** (SP-084)
+- [x] LANG-12 **Extend `claims.test.ts` to `scripts/`** — a build-time script is not shipped to a
+      user, but its OUTPUT is quoted by a human into documents that are. `check-languages.mjs`
+      printed the derived claim inside a block captioned "honest phrasing for a pitch", which is the
+      worst possible place for it. Caught the moment the scope widened
 - [ ] LANG-08 **Extend the disclosure to the remaining content screens.** Only CinematicReader,
       WatchItemScreen and now PlaceView tell a reader they are seeing English. Provinces, Heroes,
       Presidents, National Days, Journey, Kids and Schools still fall back silently

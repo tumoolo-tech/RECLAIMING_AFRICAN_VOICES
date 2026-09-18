@@ -106,10 +106,15 @@ function main() {
   out("  other languages cover none at all — those readers get English.");
   out("  Two screens say so out loud (CinematicReader, WatchItemScreen, via resolveText).");
   out("  Every other content screen falls back silently.");
+  // The two numbers come from different sources ON PURPOSE (issue #36): LANGUAGES.length is an
+  // engineering count of what the app speaks; "twelve" is a constitutional fact — South African
+  // Sign Language was added by the Eighteenth Amendment, 2023. Welding a registry count to a
+  // constitutional claim is how the original bug was written; `i18n/claims.test.ts` forbids it.
   out("\n  Honest phrasing for a pitch or a rubric:");
-  out(`    \"The interface is fully localised into all ${LANGUAGES.length} official languages.`);
-  out(`     Content translation is under way — Setswana leads at ${tnPct}%, and the app tells a`);
-  out("     reader when they are seeing English instead of their language.\"");
+  out(`    \"The interface is fully localised into ${LANGUAGES.length} of South Africa's twelve`);
+  out("     official languages — all but South African Sign Language. Content translation is");
+  out(`     under way: Setswana leads at ${tnPct}%, and the app tells a reader when they are`);
+  out("     seeing English instead of their language.\"");
 
   if (JSON_OUT) {
     console.log(JSON.stringify({ checkedAt: today, chrome, totals, perFile, englishByDesign: ENGLISH_BY_DESIGN.map(([f]) => f) }, null, 2));
