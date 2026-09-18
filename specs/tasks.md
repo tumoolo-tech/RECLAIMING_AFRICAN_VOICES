@@ -290,9 +290,12 @@ for the thing this layer is actually about — somewhere you might travel to.
 - [x] PAGE-03 `Place.image` + `place-images.ts` — **real licensed photographs or none, never AI**
       (SP-086). Name-and-registry split keeps `places.ts` importable under `node --test` (SP-088).
       Credit and licence render on the page, because CC BY-SA attribution is an obligation (SP-087)
-- [ ] PAGE-04 **Source the photographs.** Wikimedia Commons carries CC-licensed images of most of
-      these 49 places. Each needs its licence read, its photographer recorded and the file
-      converted to webp. Until then every page honestly says it has no licensed photograph
+- [~] PAGE-04 **Source the photographs.** `npm run fetch:place-photo` reads licence and author from
+      Commons' own metadata, downloads, converts to webp and prints the record to paste — it never
+      edits `places.ts`, because whether a photograph actually shows the place is a human judgement
+      (same division as `check-place-links`). **It refuses any licence it does not recognise as
+      free, and refuses a file with no recorded author**, since attribution is a licence obligation.
+      **Soweto done (4 of 49)**, each photograph looked at before acceptance. 45 to go
 - [ ] PAGE-05 **Deep links.** The route exists; the web build does not yet map a URL to it, so a
       place cannot be shared as a link. That was the whole cost SP-036 accepted and SP-085 removed
 - [ ] PAGE-06 **Longer stories.** Every place currently carries the 1–3 sourced sentences written

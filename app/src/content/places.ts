@@ -159,6 +159,12 @@ export const places: Place[] = [
   },
   {
     id: "vilakazi-street",
+    image: {
+      file: "vilakazi-street.webp",
+      credit: "Nagarjun Kandukuru",
+      licence: "CC BY 2.0",
+      source: "https://commons.wikimedia.org/wiki/File:Homes_on_Mandela%27s_Vilakazi_street.jpg",
+    },
     name: "Vilakazi Street",
     cityId: "soweto",
     landmarkLabel: "Vilakazi Street",
@@ -170,6 +176,12 @@ export const places: Place[] = [
   },
   {
     id: "hector-pieterson-memorial",
+    image: {
+      file: "hector-pieterson-memorial.webp",
+      credit: "Albinfo (original uploader, German Wikipedia)",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Hector_Pieterson_Memorial.jpg",
+    },
     name: "Hector Pieterson Memorial & Museum",
     cityId: "soweto",
     alsoListedIn: ["johannesburg"],
@@ -182,6 +194,12 @@ export const places: Place[] = [
   },
   {
     id: "mandela-house",
+    image: {
+      file: "mandela-house.webp",
+      credit: "Richard Matthews",
+      licence: "CC BY 2.0",
+      source: "https://commons.wikimedia.org/wiki/File:Mandela_House_8115.jpg",
+    },
     name: "Mandela House",
     cityId: "soweto",
     alsoListedIn: ["johannesburg"],
@@ -194,6 +212,12 @@ export const places: Place[] = [
   },
   {
     id: "regina-mundi-church",
+    image: {
+      file: "regina-mundi-church.webp",
+      credit: "Moongateclimber (attributed on Wikimedia Commons)",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Regina_mundi_church,_soweto.JPG",
+    },
     name: "Regina Mundi Church",
     cityId: "soweto",
     landmarkLabel: "Regina Mundi Church",
