@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { places } from "./places.ts";
 import {
   experiences,
@@ -199,6 +199,41 @@ test("no referral URL carries a user identifier — ever", () => {
     assert.ok(!e.url.includes("?"), `${e.id}: referral URL carries a query string — no identifiers (T5)`);
     assert.ok(!e.url.includes("#"), `${e.id}: referral URL carries a fragment — no identifiers (T5)`);
   }
+});
+
+test("openExternal is the only NEW way out of the app", () => {
+  // SP-039 made leaving the app one function's job, because `noopener,noreferrer` is
+  // security-relevant: without it the opened page gets a handle on our window via
+  // `window.opener` and can navigate it somewhere else. A convention nobody can check decays, so
+  // this checks it.
+  //
+  // KNOWN DEBT, named rather than hidden. Six call sites predate the tourism layer — the Heritage
+  // Ledger's Solana explorer links and four footer credits. They are grandfathered below, exactly
+  // as the repo already treats its 25 known-unlabelled pre-v2 controls: the debt is listed, and
+  // you may not add to it. Deleting a name from this list is allowed; adding one is the failure.
+  const GRANDFATHERED = new Set(["HeritageLedgerScreen.tsx", "shell/SiteFooter.tsx"]);
+
+  const dir = new URL("../components/", import.meta.url);
+  const offenders: string[] = [];
+  const walk = (d: URL, prefix = "") => {
+    for (const name of readdirSync(d)) {
+      const child = new URL(name, d);
+      if (statSync(child).isDirectory()) walk(new URL(name + "/", d), prefix + name + "/");
+      else if (name.endsWith(".tsx")) {
+        const rel = prefix + name;
+        if (GRANDFATHERED.has(rel)) continue;
+        const src = readFileSync(child, "utf8");
+        if (/\bwindow\.open\s*\(|\bLinking\.openURL\s*\(/.test(src)) offenders.push(rel);
+      }
+    }
+  };
+  walk(dir);
+
+  assert.deepEqual(
+    offenders,
+    [],
+    `these open a URL directly instead of via services/openExternal (SP-039): ${offenders.join(", ")}`,
+  );
 });
 
 test("Kids surfaces never import experiences.ts", () => {

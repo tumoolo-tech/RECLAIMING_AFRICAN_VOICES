@@ -403,8 +403,14 @@ still empty pending TOUR-05a sign-off, so none of this renders anything in the s
       required CI check: it hits third-party hosts and would make `main` flaky. It **reports and
       never rewrites `places.ts`** (SP-047). Exposed as `npm run check:place-links`, and running it
       is a step in the pre-send checklist — Tumo owns it (T9, SP-056)
-- [ ] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
-      A test fails if a referral URL ever grows one
+- [x] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
+      A test fails if a referral URL ever grows one. Landed early in Stage A and mutation-tested
+      then; `check-place-links.mjs` now checks the same rule independently, before a URL is even
+      fetched — two checks on the one POPIA rule is proportionate when the second runs immediately
+      before a document goes to a department. **Strengthened:** a new test makes SP-039 structural —
+      no component may call `window.open`/`Linking.openURL` directly, with the six pre-existing call
+      sites (Heritage Ledger, SiteFooter) grandfathered by name. Known debt is listed and may not be
+      added to, exactly as the 25 unlabelled pre-v2 controls are handled
 - [ ] TOUR-13 **State what the app cannot claim.** The pitch §3 calls the contribution "direct,
       traceable"; under T5 the *traceable* half is false. Attribution needs per-person tracking,
       which is what [POPIA compliance](../docs/05-popia-compliance.md) exists to prevent — and would
