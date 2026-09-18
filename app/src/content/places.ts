@@ -387,6 +387,12 @@ export const places: Place[] = [
   },
   {
     id: "nelson-mandela-museum",
+    image: {
+      file: "nelson-mandela-museum.webp",
+      credit: "Xufanc",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Mthatha-NMM1813.JPG",
+    },
     name: "Nelson Mandela Museum",
     cityId: "mthatha",
     landmarkLabel: "Nelson Mandela Museum",
@@ -407,6 +413,12 @@ export const places: Place[] = [
   },
   {
     id: "qunu",
+    image: {
+      file: "qunu.webp",
+      credit: "Salym Fayad",
+      licence: "CC BY 2.0",
+      source: "https://commons.wikimedia.org/wiki/File:Qunu,_South_Africa.jpg",
+    },
     name: "Qunu",
     cityId: "mthatha",
     landmarkLabel: "Qunu",
@@ -499,6 +511,12 @@ export const places: Place[] = [
   },
   {
     id: "pmb-city-hall",
+    image: {
+      file: "pmb-city-hall.webp",
+      credit: "Johan Pretorius",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Pietermaritzburg_City_Hall.JPG",
+    },
     name: "City Hall",
     cityId: "pietermaritzburg",
     landmarkLabel: "City Hall (red-brick)",
@@ -529,6 +547,12 @@ export const places: Place[] = [
   },
   {
     id: "emakhosini",
+    image: {
+      file: "emakhosini.webp",
+      credit: "JMK",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Gees_van_eMakhosini-monument,_eMakhosini.jpg",
+    },
     name: "Emakhosini",
     cityId: "ulundi",
     landmarkLabel: "Emakhosini — the valley of the kings",
@@ -551,6 +575,12 @@ export const places: Place[] = [
   // ── Free State ─────────────────────────────────────────────────────────────────────────────────
   {
     id: "waaihoek-wesleyan-church",
+    image: {
+      file: "waaihoek-wesleyan-church.webp",
+      credit: "KeMang??",
+      licence: "CC0",
+      source: "https://commons.wikimedia.org/wiki/File:Waaihoek_Wesleyan_Church_01.jpg",
+    },
     name: "Waaihoek Wesleyan Church",
     cityId: "bloemfontein",
     landmarkLabel: "Waaihoek (ANC founding site)",
@@ -562,6 +592,12 @@ export const places: Place[] = [
   },
   {
     id: "naval-hill",
+    image: {
+      file: "naval-hill.webp",
+      credit: "Graham Maclachlan",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Naval_Hill,_Bloemfontein,_9301,_South_Africa_-_panoramio.jpg",
+    },
     name: "Naval Hill",
     cityId: "bloemfontein",
     landmarkLabel: "Naval Hill & Nelson Mandela statue",
@@ -572,6 +608,12 @@ export const places: Place[] = [
   },
   {
     id: "national-womens-memorial",
+    image: {
+      file: "national-womens-memorial.webp",
+      credit: "Linton Brothers (historic photograph)",
+      licence: "Public domain",
+      source: "https://commons.wikimedia.org/wiki/File:The_National_Womens_Memorial,_Bloemfontein_in_South_Africa.jpg",
+    },
     name: "National Women's Memorial",
     cityId: "bloemfontein",
     landmarkLabel: "the National Women's Memorial",
@@ -582,6 +624,12 @@ export const places: Place[] = [
   },
   {
     id: "oliewenhuis-art-museum",
+    image: {
+      file: "oliewenhuis-art-museum.webp",
+      credit: "Ymblanter",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Bloemfontein_Oliewenhuis_Art_Museum_seen_from_the_south.jpg",
+    },
     name: "Oliewenhuis Art Museum",
     cityId: "bloemfontein",
     landmarkLabel: "Oliewenhuis Art Museum",
@@ -628,6 +676,12 @@ export const places: Place[] = [
   // ── Mpumalanga ─────────────────────────────────────────────────────────────────────────────────
   {
     id: "makhonjwa-mountains",
+    image: {
+      file: "makhonjwa-mountains.webp",
+      credit: "MaruAttwood",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Baberton_greenstone_belt_view.jpg",
+    },
     name: "Barberton Makhonjwa Mountains",
     cityId: "barberton",
     landmarkLabel: "the Makhonjwa Mountains (UNESCO)",
@@ -690,6 +744,12 @@ export const places: Place[] = [
   },
   {
     id: "magaliesberg",
+    image: {
+      file: "magaliesberg.webp",
+      credit: "Humphrey1938",
+      licence: "CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Magaliesberg_mountains_27.jpg",
+    },
     name: "The Magaliesberg",
     cityId: "rustenburg",
     landmarkLabel: "the Magaliesberg",
@@ -700,6 +760,12 @@ export const places: Place[] = [
   },
   {
     id: "pilanesberg-national-park",
+    image: {
+      file: "pilanesberg-national-park.webp",
+      credit: "NJR ZA",
+      licence: "CC BY-SA 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Pilanesberg-Lenong_view-001.jpg",
+    },
     name: "Pilanesberg National Park",
     cityId: "rustenburg",
     landmarkLabel: "Pilanesberg National Park",
