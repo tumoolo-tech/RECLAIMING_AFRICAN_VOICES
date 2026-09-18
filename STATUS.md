@@ -4,7 +4,7 @@
 > of "done." For the structured **implemented vs. planned** view, see
 > [docs/10-status-and-roadmap.md](docs/10-status-and-roadmap.md).
 
-_Last updated: 2026-09-15 — by Tumo (via Claude). Previous update: 2026-09-12._
+_Last updated: 2026-09-18 — by Tumo (via Claude). Previous update: 2026-09-17._
 
 > **⚠️ Open question, and it sits above everything else on this board: what happened to the
 > hackathon?** All four AADHIH dates — the 9 Jul concept deadline, the 10 Jul finalist announcement,
@@ -47,7 +47,7 @@ _Last updated: 2026-09-15 — by Tumo (via Claude). Previous update: 2026-09-12.
 | **🏗️ Architecture v2 — multi-page transformation** | 🟢 **30 of 31 tasks done (26–27 Aug)** — every room is live and the Watch page carries its provenance block; the one open task is the **V2-12 browser re-walk** · plan: [docs/13-architecture-v2-plan.md](docs/13-architecture-v2-plan.md) |
 | **📚 `countries/` research** | 🟢 **54 of 54 researched — no scaffolds left.** `bw` + `bf` carry long-form reports; the other 52 are built claim-by-claim from named sources, each with Open questions. Findings: **indigenous African scripts** (Ge'ez, Vai, N'Ko), **the first African-language novel is in Sesotho (1907)**, **Sontonga's melody in 4 countries**, **Swahili should be language 12**, and **3 fixes to live `country-languages.ts` data** · [countries/README.md](countries/README.md) |
 | **🔁 PR checks (CI)**: GitHub Actions runs typecheck + unit tests on every PR into `main` ([.github/workflows/pr-checks.yml](.github/workflows/pr-checks.yml)); Vercel still builds + deploys | 🟡 added 12 Sep · `main` now requires a PR (no approval) · two developers given write access · **has now run green four times** (PRs #61, #62) — still **not a required check**; make it one |
-| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Three decisions are Tumo's** (nav placement vs Architecture v2 **D1**, pilot breadth, partner ownership) · plan: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
+| **🧭 Heritage tourism — story → place → operator → a visit (Phase 7)** | 📋 **planned 17 Sep, 0 of 13 started.** `TOUR-01–13`, a linking layer over content that already exists — **not a new product**. Only four things genuinely don't exist: a bookable-operator model, `landmarks` as entities rather than bare strings, a story↔place relation, and link-freshness checking. **Stage A 4 of 5 done (TOUR-01–05a), 4 of 13 overall.** TOUR-05b blocked on the review sheet + SP-067 (coordinates). Surfaces inside **Atlas + Provinces** (no new room, D1 stands); pilot is **Soweto only**; **all decisions resolved** — 12 inherited + 57 registered, 0 open. Next action is **Tumo**: review [design/places-content.md](design/places-content.md) and answer SP-067. · build plan + decision register: [docs/sim_plan.md](docs/sim_plan.md) · design: [docs/15-heritage-tourism-plan.md](docs/15-heritage-tourism-plan.md) |
 
 ---
 
@@ -295,6 +295,144 @@ file. "(early)" is kept where it was earned: those phases genuinely finished ahe
   anchoring to Atlas heritage is a safe additive follow-up (won't touch the live devnet tx).
 
 ## 🗒️ Log
+
+- **2026-09-18 (planning)** — **The two decisions that were blocking Phase 7 are made, and the build
+  plan is written.**
+
+  [docs/sim_plan.md](docs/sim_plan.md) is now the document `TOUR-*` work is run from — doc 15 keeps
+  the design argument, sim_plan carries the order, the files, and the done-when for each of the
+  thirteen tasks. **T7: the layer surfaces inside Atlas + Provinces, no new room**, so Architecture
+  v2 **D1** stands and [shell/nav.ts](app/src/components/shell/nav.ts) is not edited — if a diff
+  touches it, the scope has drifted. **T8: the v1 pilot is Soweto only**, because its four landmarks
+  and its two 16 June 1976 articles are already in the repo, so zero new historical research gates
+  the mechanism. Both Stage A and Stage B are unblocked. **T9 — who owns partner relationships as
+  links go stale — was answered later the same day** (see below).
+
+  Two things written down that were previously assumed. The `direct` vs `thematic` editorial rule now
+  has a factual test (*did the event happen here, or did the person occupy this place?*) and a stated
+  reason it is load-bearing: the two relations render differently, and collapsing them would let the
+  UI imply that standing somewhere puts you where the history happened when it does not. And the
+  Soweto seed is written with `[NEEDS SOURCE]` against all four places rather than plausible
+  citations, because an unsourced landmark stays a bare string rather than being promoted into an
+  entity with invented provenance. No `visit.url` goes into the repo unverified by a human.
+  *(Superseded below: Tumo chose to have all four researched and cited, so the pilot is four places
+  rather than the one or two the in-repo citations alone would have supported.)*
+
+  **Then rewritten, same day, as the phase's decision register**, at Tumo's request: all three stages
+  planned to decision level rather than task level, so there is one place to look up why any choice
+  was made, from the pitch through to delivery. **12 inherited decisions** (the rename, Architecture
+  v2 **D1**, the AI-art call, `T1`–`T9`) are back-filled with their origins; **50 new `SP-*` rows**
+  carry a reason each; **6 are open** and every one of them names a default so no single unanswered
+  question stalls the other twelve tasks. The register is append-only — a decision that turns out
+  wrong is superseded by a new row, never edited away.
+
+  Two Stage B decisions came out of the code rather than the plan. **Place detail will be an overlay
+  inside `CityScreen`, not a 25th `Route` member** — [App.tsx](app/App.tsx) already records that
+  inlining a stage in the route switch "made the type-checker recurse over the (now 24-member) route
+  union until it stopped finishing," and `ArticleReader` is already a modal rather than a route, so
+  the precedent exists. The honest cost is written down beside it: **no deep link to a place in v1.**
+  And the Stage A tests cannot import `provinces.ts` at all — verified, not assumed: it `require()`s
+  `.webp` assets and throws in ESM scope under `node --test`.
+
+  One data problem surfaced that no plan doc had caught: **"Hector Pieterson Memorial" and "Mandela
+  House" are listed under both Johannesburg and Soweto**, and they are in Soweto. It is now an open
+  decision rather than something discovered mid-build.
+
+  **Then all seven open decisions answered, same day, and the register closed.** Nothing in Phase 7
+  is now blocked. Tumo's calls: **coordinates are kept and filled** for all four places, which makes
+  each one a sourced factual claim rather than a convenience field; a place carries **`alsoListedIn`**
+  so the two landmarks Johannesburg *and* Soweto both list resolve to one entity instead of a dead
+  chip; **all four places get researched citations** rather than the thin in-repo line, which takes
+  the pilot from one-or-two places to four and puts **8 citations + 4 coordinates** in front of Tumo
+  to review; **real `thematic` candidates** are proposed for approval rather than a test fixture, so
+  the "Related, never *visit this*" rule is proven by content; tests **read `provinces.ts` as text**,
+  the pattern `ui-coverage.test.ts` already uses, leaving that file unedited; and **Kids mode shows
+  the place but never an outbound booking link** — a child gets the heritage, not the commercial path
+  out of the app. **T9: Tumo owns partner links** and checks them before every demo or send-out.
+
+  Seven consequences were registered rather than left implicit (`SP-051`–`SP-057`), the useful one
+  being that citations now land in a **review sheet, `design/places-content.md`**, before they become
+  code — the convention `provinces.ts` already names for itself. TOUR-05 split into **05a** (the
+  sheet) and **05b** (the code) so no citation becomes code before it has been read.
+
+  Docs only up to this point — planning, not built.
+
+  **Then TOUR-01 landed, and Tumo's question changed the shape before it set.** Asked before a line
+  was written: *what happens when one booking covers several places?* The pitch's own flagship
+  example is exactly that — "book a bike tour through Soweto" visits Vilakazi Street, the memorial,
+  Mandela House and Regina Mundi — and the designed shape could not hold it. A booking hanging off a
+  single `Place` forced a four-stop tour to either pick one arbitrary stop (showing "book" on
+  Vilakazi Street but not Mandela House) or be copied onto all four, leaving four URLs to keep fresh
+  and a reader inferring four tours. **So everything bookable became its own entity**: `Experience`
+  with `placeIds: string[]`, and a museum's own ticketing is simply an Experience with one stop
+  (`SP-058`, amending T2 — the place stays first-class, the booking stops hanging off it).
+
+  Three things fell out of that, all better than the shape it replaced. **History and commerce now
+  have different truth standards** and different files: a `Place` needs a citation, an `Experience`
+  needs a verified URL, and `experiences.ts` has no `sources` field on purpose (`SP-059`). **The Kids
+  rule became structural** — Kids surfaces import `places.ts` and never `experiences.ts`, so "no
+  booking path in front of a child" is a property of the import graph rather than a button someone
+  has to remember to hide (`SP-062`). And the one file that points a reader at a commercial offer is
+  now the only file that does.
+
+  `app/src/content/places.ts` and `experiences.ts` are written, both arrays deliberately empty until
+  the review sheet is signed off. **The guardrails were proved rather than asserted**: a probe
+  confirmed that a place with no `sources`, a place with no `coords`, an invented `kind`, and an
+  experience with no places **all fail to compile**. Typecheck clean, **179/179 tests still pass**,
+  no `.tsx` touched.
+
+  **TOUR-02 followed** — `place-links.ts`, the story↔place registry. One table rather than a `places`
+  field on nine content files (T3), and content → place only, with the reverse derived in TOUR-03
+  rather than stored, so there is nothing to keep in sync. One finding worth recording: the join key
+  needs `kind` as well as `id`, because **51 ids in `src/content` appear in more than one file** —
+  `eastern-cape` is a journey stage *and* a province, `de-klerk` a journey stage *and* a president,
+  and nearly every totem is also a journey stage. A bare id would have been genuinely ambiguous, not
+  theoretically so. The registry knows nothing about `experiences.ts` on purpose: a link pointing at
+  an experience would mean an operator folding orphans a *story*, and the history does not stop being
+  about that place because a tour company closed. Guardrails proved by probe again — a link with no
+  `why`, a bare-string ref, an invented `kind` and an invented `relation` all fail to compile.
+
+  Typecheck clean, **179/179**, no `.tsx` in the diff.
+
+  **TOUR-03 — the resolvers, and the first tests. 179 → 199.** Each resolver is a pure core plus a
+  bound wrapper, so behaviour is testable before the data exists; the alternative would have left
+  ordering, `kind` disambiguation and status filtering untested for three more tasks.
+  `bookableAtPlace` filters to `live` **in the resolver rather than in the UI**, so a Stage B surface
+  cannot render a dead or unverified booking even by mistake. Eight of the twenty new tests pass
+  vacuously on empty registries, which proves nothing — so they were **mutation-tested**: a place
+  with a duplicate id, a non-existent city, an unmatched `landmarkLabel`, a London coordinate and a
+  stub source, plus an experience with no operator, a ghost place, a `?ref=` tracking parameter and a
+  non-ISO date, turned **six of them red**. Probe reverted; 199/199 green.
+
+  **TOUR-04** — the `direct`/`thematic` rule is written in [sim_plan §9](docs/sim_plan.md) and again
+  as the doc comment where it is applied.
+
+  **TOUR-05a — the review sheet is drafted and waiting on Tumo**
+  ([design/places-content.md](design/places-content.md)). Mandela House is grounded on the Soweto
+  Heritage Trust's own record — 8115 Vilakazi Street, heritage status 16 March 1999 — which is
+  exactly the institution-first standard SP-054 asks for. The memorial rests on SAHO.
+
+  **Three findings, and two of them block the seed.** First: **no coordinate can be sourced to
+  SP-054 standard.** Museums publish street addresses, not decimal coordinates; the only candidates
+  are Wikipedia, which SP-054 does not admit — so by the project's own rule the four coordinates
+  cannot ship (`SP-067`, blocks TOUR-05b). Second: **a street has no coordinate** — Vilakazi Street
+  can carry a representative point at best, the same shape problem that made a bike tour an
+  `Experience` (`SP-068`). Third, and not blocking but worth Tumo's judgement: the **"only street in
+  the world to have housed two Nobel laureates"** line already in `provinces.ts` is a superlative
+  that South African Tourism, Brand South Africa, CNN and Mandela House all repeat and **none
+  evidence.** That Mandela and Tutu both lived there is solid; the superlative is not.
+
+  Regina Mundi's founding date is **genuinely contested** — 1960 groundbreaking/1962 completed versus
+  "built in 1964", with Wikipedia contradicting itself — so every date was left out of its entry
+  rather than guessed. One `thematic` candidate is proposed and one rejected: `module:vilakazi` →
+  `vilakazi-street`, because **the street is named after the poet whose *Inkondlo kaZulu* (1935) is
+  the app's fourth literary pillar** — the literary core reaching the tourism layer from the other
+  direction. The rejected one, `herstory-soweto-erasure` → `regina-mundi-church`, was dropped because
+  the article never mentions the church: linking them would have been inventing the connection.
+
+  **Stage A is 4 of 5.** `TOUR-05b` is deliberately not started — SP-053 says nothing reaches
+  `places.ts` before the sheet is reviewed, and SP-067 blocks the coordinates regardless. `4 of 13`
+  `TOUR-*` done, all three registries still shipping empty.
 
 - **2026-09-17 (planning)** — **The tourism pitch gets an implementation plan, and the pitch gets an
   honest paragraph about AI.**

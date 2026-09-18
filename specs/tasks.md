@@ -294,36 +294,79 @@ relation joins a story to a place; and nothing would notice a dead booking link.
 the places, the sourced stories, the consent flow, the rights gate in
 [ingest/rights.ts](../app/src/services/ingest/rights.ts) — is built.
 
-**Three decisions are Tumo's and block specific tasks:** where this sits in the nav (Architecture v2
-**D1** locks the six rooms, so a "Visit" room would break it — T7), pilot breadth (T8), and who owns
-partner relationships as links go stale (T9).
+**Every decision behind these tasks is registered in [sim_plan.md §4](../docs/sim_plan.md), with its
+reason and its status** — that is the document this phase is built from, and the place to look before
+re-arguing anything below.
+
+**All decisions resolved 2026-09-18 — nothing in this phase is blocked.** The layer surfaces
+*inside Atlas + Provinces*, no new room, so Architecture v2 **D1** stands and `shell/nav.ts` is not
+edited (T7); the v1 pilot is *Soweto only* (T8); **Tumo owns partner links and checks them before
+every demo or send-out** (T9). Six further calls — coordinates kept and filled, `alsoListedIn` for
+places two cities list, researched citations for all four places, real `thematic` candidates,
+text-read tests, and **no outbound booking link in Kids mode** — are `SP-014`/`017`/`027`/`030`/
+`032`/`040` in the register, with what was rejected and why.
 
 ### Stage A — the data layer (no UI; pure logic, `node --test`)
 
-- [ ] TOUR-01 `content/places.ts` — `Place` + `VisitInfo` types per [plan §5](../docs/15-heritage-tourism-plan.md).
-      A place is first-class and a booking is an attribute of it (T2): a tour operator folding must
-      not delete Vilakazi Street. `sources` is **required** — a place without one does not ship
-- [ ] TOUR-02 `content/place-links.ts` — the story↔place registry as **one** table keyed by
+- [x] TOUR-01 `content/places.ts` + `content/experiences.ts` — the shape. A place is first-class
+      (T2); a **booking is its own entity, not an attribute of a place** (SP-058), because one Soweto
+      bike tour visits four places and the old shape had no honest home for it. `Place` carries
+      required `sources` **and** required `coords`; `Experience` carries `placeIds: string[]` and no
+      `sources` — history needs a citation, commerce needs a verified URL (SP-059). Guardrails proved
+      by probe: a place with no `sources`, a place with no `coords`, an invented `kind`, and an
+      experience with no places **all fail to compile**. Both arrays ship empty
+- [x] TOUR-02 `content/place-links.ts` — the story↔place registry as **one** table keyed by
       `ContentRef`, *not* a `places` field added to `articles`/`journey`/`heroes`/`presidents`/
-      `national-days` and the four literary modules (T3 — that would touch every content file)
-- [ ] TOUR-03 Resolvers + tests — `placesForContent`, `contentForPlace`, `citiesWithPlaces`. Pure
-      functions, no imports, so they run with no dependencies installed like the existing 179
-- [ ] TOUR-04 **Write down the editorial rule for `direct` vs `thematic`.** This answers the
-      walkthrough's own open question — how tightly must a story relate to a place? Mandela →
+      `national-days` and the four literary modules (T3 — that would touch every content file).
+      `ContentRef` carries `kind` **and** `id` because **51 ids in `src/content` appear in more than
+      one file** — `eastern-cape` is a journey stage *and* a province, `de-klerk` a journey stage
+      *and* a president — so a bare id would be genuinely ambiguous. Direction is content → place
+      only; the reverse is derived in TOUR-03, never stored. The registry deliberately knows nothing
+      about `experiences.ts`: an operator folding must not orphan a story. Guardrails proved by
+      probe — a link with no `why`, a bare-string ref, an invented `kind` and an invented `relation`
+      **all fail to compile**. Registry ships empty
+- [x] TOUR-03 Resolvers + tests — `placesForContent`, `contentForPlace`, `citiesWithPlaces`, plus
+      `experiencesAtPlace`/`bookableAtPlace` in `experiences.ts` (SP-065). Each is a **pure core plus
+      a bound wrapper** (SP-064) so behaviour is testable before the data exists. `bookableAtPlace`
+      filters to `live` **in the resolver, not the UI** — a Stage B surface cannot render a dead
+      booking even by mistake. **179 → 199 tests.** The eight integrity tests pass vacuously on empty
+      registries, so they were **mutation-tested**: a bad place (duplicate id, non-existent city,
+      unmatched landmarkLabel, London coordinate, stub source) and a bad experience (no operator,
+      ghost place, `?ref=` tracking param, non-ISO date) turned **6 of them red**, then the probe was
+      reverted
+- [x] TOUR-04 **Write down the editorial rule for `direct` vs `thematic`** — [sim_plan.md §9](../docs/sim_plan.md),
+      and again as the doc comment on `PlaceRelation` so it is readable where it is applied.
+      This answers the walkthrough's own open question — how tightly must a story relate to a place? Mandela →
       Vilakazi Street is `direct`; mathematics → an Egyptian site is `thematic` and renders as
       "related", never "visit this". The rule is recorded with its reasoning, not inferred per entry
-- [ ] TOUR-05 **Migrate Soweto out of `landmarks: string[]`** — `"Vilakazi Street"`,
+- [~] TOUR-05a **The review sheet** — [design/places-content.md](../design/places-content.md) is
+      **drafted and awaiting Tumo**. Four places researched; Mandela House grounded on the Soweto
+      Heritage Trust's own record, the memorial on SAHO. Three findings need Tumo: **no coordinate can
+      be sourced to SP-054 standard** (SP-067, blocks all four), **a street has no coordinate**
+      (SP-068), and the "only street in the world to have housed two Nobel laureates" superlative is
+      repeated by every source and evidenced by none. Regina Mundi's founding date is genuinely
+      contested (1960/1962 vs 1964, Wikipedia contradicting itself) and is left blank rather than
+      guessed. One real `thematic` candidate: `module:vilakazi` → `vilakazi-street`, since the street
+      is named after the poet whose *Inkondlo kaZulu* is the app's fourth literary pillar
+      — `design/places-content.md`, following the convention
+      `provinces.ts` already names for itself. Four places, their researched citations, their
+      coordinates and where each coordinate came from, plus any `thematic` candidates. **Nothing
+      reaches `places.ts` before Tumo has reviewed this** (SP-053, SP-057)
+- [ ] TOUR-05b **BLOCKED on TOUR-05a sign-off + SP-067.** Migrate Soweto out of `landmarks: string[]` — `"Vilakazi Street"`,
       `"Hector Pieterson Memorial"`, `"Mandela House"`, `"Regina Mundi Church"` become the first four
       `Place` records, and `time-soweto-photograph` → `hector-pieterson-memorial` the first `direct`
-      link. **An unsourced landmark stays a string** rather than being promoted into an entity with
-      invented provenance. Needs T8 for breadth
+      link. The memorial and Mandela House carry `alsoListedIn: ["johannesburg"]` (SP-017), since
+      Joburg lists them too. **An unsourced landmark stays a string** rather than being promoted into
+      an entity with invented provenance
 
-### Stage B — the surfaces (needs T7 answered first)
+### Stage B — the surfaces (**T7 = inside Atlas + Provinces**; `shell/nav.ts` must not be touched)
 
 - [ ] TOUR-06 `VisitPanel` — shown **beside** the story, not in a separate tab; the walkthrough's
       Step 3 is explicit that burying it defeats the mechanism
 - [ ] TOUR-07 Place detail — what it is, where it is, its sources, and the outbound link when there
-      is one
+      is one. **An overlay inside `CityScreen`, not a 25th `Route` member** (SP-035): `App.tsx`
+      records that the route union already pushed tsc to the edge. Honest cost: no deep link to a
+      place in v1. **Kids mode shows the place and no outbound link at all** (SP-040)
 - [ ] TOUR-08 Landmarks become tappable on the Provinces screen, reusing the existing
       [provinces.ts](../app/src/content/provinces.ts) `City` shape
 - [ ] TOUR-09 Strings for every new surface in **all 11 languages** — strings are data, never
@@ -335,7 +378,9 @@ partner relationships as links go stale (T9).
 
 - [ ] TOUR-11 `scripts/check-place-links.mjs` — HEAD each `visit.url`, stamp `lastChecked`, set
       `status`. A `"dead"` link is **hidden, not shown hopefully**. Manual/reported, **not** a
-      required CI check: it hits third-party hosts and would make `main` flaky. Needs T9
+      required CI check: it hits third-party hosts and would make `main` flaky. It **reports and
+      never rewrites `places.ts`** (SP-047). Exposed as `npm run check:place-links`, and running it
+      is a step in the pre-send checklist — Tumo owns it (T9, SP-056)
 - [ ] TOUR-12 **Referral URLs carry no user identifiers, ever** (T5) — no query params, no click IDs.
       A test fails if a referral URL ever grows one
 - [ ] TOUR-13 **State what the app cannot claim.** The pitch §3 calls the contribution "direct,
