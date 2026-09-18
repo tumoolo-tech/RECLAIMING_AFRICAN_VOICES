@@ -31,7 +31,7 @@ const KICKER = "Reclaiming African Voices";
 // not an endorsement. Official logo used per Solana's brand guidelines (light logotype on a dark bg).
 const PHOTO = "warm documentary photography, golden natural light, photorealistic, dignified African subjects, rich colour";
 
-// UI chrome in all 11 official languages so the whole interface switches, not just EN/Setswana. These
+// UI chrome in all 11 spoken official languages (SA has 12; Sign Language is the twelfth) so the whole interface switches, not just EN/Setswana. These
 // are best-effort translations of INTERFACE labels (not the literary content, which keeps its honest
 // reviewed/fallback status). A native speaker should still review before final. See setswana-i18n.
 const UI = {

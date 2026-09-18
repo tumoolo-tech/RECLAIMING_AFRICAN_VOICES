@@ -37,7 +37,7 @@ const APP_FACTS: KnowledgeChunk[] = [
     id: "app-languages",
     page: "home",
     title: "Languages",
-    body: "The whole interface can switch between all 11 official South African languages using the language picker. The literary and heritage content is human-authored and human-reviewed in English and Setswana; the other nine languages are shown as machine translations that are clearly labelled 'unreviewed' until a native speaker reviews them, and otherwise fall back to English so nothing is ever passed off as authoritative.",
+    body: "South Africa has twelve official languages — the eleven spoken languages in the 1996 Constitution, plus South African Sign Language, added by the Constitution Eighteenth Amendment Act in 2023. Ubuntu Heritage speaks eleven of the twelve: the whole interface switches between them using the language picker. South African Sign Language is the one the app does not yet serve — there are no captions or signed video yet. The literary and heritage content is human-authored and human-reviewed in English and Setswana; the other nine languages are shown as machine translations that are clearly labelled 'unreviewed' until a native speaker reviews them, and otherwise fall back to English so nothing is ever passed off as authoritative.",
   },
   {
     id: "app-offline-popia",

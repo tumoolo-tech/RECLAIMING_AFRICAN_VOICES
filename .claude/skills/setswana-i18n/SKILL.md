@@ -5,7 +5,7 @@ description: Maloba's multilingual + Setswana guidance. Use WHENEVER adding/edit
 
 # Setswana & i18n — languages are first-class, strings are data
 
-Maloba ships **Setswana + English** and is architected to extend to all 11 official SA languages.
+Maloba ships **Setswana + English** and is architected to extend to all eleven spoken official SA languages (the twelfth, South African Sign Language, needs captions and signed video, not strings).
 (See [docs/07-accessibility.md](../../../docs/07-accessibility.md).)
 
 ## Rules

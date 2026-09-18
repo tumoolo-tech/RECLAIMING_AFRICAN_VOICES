@@ -2,9 +2,12 @@
 // Data-driven so adding/extending a language is a data edit, never an app-logic change
 // (see .claude/skills/setswana-i18n). Pure & dependency-free so it unit-tests under `node --test`.
 //
-// All 11 official South African languages (Constitution §6). `endonym` is the language's own name
-// for itself (first-class, not an English label). `bcp47` drives on-device speech + the web; `botlhale`
-// is the code for Botlhale AI's speech/translation APIs. `reviewedContent` = we have human-authored /
+// The 11 spoken official South African languages (Constitution §6). SA has 12 since the Eighteenth
+// Amendment Act, 2023 added South African Sign Language — not here, because a LangCode with no text,
+// audio or video to render would be a promise the app cannot keep; it is named in country-languages.ts.
+// `endonym` is the language's own name for itself (first-class, not an English label). `bcp47` drives
+// on-device speech + the web; `botlhale` is the code for Botlhale AI's speech/translation APIs.
+// `reviewedContent` = we have human-authored /
 // human-reviewed literary text in this language today (integrity rule: no machine text passed off as
 // authoritative). The rest fall back to English text, clearly marked, until real translations land.
 

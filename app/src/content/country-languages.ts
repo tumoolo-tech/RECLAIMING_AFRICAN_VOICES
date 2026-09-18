@@ -42,9 +42,12 @@ export const countryLanguages: Record<string, CountryLanguages> = {
   za: {
     lead: "zu",
     supported: ["zu", "xh", "af", "en", "nso", "tn", "st", "ts", "ss", "ve", "nr"],
+    // The twelfth official language. It is in `notYet`, not `supported`, because the app has nothing
+    // it could render in it — a LangCode with no text, no audio and no video would be a promise the
+    // app cannot keep. It is named here so the picker says so out loud rather than implying eleven.
     notYet: ["South African Sign Language"],
     sourceNote:
-      "Constitution of the Republic of South Africa, 1996, §6 — eleven official languages, which the Constitution lists without ranking. The ORDER here is by first home language at the 2022 Census (isiZulu the largest), which is why isiZulu leads; the Constitution is the source for the list, the Census for the order.",
+      "Constitution of the Republic of South Africa, 1996, §6, as amended by the Constitution Eighteenth Amendment Act, 2023 — twelve official languages: the eleven spoken languages listed in 1996, without ranking, plus South African Sign Language from 2023. Ubuntu Heritage speaks the eleven. The ORDER here is by first home language at the 2022 Census (isiZulu the largest), which is why isiZulu leads; the Constitution is the source for the list, the Census for the order.",
   },
   bw: {
     lead: "tn",

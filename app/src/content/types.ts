@@ -3,7 +3,7 @@
 
 import type { LangCode } from "../i18n/languages";
 
-// The app speaks all 11 official SA languages (see src/i18n/languages.ts). English is the base every
+// The app speaks 11 of the 12 official SA languages (see src/i18n/languages.ts; Sign Language is the twelfth). English is the base every
 // text carries; other languages are optional and fall back to English (clearly marked) until a
 // human-reviewed translation exists — machine text is never passed off as authoritative (integrity rule).
 export type Lang = LangCode;

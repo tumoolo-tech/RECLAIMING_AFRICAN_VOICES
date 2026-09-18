@@ -8,7 +8,7 @@ import {
   toBotlhaleCode,
 } from "./languages.ts";
 
-test("covers all 11 official South African languages", () => {
+test("speaks eleven of South Africa's twelve official languages (Sign Language is the twelfth)", () => {
   assert.equal(LANGUAGES.length, 11);
 });
 
