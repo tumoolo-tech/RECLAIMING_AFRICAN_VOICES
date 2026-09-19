@@ -1,4 +1,4 @@
-# 06 — Judging Criteria & How Maloba Maps to Each
+# 06 — Judging Criteria & How Ubuntu Heritage Maps to Each
 
 Total: **100 points**. Submissions are scored on this rubric (and an AI pre-rater); the top 50 advance
 to the Red Horizon Metaverse finals. Design and demo decisions should trace to a row here.
@@ -50,14 +50,14 @@ touching app logic. → [02-tech-stack.md](02-tech-stack.md), [05](05-popia-comp
 
 ## Score-maximising checklist (revisit before submission)
 
-- [ ] At least 3 modules with **real, sourced** content (not lorem).
-- [ ] "About the Sources" screen credits every author + links references.
-- [ ] Community Archive: record → consent → save → delete all work in the demo.
-- [ ] App reads **offline**; images cached; works on a small screen.
-- [ ] Setswana + English toggle works on at least the home + one module.
-- [ ] Child/Adult toggle visibly changes the reading level.
-- [ ] Demo video (2–3 min) explicitly shows: a text's depth, the consent screen, offline, multilingual.
-- [ ] Written narrative states: the gap addressed, whose voices are centred, relevance to African DH.
+- [x] At least 3 modules with **real, sourced** content (not lorem). *(Four pillars + six Atlas modules; depth is issue #33.)*
+- [x] "About the Sources" screen credits every author + links references *(and, since #34, each work's rights)*.
+- [x] Community Archive: record → consent → save → delete all work *(web; cloud sharing live — moderation is #45)*.
+- [ ] App reads **offline**; images cached; works on a small screen. *(Images cached ✓; PWA built ✓; **not yet verified on a real device in aeroplane mode** — PWA-05 / #57.)*
+- [x] Setswana + English toggle works on at least the home + one module *(all eleven spoken official languages for the UI; content coverage is measured — #38)*.
+- [x] Child/Adult toggle visibly changes the reading level.
+- [ ] Demo video (2–3 min) — **never recorded** (#57).
+- [x] Written narrative states: the gap addressed, whose voices are centred, relevance to African DH *(drafted in specs/; submission unrecorded)*.
 
 ## Deliverables (don't lose easy points)
 

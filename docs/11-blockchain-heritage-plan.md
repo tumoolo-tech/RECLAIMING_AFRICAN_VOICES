@@ -57,7 +57,7 @@ content off-chain, and we do **not** turn people's voices or heritage into specu
 Four layers. Personal data never crosses into the permanent/on-chain layers.
 
 ```
-┌─────────────────────────── Maloba app (Expo) ───────────────────────────┐
+┌─────────────────────── Ubuntu Heritage app (Expo) ──────────────────────┐
 │  Reader · Community Archive · NEW: "Heritage Ledger" screen              │
 │  - shows each artifact's on-chain provenance + "Verify on Solana" link   │
 └─────────────┬───────────────────────────────────────────┬───────────────┘
@@ -134,7 +134,7 @@ Four layers. Personal data never crosses into the permanent/on-chain layers.
 servers (Helius, solana-dev docs, Surfpool). We'd **keep the Solana program in its own package/repo**
 (`chain/` — Rust/Anchor) and use the kit's agents to design + write + test it fast, then integrate
 the client into the Expo app. Install it into that `chain/` workspace (or a sibling), not over
-Maloba's existing `.claude/` humanities config.
+Ubuntu Heritage's existing `.claude/` humanities config.
 
 ---
 
