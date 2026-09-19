@@ -8,6 +8,43 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-19 (a story told by scrolling)** — Tumo pointed at the Rockstar GTA VI page and asked
+  for one demo feature in that shape. I looked at it: full-bleed art about a screen tall, a small
+  kicker over a large headline, a line or two of body, text alternating side to side, a lot of
+  black between. The effect is scale and restraint, **not** scroll-jacking — which is also what
+  makes it portable to a phone. **"Sixteen June"**, reached from a card on Home. Nine panels: four
+  licensed place photographs, Sam Nzima's archival photograph, four typographic beats, and the
+  sources.
+
+  **A panel cannot choose its own picture** (`SP-100`). It names a `placeId` or a `dayId`, and the
+  image, credit and licence all come from that record — so a story cannot illustrate one place with
+  another's photograph, and a credit cannot drift from the file it belongs to.
+
+  **A documentary photograph gets a different panel from a place photograph** (`SP-101`), and this
+  is the part worth keeping. A place photograph is scenery: cropping it to fill a panel loses
+  nothing. Nzima's photograph is evidence — cropping changes what it shows, and a headline across
+  it is writing on the record. So it is shown whole on black, undarkened, with the photographer,
+  the people in the frame and the date beneath it, and the story text below that.
+  `NationalDaysScreen` already drew that line; the new screen must not quietly undo it.
+
+  **A bug that would have shipped a black screen.** The scroll was driven by
+  `Animated.event(…, {useNativeDriver: true})`. Measured in the browser: panel 1 at opacity 0.74,
+  **panels 2 through 9 at exactly 0** — the value never moves on web, so every interpolation clamps
+  to zero. A nine-panel showcase with one visible panel, and the first screenshot looked fine
+  because the first panel is the one that works. The rule that came out of it (`SP-103`): a surface
+  may decline to animate, never to render.
+
+  **The story tells the correction** (`SP-104`). This app holds Thando Sipuye's argument that the
+  familiar telling of 16 June erases the women who organised and marched, and summarises it
+  approvingly. The conventional version in the app's most visible feature would contradict its own
+  scholarship, so the last third names Sibongile Mkhabela, Winnie Motlalepula Kgware and Hermina
+  Leroke, and ends on Antoinette Sithole being a protester rather than only Hector's sister. A test
+  fails if those names go.
+
+  Also caught by looking rather than testing: the typographic beats had nothing giving them height
+  and read as gaps between pictures; and the floating back button was invisible behind the shell's
+  own nav. **269 tests**, typecheck clean, walked end to end in a browser.
+
 - **2026-09-19 (topics link to each other)** — Tumo asked for it in one line: *"mandela house to
   mandela and vilakazi street to mandela house."* Asked who decides that two topics are linked,
   Tumo chose **automatic name matching** over hand-authored rows, having been shown the risk that

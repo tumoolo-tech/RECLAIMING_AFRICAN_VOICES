@@ -305,6 +305,28 @@ for the thing this layer is actually about — somewhere you might travel to.
 - [ ] PAGE-06 **Longer stories.** Every place currently carries the 1–3 sourced sentences written
       for a sheet. The page has room for more, and each new claim needs its own source (T4)
 
+## Phase 11 — A story told by scrolling (2026-09-19)
+
+Tumo, pointing at the Rockstar GTA VI page: *"tell the story as you scroll up with pictures and the
+story."* Chose **Soweto, 16 June 1976**, **reveal-on-scroll** over pinned parallax, and **its own
+route**. Decisions: [docs/sim_plan.md §4.13](../docs/sim_plan.md).
+
+- [x] STORY-01 `content/stories.ts` — panels name a `placeId` or a `dayId` and never their own
+      image path, so the picture, credit and licence come from that record (SP-100)
+- [x] STORY-02 `RevealOnScroll` in `Motion.tsx` — rise-and-fade on entry, identical on web and
+      native. **Animates only once a scroll event has arrived** (SP-103): the first version left
+      panels 2–9 at opacity exactly 0 on web
+- [x] STORY-03 `StoryScrollScreen.tsx` — three panel shapes: place (cropped, darkened, headline
+      over), archival (whole, undarkened, caption beneath — SP-101), typographic (a pause)
+- [x] STORY-04 The `story` route + a card on Home. Nothing existing changed
+- [x] STORY-05 **Sam Nzima's photograph**, by Tumo's decision (SP-102), rendered under SP-101
+- [x] STORY-06 `stories.test.ts` — sources required · every panel's picture resolves and is
+      credited · a panel shows one picture, not two · the panel that shows a place links to that
+      place and no other · **the names Sipuye recovers cannot be edited out** (SP-104)
+
+- [ ] STORY-07 **More stories.** The shape is reusable — point it at another day, place or chapter.
+      Blocked on the same thing the linking layer is: prose. See PAGE-06
+
 ## Phase 10 — Topics link to each other (2026-09-19)
 
 Tumo: *"i want topics to be able to link to each other for examples mandela house to mandela and

@@ -8,17 +8,26 @@
 //
 // SO THE MOTION IS DELIBERATELY MODEST. Each panel rises and fades as it enters view
 // (`RevealOnScroll`), driven by interpolating scroll position against the panel's own measured
-// position. No sticky positioning and no scroll listener in JS, so web, Android and iOS behave
-// identically and the whole thing runs on the native driver.
+// position. No sticky positioning, no scroll hijacking, so web, Android and iOS behave identically.
 //
-// THE PHOTOGRAPHS ARE NOT THIS FILE'S TO CHOOSE. A panel names a `placeId`; the photograph, its
-// credit and its licence all come from that place's own record. A story therefore cannot
-// illustrate one place with another's picture, and a credit cannot drift from the file it belongs
-// to (SP-086, SP-087). Panels with no `placeId` are type on black — a beat, not a gap.
+// THE PHOTOGRAPHS ARE NOT THIS FILE'S TO CHOOSE. A panel names a `placeId` or a `dayId`; the
+// image, its credit and its licence all come from that record. A story therefore cannot illustrate
+// one place with another's picture, and a credit cannot drift from the file it belongs to
+// (SP-086, SP-087). A panel naming neither is type on black — a beat, not a gap.
+//
+// THREE PANEL SHAPES, AND THE THIRD IS THE POINT OF THE OTHER TWO:
+//
+//   place       a licensed photograph, cropped to fill, darkened from the text side so a headline
+//               can sit on it. Scenery: cropping loses nothing.
+//   archival    a documentary photograph, shown WHOLE on black, never cropped and never darkened,
+//               with its caption below and the story text below that. Evidence: cropping changes
+//               what it shows, and a headline across it would be writing on the record.
+//   typographic no picture. A pause, given enough height to read as one.
 //
 // CREDIT RENDERS ON EVERY PHOTOGRAPH, not in a credits screen at the end. CC BY attribution is a
-// licence obligation and a credit nobody scrolls to is not attribution (SP-087). On a screen built
-// to be beautiful that is a real cost in pixels, and it is not negotiable.
+// licence obligation and a credit nobody scrolls to is not attribution (SP-087). For the archival
+// photograph the credit is stronger still — it names the photographer, the people in the frame and
+// the date, because for that picture the caption is part of what the picture means.
 
 import React, { useRef, useState } from "react";
 import { View, Text, StyleSheet, Animated, useWindowDimensions } from "react-native";
@@ -28,6 +37,7 @@ import { Screen, Icon } from "../ui";
 import { PressScale, RevealOnScroll } from "./Motion";
 import { placeById } from "../content/places";
 import { placeImage } from "../content/place-images";
+import { nationalDays } from "../content/national-days";
 import type { Story, StoryPanel } from "../content/stories";
 import type { ContentRef } from "../content/topic-links";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
@@ -70,6 +80,34 @@ function Panel({
   const place = panel.placeId ? placeById(panel.placeId) : undefined;
   const img = placeImage(place?.image?.file);
   const height = Math.max(420, Math.min(viewportHeight * 0.82, 720));
+
+  // An ARCHIVAL photograph — Sam Nzima's, by Tumo's decision. Its own panel shape, because it is
+  // a different kind of picture: evidence rather than scenery. Shown whole on black, never
+  // cropped to fill, never darkened under a headline, with the caption and credit under it and
+  // the story text below that. Both come from `national-days.ts` so neither can be retyped wrong.
+  const day = panel.dayId ? nationalDays.find((d) => d.id === panel.dayId) : undefined;
+  if (day?.image && day.imageCredit) {
+    return (
+      <RevealOnScroll scrollY={scrollY} viewportHeight={viewportHeight} live={live} style={s.panelWrap}>
+        <View style={[s.archival, { minHeight: Math.min(viewportHeight * 0.52, 460) }]}>
+          <ExpoImage
+            source={day.image}
+            style={s.archivalImg}
+            contentFit="contain"
+            transition={260}
+            cachePolicy="disk"
+            accessibilityLabel={day.imageCredit}
+          />
+        </View>
+        <Text style={s.archivalCredit}>{day.imageCredit}</Text>
+        <View style={s.copyBare}>
+          <Text style={s.kicker}>{panel.kicker}</Text>
+          <Text style={s.headline}>{panel.headline}</Text>
+          <Text style={s.body}>{panel.body}</Text>
+        </View>
+      </RevealOnScroll>
+    );
+  }
 
   return (
     <RevealOnScroll scrollY={scrollY} viewportHeight={viewportHeight} live={live} style={s.panelWrap}>
@@ -257,6 +295,19 @@ const s = StyleSheet.create({
   credit: {
     position: "absolute", right: spacing.md, bottom: spacing.sm,
     color: "rgba(255,255,255,0.5)", fontFamily: fonts.body, fontSize: 10,
+  },
+
+  // Archival: black field, whole photograph, no gradient. The credit sits UNDER it as a caption
+  // rather than floating in a corner — for a documentary photograph the caption is part of the
+  // picture's meaning, not decoration on top of it.
+  archival: {
+    borderRadius: radius.lg, overflow: "hidden", backgroundColor: "#000",
+    borderWidth: 1, borderColor: colors.line, justifyContent: "center",
+  },
+  archivalImg: { width: "100%", height: "100%" },
+  archivalCredit: {
+    color: colors.muted, fontFamily: fonts.body, fontSize: 11, lineHeight: 17,
+    marginTop: spacing.sm, maxWidth: 640,
   },
 
   sources: {

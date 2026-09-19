@@ -4,6 +4,8 @@ import { stories, sowetoStory, storyById } from "./stories.ts";
 import { places } from "./places.ts";
 import { articles } from "./articles.ts";
 import { CONTENT_KINDS } from "./topic-links.ts";
+import { TOPICS } from "./topics.generated.ts";
+import { readFileSync } from "node:fs";
 
 // A scroll-told story is the most persuasive surface in the app and therefore the most dangerous
 // one: nobody fact-checks a caption under a beautiful photograph. These tests exist because that
@@ -53,6 +55,37 @@ test("a panel's photograph is a REAL place's own photograph, never one borrowed 
         `${story.id}/${p.id} points at ${p.placeId}, which has no licensed photograph — ` +
           `the panel would silently lose its picture`,
       );
+    }
+  }
+});
+
+test("an archival panel names a real day, and that day has both an image and a credit", () => {
+  // The archival branch renders only when BOTH exist. If a `dayId` resolved to a day with no
+  // image, or an image with no credit, the panel would silently fall through to the place branch
+  // and render as a typographic beat — losing Sam Nzima's photograph without any error.
+  //
+  // Checked against TOPICS rather than national-days.ts, which cannot be imported here: it
+  // `require()`s image binaries (SP-032). topics.generated.test.ts independently proves TOPICS
+  // faithful to the source, so this is a real check rather than a convenient one.
+  const days = new Set(TOPICS.filter((t) => t.kind === "day").map((t) => t.id));
+  for (const story of stories) {
+    for (const p of story.panels) {
+      if (!p.dayId) continue;
+      assert.ok(days.has(p.dayId), `${story.id}/${p.id} names day "${p.dayId}", which does not exist`);
+      const src = readFileSync(new URL("./national-days.ts", import.meta.url), "utf8");
+      const block = src.slice(src.indexOf(`id: "${p.dayId}"`));
+      const next = block.search(/\n {4}id: "/);
+      const record = next === -1 ? block : block.slice(0, next);
+      assert.match(record, /image: require\(/, `day "${p.dayId}" has no image — the panel would lose its photograph`);
+      assert.match(record, /imageCredit:/, `day "${p.dayId}" has an image with no credit — it would render uncredited`);
+    }
+  }
+});
+
+test("a panel shows one picture, not two", () => {
+  for (const story of stories) {
+    for (const p of story.panels) {
+      assert.ok(!(p.placeId && p.dayId), `${story.id}/${p.id} names both a place and a day`);
     }
   }
 });

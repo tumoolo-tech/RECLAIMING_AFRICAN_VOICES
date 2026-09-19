@@ -60,7 +60,7 @@ exists ([doc 15 §2](15-heritage-tourism-plan.md#2-what-already-exists-do-not-re
 | Tests | **202 passing**, `npm run typecheck` clean · was 179 at the start of this phase |
 | Live in the app | **49 sourced places across 18 of 19 cities** · 2 story→place links · **0 experiences** |
 | CI gate | [pr-checks.yml](../.github/workflows/pr-checks.yml) — typecheck + tests on every PR into `main` |
-| Decisions | 12 inherited · 87 registered |
+| Decisions | 12 inherited · 92 registered |
 | **Not closed** | **TOUR-10** — a11y labels are written and confirmed in the accessibility tree, but there has been no audit with a real screen reader. Gate B's screen-reader line is open |
 | Waiting on you | The 3 access-restricted places · ~14 `[VERIFY]` sources · the 4 conflated strings · Thulamela's city · the team-size line in the pitch |
 
@@ -253,6 +253,21 @@ would assert connections nobody checked". Also chose: links **written once and s
 | **SP-097** | **No kind may be a link target before it has a route.** `article`, `day` and `journey` are indexed as *sources* only; a test fails any link pointing at them | A chip that looks tappable and does nothing is worse than no chip — the same reasoning SP-017 used to invent `alsoListedIn` | Proposed |
 | **SP-098** | **`openRef` is one `as Route` cast, and the safety is bought back by a test over `App.tsx` read as text** | Adding a `case` per kind would re-approach the recursion trap SP-085 describes. A `Record<string, string \| undefined>` narrows nothing, exactly as `ATLAS_ROOMS` is a `Set<string>` for the same reason, and `navigateTo` already casts at App.tsx:239. The test is **stronger than the cast** — it checks the mapped route exists *and carries an id*, which the cast does not | Proposed |
 | **SP-099** | **`place-links.ts` is renamed to `topic-links.ts`, not duplicated**, with `placesForContent`/`contentForPlace` kept as narrow bound wrappers | Its own header says why it exists: "one table, not a field on nine content files". A second table regresses against that. Keeping the two narrow wrappers makes the rename an import-path-only change for `VisitPanel` and `ArticleReader`, so the commit carries no behaviour | Proposed |
+
+### 4.13 Phase 11 — a story told by scrolling
+
+Tumo, 2026-09-19, pointing at the Rockstar GTA VI page: *"i want to introduce one feature as a
+demo … where we tell the story as you scroll up with pictures and the story."* Chose **Soweto,
+16 June 1976**, **reveal-on-scroll** over pinned parallax, and **its own route** rather than
+replacing the home page.
+
+| # | Decision | Why | Status |
+|---|----------|-----|--------|
+| **SP-100** | **A panel names a `placeId` or a `dayId`; it never carries its own image path.** The picture, its credit and its licence all come from that record | A story file choosing its own images is a story file that can illustrate one place with another's photograph, and a credit that can drift from the file it belongs to. Naming the record makes both impossible rather than merely discouraged (follows SP-086, SP-087) | Proposed |
+| **SP-101** | **A documentary photograph gets a different panel from a place photograph.** Archival: shown WHOLE on black, never cropped, never darkened, caption beneath, story text below that. Place: cropped to fill, darkened from the text side so a headline can sit on it | A place photograph is scenery and cropping it loses nothing. A documentary photograph is evidence: cropping changes what it shows, and a headline across it is writing on the record. `NationalDaysScreen` already draws this line (`contentFit="contain"` when `imageCredit` is set) and the story screen must not quietly undo it | Proposed |
+| **SP-102** | **Sam Nzima's photograph of Hector Pieterson MAY be used on the story screen** — Tumo, 2026-09-19, asked directly | It is the defining image of the day and the app already ships it, credited, on the National Days screen. It is also rights-encumbered press photography, so widening its use is a decision to take in the open rather than inside a feature. Recorded here so the next person knows it was asked and answered, not assumed. Rendered under SP-101 with the photographer, the people in the frame and the date | Locked |
+| **SP-103** | **`RevealOnScroll` animates only once a scroll event has demonstrably ARRIVED** | Not defensive coding. The first version drove the value with `Animated.event(…, {useNativeDriver: true})`; measured in a browser, panel 1 sat at opacity 0.74 and panels 2–9 at exactly **0**. The value never moves on web, so every interpolation clamps to zero — a nine-panel showcase with one visible panel, and it looked correct in the first screenshot because the first panel is the one that works. The rule that falls out: a surface may decline to animate, never to render | Proposed |
+| **SP-104** | **The Soweto story tells the correction, not the conventional account** — the last third names Sibongile Mkhabela, Winnie Motlalepula Kgware, Hermina Leroke, and Antoinette Sithole as a protester | The app holds `herstory-soweto-erasure` (Thando Sipuye, Pambazuka News) and summarises it approvingly: the familiar telling of 16 June is remembered through a small cast of male student leaders while the women who organised, marched, hid the students and were shot sit at the edges. Telling the standard version in the most visible feature in the app would have it contradict its own scholarship. A test fails if the names are edited out, and says why | Proposed |
 
 ---
 

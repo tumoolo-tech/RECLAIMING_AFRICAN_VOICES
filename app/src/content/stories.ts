@@ -34,6 +34,14 @@ export type StoryPanel = {
   /** → `places.ts`. The renderer takes the photograph, credit and licence from that record, so
    *  they cannot drift apart. Omit for a typographic beat. */
   placeId?: string;
+  /** → `national-days.ts`, for an ARCHIVAL photograph rather than a place's own.
+   *
+   *  A different kind of picture and therefore a different kind of panel. A place photograph is
+   *  scenery: cropping it to fill a panel loses nothing. A documentary photograph of a historical
+   *  moment is evidence, and cropping it changes what it shows — so the renderer letterboxes it
+   *  whole, does not darken it under text, and sets the story text below rather than across it.
+   *  `NationalDaysScreen` already draws the same distinction, and for the same reason. */
+  dayId?: string;
   /** Optional: the topic this beat is about, so a reader can leave the story and go deeper. */
   ref?: ContentRef;
 };
@@ -104,6 +112,7 @@ export const sowetoStory: Story = {
       kicker: "The photograph",
       headline: "Eighteen carrying twelve",
       body: "Sam Nzima photographed eighteen-year-old Mbuyisa Makhubu carrying the mortally wounded twelve-year-old Hector Pieterson, with Antoinette Sithole running alongside. It ran in the world's newspapers. Nzima lived for years under police surveillance, and Makhubu fled into an exile he never returned from.",
+      dayId: "youth-day",
     },
     {
       id: "regina-mundi",
