@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TextProps, StyleSheet } from "react-native";
 import { colors, fonts, type } from "../theme/tokens";
 
-// Typography primitives — the ONLY way to render text in Maloba. Every page uses these instead of
+// Typography primitives — the ONLY way to render text in Ubuntu Heritage. Every page uses these instead of
 // raw <Text> + fontFamily, so the type system (Anton display + Barlow body) and the brief's colours
 // stay identical everywhere, including any new page. Pass `onDark` on immersive/dark surfaces (the
 // Reader) to flip text to cream; default is the cream-paper world (navy text). See src/ui/README.md.
