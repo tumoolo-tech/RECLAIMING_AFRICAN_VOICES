@@ -28,4 +28,10 @@ export const TOPIC_ALIASES: AliasTable = {
   // "Mandela House" and "Winnie Madikizela-Mandela" are longer surfaces and claim their own
   // characters first.
   "president:mandela": ["Mandela"],
+
+  // Found by the "near misses" section of `npm run check:topic-links`, not by guessing: Kgalema
+  // Motlanthe's record says "After Mbeki's resignation, until the 2009 election". Unambiguous —
+  // Thabo Mbeki is the only Mbeki in the index, which is the test the report applies before
+  // suggesting a surname at all.
+  "president:mbeki": ["Mbeki"],
 };

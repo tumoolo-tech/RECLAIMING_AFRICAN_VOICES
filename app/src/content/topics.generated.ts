@@ -1,7 +1,7 @@
 // GENERATED FILE — do not edit by hand. Regenerate: npm run gen:topics
 //
 // Every topic that can be linked to or from, and every MENTION found by scanning one topic's prose
-// for another topic's name. 87 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 10) · 35 mentions.
+// for another topic's name. 87 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 10) · 36 mentions.
 //
 // WHY A FILE RATHER THAN A RUNTIME SCAN (SP-092): six content registries `require()` image
 // binaries, so reading them needs `node:fs`, which cannot ship in the React Native bundle.
@@ -137,6 +137,7 @@ export const MENTIONS: Mention[] = [
   { from: { kind: "president", id: "mandela" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
   { from: { kind: "president", id: "mbeki" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "president", id: "motlanthe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "president", id: "motlanthe" }, to: { kind: "president", id: "mbeki" }, surface: "Mbeki" },
   { from: { kind: "president", id: "zuma" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "president", id: "de-klerk" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "hero", id: "sobukwe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
