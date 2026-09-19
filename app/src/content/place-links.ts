@@ -46,7 +46,7 @@ export type ContentRef = { kind: ContentKind; id: string };
  *  place? Mandela → Vilakazi Street is direct; mathematics → an Egyptian site is thematic. The two
  *  MUST render differently (SP-041): a direct link may say "visit this", a thematic one may only say
  *  "related". Collapsing them would let the app imply that standing somewhere puts you where the
- *  history happened when it does not — the invented-heritage failure AGENTS.md §4 exists to prevent,
+ *  history happened when it does not — the invented-heritage failure AGENTS.md §2 exists to prevent,
  *  arrived at through layout rather than prose. When a link is arguable, it is thematic. */
 export type PlaceRelation = "direct" | "thematic";
 

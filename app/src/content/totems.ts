@@ -1,7 +1,7 @@
 // Totems & Clans — "The Zoo-Cosmological Constitution": Southern African totemism, lineage fission and
 // indigenous socio-ecological governance. A Cultural Atlas compendium rendered on the sidebar layout.
 //
-// GROUNDING (humanities-grounding skill + AGENTS.md §4): every claim traces to a published source or is
+// GROUNDING (humanities-grounding skill + AGENTS.md §2): every claim traces to a published source or is
 // framed openly as oral tradition. Per the project's integrity choice we DO NOT use grokipedia; the
 // citations below are reputable ethnographic/academic/heritage sources. Oral genesis stories are
 // presented AS oral tradition — how the communities themselves carry them — not as settled fact.
