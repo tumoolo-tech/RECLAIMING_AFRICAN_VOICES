@@ -20,7 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Screen, Icon } from "../ui";
 import { places, type Place } from "../content/places";
 import { placeImage } from "../content/place-images";
-import { contentForPlace } from "../content/place-links";
+import { contentForPlace } from "../content/topic-links";
 import { PlaceBody, kindLabel } from "./PlaceBody";
 import { PressScale } from "./Motion";
 import { colors, spacing, radius, fonts, type } from "../theme/tokens";

@@ -42,7 +42,7 @@
 
 import { places } from "../src/content/places.ts";
 import { experiences, resolveBookableAt } from "../src/content/experiences.ts";
-import { PLACE_LINKS, resolveCitiesWithPlaces } from "../src/content/place-links.ts";
+import { PLACE_LINKS, resolveCitiesWithPlaces } from "../src/content/topic-links.ts";
 
 const TIMEOUT_MS = 10_000;
 const POLITE_MS = 750;
@@ -112,7 +112,13 @@ function inventory() {
   const unverified = experiences.filter((e) => e.status === "unverified").length;
   const dead = experiences.filter((e) => e.status === "dead").length;
   const bookablePlaces = places.filter((p) => resolveBookableAt(p.id, experiences).length > 0).length;
-  const linkedPlaceIds = new Set(PLACE_LINKS.map((l) => l.placeId));
+  // A link is now `from`/`to` rather than `ref`/`placeId` (SP-099), and a place can sit on either
+  // end — place→place links exist. Count both sides, or the tally silently under-reports.
+  const linkedPlaceIds = new Set(
+    PLACE_LINKS.flatMap((l) => [l.from, l.to])
+      .filter((r) => r.kind === "place")
+      .map((r) => r.id),
+  );
   return {
     places: places.length,
     cities: resolveCitiesWithPlaces(places).length,

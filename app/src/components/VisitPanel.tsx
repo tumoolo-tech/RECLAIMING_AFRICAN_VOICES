@@ -17,7 +17,7 @@
 
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { placesForContent, type ContentRef, type LinkedPlace } from "../content/place-links";
+import { placesForContent, type ContentRef, type LinkedPlace } from "../content/topic-links";
 import { bookableAtPlace } from "../content/experiences";
 import type { Experience } from "../content/experiences";
 import type { Place } from "../content/places";
