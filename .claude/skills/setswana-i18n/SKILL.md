@@ -1,11 +1,11 @@
 ---
 name: setswana-i18n
-description: Maloba's multilingual + Setswana guidance. Use WHENEVER adding/editing UI strings, the i18n layer, language toggle, or any Setswana/other South African language content. Strings are data, not hardcoded. Accessibility & Inclusivity is 20% of the score; indigenous languages are first-class, not bolted on.
+description: Ubuntu Heritage's multilingual + Setswana guidance. Use WHENEVER adding/editing UI strings, the i18n layer, language toggle, or any Setswana/other South African language content. Strings are data, not hardcoded. Accessibility & Inclusivity is 20% of the score; indigenous languages are first-class, not bolted on.
 ---
 
 # Setswana & i18n — languages are first-class, strings are data
 
-Maloba ships **Setswana + English** and is architected to extend to all eleven spoken official SA languages (the twelfth, South African Sign Language, needs captions and signed video, not strings).
+Ubuntu Heritage ships **Setswana + English** and is architected to extend to all eleven spoken official SA languages (the twelfth, South African Sign Language, needs captions and signed video, not strings).
 (See [docs/07-accessibility.md](../../../docs/07-accessibility.md).)
 
 ## Rules
@@ -24,7 +24,7 @@ Maloba ships **Setswana + English** and is architected to extend to all eleven s
 
 ## Naming & cultural terms (keep authentic)
 
-- Project name **Maloba** = "yesterday" (Setswana). Tagline *Mantswe a maloba* = "Voices of Yesterday".
+- Working name **Maloba** = "yesterday" (Setswana); the product is **Ubuntu Heritage** since 2026-07-03. Tagline *Mantswe a maloba* = "Voices of Yesterday".
 - Keep indigenous terms in their language with a short gloss on first use (e.g. *inkundla* — the
   traditional Xhosa court; *ubulungisa* — justice; *izimbongi* — praise poets; *sangoma* — healer).
   Don't over-translate culturally specific words into flat English.
