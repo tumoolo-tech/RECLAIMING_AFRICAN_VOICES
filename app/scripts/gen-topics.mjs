@@ -27,6 +27,7 @@ import { fileURLToPath } from "node:url";
 import { findMentions } from "../src/content/topic-mentions.ts";
 import { TOPIC_ALIASES } from "../src/content/topic-aliases.ts";
 import { TOPIC_EXCLUSIONS } from "../src/content/topic-exclusions.ts";
+import { TOPIC_LINKS } from "../src/content/topic-links.ts";
 
 const appDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const contentDir = resolve(appDir, "src/content");
@@ -163,7 +164,21 @@ async function main() {
   // Dropped HERE rather than at render time, so the dead link is never in the data at all and no
   // future surface can resurrect it by forgetting to filter.
   const routable = new Set(topics.filter((t) => t.routable).map((t) => `${t.kind}:${t.id}`));
-  const mentions = all.filter((m) => routable.has(`${m.to.kind}:${m.to.id}`));
+
+  // A pair that is ALSO a curated link is dropped, in either orientation. The curated row carries
+  // an authored reason; the mention carries the bare words. Showing both says the same thing twice
+  // on one page, and the weaker one adds nothing. Dropped here rather than at render for the same
+  // reason as above: the redundancy never enters the data, so no future surface can reintroduce it.
+  const curated = new Set(
+    TOPIC_LINKS.flatMap((l) => [
+      `${l.from.kind}:${l.from.id}→${l.to.kind}:${l.to.id}`,
+      `${l.to.kind}:${l.to.id}→${l.from.kind}:${l.from.id}`,
+    ]),
+  );
+
+  const mentions = all.filter(
+    (m) => routable.has(`${m.to.kind}:${m.to.id}`) && !curated.has(`${m.from.kind}:${m.from.id}→${m.to.kind}:${m.to.id}`),
+  );
   const dropped = all.length - mentions.length;
 
   const next = render(topics, mentions);
@@ -172,7 +187,7 @@ async function main() {
   console.log(`→ topic index`);
   console.log(`  ✓ ${topics.length} topics · ${topics.filter((t) => t.routable).length} routable`);
   console.log(`  ✓ ${mentions.length} mentions`);
-  if (dropped) console.log(`  · ${dropped} dropped — target kind has no route yet (SP-097)`);
+  if (dropped) console.log(`  · ${dropped} dropped — no route for the target kind (SP-097), or superseded by a curated link`);
 
   if (next === prev) {
     console.log(`  · topics.generated.ts already current\n`);

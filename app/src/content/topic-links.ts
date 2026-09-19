@@ -128,6 +128,70 @@ export const TOPIC_LINKS: TopicLink[] = [
     relation: "direct",
     why: "The article is about the same uprising and the same photograph, arguing Antoinette Sithole is remembered as Hector's sister rather than as a protester in her own right.",
   },
+
+  // LINK-10, 2026-09-19. All `direct` under the §9 test — the event happened there, or the person
+  // lived, worked, was held or is buried there. Every `why` restates a fact already carried by the
+  // sourced prose of BOTH ends; nothing below adds a claim that was not already published and
+  // cited, which is what makes them safe to write without a new citation.
+  //
+  // DIRECT ONLY. SP-030 reserves thematic candidates for Tumo's approval one at a time, so the
+  // arguable ones are NOT here — they are listed in STATUS.md for a ruling, along with the
+  // `module:vilakazi → vilakazi-street` candidate parked since TOUR-05b.
+
+  {
+    from: { kind: "day", id: "youth-day" },
+    to: { kind: "place", id: "hector-pieterson-memorial" },
+    relation: "direct",
+    why: "Youth Day commemorates the Soweto Uprising of 16 June 1976, and this is the memorial to the schoolchildren killed on that march — it opened on 16 June 2002, near the place Hector Pieterson was shot.",
+  },
+  {
+    from: { kind: "president", id: "mandela" },
+    to: { kind: "place", id: "mvezo" },
+    relation: "direct",
+    why: "He was born here on 18 July 1918, and his umbilical cord is buried here in Xhosa tradition.",
+  },
+  {
+    from: { kind: "president", id: "mandela" },
+    to: { kind: "place", id: "qunu" },
+    relation: "direct",
+    why: "His mother brought the family here after his father's death; he described the childhood he spent here as the happiest part of his life, and he chose to be buried here.",
+  },
+  {
+    from: { kind: "president", id: "mandela" },
+    to: { kind: "place", id: "mandela-house" },
+    relation: "direct",
+    why: "He lived in this four-roomed house at 8115 Vilakazi Street from 1946, gave it to the Soweto Heritage Trust in 1997, and on his release described it as the centre point of his world.",
+  },
+  {
+    from: { kind: "president", id: "mandela" },
+    to: { kind: "place", id: "robben-island" },
+    relation: "direct",
+    why: "He was held here for eighteen of his twenty-seven years in prison.",
+  },
+  {
+    from: { kind: "president", id: "mandela" },
+    to: { kind: "place", id: "nelson-mandela-museum" },
+    relation: "direct",
+    why: "The museum is about his life, across three sites: the Bhunga Building in Mthatha, Qunu where he grew up, and Mvezo where he was born.",
+  },
+  {
+    from: { kind: "hero", id: "winnie" },
+    to: { kind: "place", id: "constitution-hill" },
+    relation: "direct",
+    why: "She was detained in this prison complex, as were Mahatma Gandhi, Nelson Mandela, Albertina Sisulu and Fatima Meer.",
+  },
+  {
+    from: { kind: "hero", id: "sobukwe" },
+    to: { kind: "place", id: "robben-island" },
+    relation: "direct",
+    why: "He was held here in isolation under the General Law Amendment Act clause written for him alone and renewed yearly — the provision that became known as the Sobukwe clause.",
+  },
+  {
+    from: { kind: "module", id: "mhudi" },
+    to: { kind: "place", id: "sol-plaatje-house" },
+    relation: "direct",
+    why: "Sol Plaatje, who wrote Mhudi, lived in this house on Angel Street from 1927 until his death in 1932; it is now a museum and a library of African literature.",
+  },
 ];
 
 /** The old name. `check-place-links.mjs` imports this. */

@@ -1,7 +1,7 @@
 // GENERATED FILE — do not edit by hand. Regenerate: npm run gen:topics
 //
 // Every topic that can be linked to or from, and every MENTION found by scanning one topic's prose
-// for another topic's name. 87 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 10) · 36 mentions.
+// for another topic's name. 87 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 10) · 26 mentions.
 //
 // WHY A FILE RATHER THAN A RUNTIME SCAN (SP-092): six content registries `require()` image
 // binaries, so reading them needs `node:fs`, which cannot ship in the React Native bundle.
@@ -113,34 +113,24 @@ export const TOPICS: Topic[] = [
 ];
 
 export const MENTIONS: Mention[] = [
-  { from: { kind: "place", id: "robben-island" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
-  { from: { kind: "place", id: "constitution-hill" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
   { from: { kind: "place", id: "constitution-hill" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "module", id: "vilakazi" }, surface: "Inkondlo kaZulu" },
   { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "place", id: "mandela-house" }, surface: "Mandela House" },
   { from: { kind: "place", id: "mandela-house" }, to: { kind: "place", id: "vilakazi-street" }, surface: "Vilakazi Street" },
-  { from: { kind: "place", id: "mandela-house" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "place", id: "regina-mundi-church" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
-  { from: { kind: "place", id: "sol-plaatje-house" }, to: { kind: "module", id: "mhudi" }, surface: "Mhudi" },
   { from: { kind: "place", id: "route-67" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
-  { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
   { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "place", id: "qunu" }, surface: "Qunu" },
-  { from: { kind: "place", id: "mvezo" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
-  { from: { kind: "place", id: "qunu" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "place", id: "naval-hill" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "place", id: "mafikeng-museum" }, to: { kind: "module", id: "mhudi" }, surface: "Mhudi" },
   { from: { kind: "president", id: "mandela" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
-  { from: { kind: "president", id: "mandela" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "president", id: "mandela" }, to: { kind: "president", id: "de-klerk" }, surface: "F.W. de Klerk" },
-  { from: { kind: "president", id: "mandela" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
   { from: { kind: "president", id: "mbeki" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "president", id: "motlanthe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "president", id: "motlanthe" }, to: { kind: "president", id: "mbeki" }, surface: "Mbeki" },
   { from: { kind: "president", id: "zuma" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "president", id: "de-klerk" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
-  { from: { kind: "hero", id: "sobukwe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "hero", id: "winnie" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "day", id: "freedom-day" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "day", id: "mandela-day" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },

@@ -72,17 +72,30 @@ test("mentions of other topics entirely are not this topic's business", () => {
 
 test("Tumo's two examples both work, in both directions", () => {
   // The literal ask: "mandela house to mandela and vilakazi street to mandela house".
-  const street = relatedTo({ kind: "place", id: "vilakazi-street" });
-  const names = (r: typeof street) => r.mentions.map((m) => m.topic.name);
-  assert.ok(names(street).includes("Mandela House"), "vilakazi-street → mandela-house");
+  //
+  // Checked across BOTH tiers on purpose. Which tier serves a link is an editorial detail that
+  // changes as curated rows are written — `mandela-house → Nelson Mandela` began as a derived
+  // mention and became a curated link with a reason. A test that watched only one tier would have
+  // gone red on an improvement, which is a test measuring the wrong thing.
+  const names = (ref: ContentRef) => {
+    const r = relatedTo(ref);
+    return [...r.curated.map((c) => c.topic.name), ...r.mentions.map((m) => m.topic.name)];
+  };
 
-  const house = relatedTo({ kind: "place", id: "mandela-house" });
-  assert.ok(names(house).includes("Nelson Mandela"), "mandela-house → mandela");
-  assert.ok(names(house).includes("Vilakazi Street"), "mandela-house → vilakazi-street");
+  assert.ok(
+    names({ kind: "place", id: "vilakazi-street" }).includes("Mandela House"),
+    "vilakazi-street → mandela-house",
+  );
 
-  // And the half nobody wrote: his page knows about the house.
-  const mandela = relatedTo({ kind: "president", id: "mandela" });
-  assert.ok(names(mandela).includes("Mandela House"), "mandela ← mandela-house, derived");
+  const house = names({ kind: "place", id: "mandela-house" });
+  assert.ok(house.includes("Nelson Mandela"), "mandela-house → mandela");
+  assert.ok(house.includes("Vilakazi Street"), "mandela-house → vilakazi-street");
+
+  // And the reverse, which nobody wrote for his page: it is derived either way.
+  assert.ok(
+    names({ kind: "president", id: "mandela" }).includes("Mandela House"),
+    "mandela ← mandela-house, derived from a single stored row",
+  );
 });
 
 test("no topic shows the same other topic twice, anywhere in the real data", () => {
