@@ -8,6 +8,8 @@ import { colors, spacing, radius, fonts, type } from "../theme/tokens";
 import { t } from "../i18n";
 import type { LangCode } from "../i18n";
 import { PressScale } from "./Motion";
+import { RelatedTopics } from "./RelatedTopics";
+import type { ContentRef } from "../content/topic-links";
 import { SideIndexScroll } from "./SideIndexScroll";
 import { FeatureEntry } from "./FeatureEntry";
 import { Journey } from "./Journey";
@@ -208,7 +210,7 @@ export function PresidentsScreen({ onBack, onOpen, lang }: { onBack: () => void;
 }
 
 // ---------- Detail ----------
-export function PresidentScreen({ president, onBack, onArchive, lang }: { president: President; onBack: () => void; onArchive?: () => void; lang: LangCode }) {
+export function PresidentScreen({ president, onBack, onArchive, onOpenRef, lang }: { president: President; onBack: () => void; onArchive?: () => void; onOpenRef?: (ref: ContentRef) => void; lang: LangCode }) {
   const p = president;
   const hist = p.era === "pre1994";
   const card = leaderCards[p.id];
@@ -312,6 +314,10 @@ export function PresidentScreen({ president, onBack, onArchive, lang }: { presid
           <Icon.ChevronRight size={20} color={colors.gold} />
         </PressScale>
       ) : null}
+
+      {/* The other half of a link written once: nothing here was authored for this page — every
+          row is derived from prose that already named him (SP-091). */}
+      {onOpenRef ? <RelatedTopics refTo={{ kind: "president", id: p.id }} lang={lang} onOpenRef={onOpenRef} /> : null}
 
       {p.sources ? (
         <View style={s.srcNote}>

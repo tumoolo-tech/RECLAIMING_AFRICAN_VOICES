@@ -377,7 +377,7 @@ export default function App() {
         return <PresidentsScreen onBack={back} onOpen={(id) => push({ name: "president", id })} lang={lang} />;
       case "president": {
         const pr = presidentById(route.id);
-        return pr ? <PresidentScreen president={pr} onBack={back} onArchive={() => push({ name: "archive" })} lang={lang} /> : null;
+        return pr ? <PresidentScreen president={pr} onBack={back} onArchive={() => push({ name: "archive" })} onOpenRef={openRef} lang={lang} /> : null;
       }
       case "days":
         return <NationalDaysScreen onBack={back} lang={lang} />;
@@ -387,7 +387,7 @@ export default function App() {
         return <HeroesScreen onBack={back} onOpen={(id) => push({ name: "hero", id })} lang={lang} />;
       case "hero": {
         const h = heroById(route.id);
-        return h ? <HeroScreen hero={h} onBack={back} lang={lang} /> : null;
+        return h ? <HeroScreen hero={h} onBack={back} onOpenRef={openRef} lang={lang} /> : null;
       }
       // ── The v2 rooms ──
       case "watch":

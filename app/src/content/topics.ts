@@ -60,15 +60,31 @@ export function resolveRelated(
   // is a better statement than the bare words, and showing both would say the same thing twice.
   const alreadyCurated = new Set(curated.map((c) => key(c.topic)));
 
+  // A MUTUAL pair is two records — Vilakazi Street names Mandela House and Mandela House names
+  // Vilakazi Street — and rendering both would put the same topic under "Also mentioned here" AND
+  // "Mentioned in" on one page. To a reader that is the same link printed twice, and it reads as a
+  // bug. Outgoing wins: those are the words on THIS page, which the reader can see for themselves,
+  // and the heading is therefore the one that tells the truth without asking them to take it on
+  // trust. Sorting outgoing first is what makes the first-seen-wins dedupe below deterministic.
+  const mine = mentions
+    .map((m) => {
+      const isOut = key(m.from) === me;
+      if (!isOut && key(m.to) !== me) return null;
+      const direction: RelatedMention["direction"] = isOut ? "out" : "in";
+      return { other: isOut ? m.to : m.from, surface: m.surface, direction };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null)
+    .sort((a, b) => (a.direction === "out" ? 0 : 1) - (b.direction === "out" ? 0 : 1));
+
   const out: RelatedMention[] = [];
-  for (const m of mentions) {
-    const isOut = key(m.from) === me;
-    const isIn = key(m.to) === me;
-    if (!isOut && !isIn) continue;
-    const other = isOut ? m.to : m.from;
-    if (alreadyCurated.has(key(other))) continue;
-    const topic = lookup.get(key(other));
-    if (topic) out.push({ topic, surface: m.surface, direction: isOut ? "out" : "in" });
+  const shown = new Set<string>();
+  for (const m of mine) {
+    const k = key(m.other);
+    if (alreadyCurated.has(k) || shown.has(k)) continue;
+    const topic = lookup.get(k);
+    if (!topic) continue;
+    shown.add(k);
+    out.push({ topic, surface: m.surface, direction: m.direction });
   }
 
   return { curated, mentions: out };

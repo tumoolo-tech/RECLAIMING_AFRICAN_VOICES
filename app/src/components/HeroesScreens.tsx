@@ -8,6 +8,8 @@ import { t } from "../i18n";
 import type { LangCode } from "../i18n";
 import { SideIndexScroll } from "./SideIndexScroll";
 import { FeatureEntry } from "./FeatureEntry";
+import { RelatedTopics } from "./RelatedTopics";
+import type { ContentRef } from "../content/topic-links";
 
 // Heroes of the Nation — South Africans, men and women, who gave something to the country's freedom
 // and dignity. Grounded, cited content in src/content/heroes.ts (humanities-grounding rule); contested
@@ -154,7 +156,7 @@ export function HeroesScreen({ onBack, onOpen, lang }: { onBack: () => void; onO
 }
 
 // ---------- Detail ----------
-export function HeroScreen({ hero, onBack, lang }: { hero: Hero; onBack: () => void; lang: LangCode }) {
+export function HeroScreen({ hero, onBack, onOpenRef, lang }: { hero: Hero; onBack: () => void; onOpenRef?: (ref: ContentRef) => void; lang: LangCode }) {
   const h = hero;
   const life = h.life ?? [];
   const tiles: { label: string; value: string }[] = [];
@@ -226,6 +228,8 @@ export function HeroScreen({ hero, onBack, lang }: { hero: Hero; onBack: () => v
           <Text style={s.galleryNote}>{t(UI.galleryNote, lang)}</Text>
         </>
       ) : null}
+
+      {onOpenRef ? <RelatedTopics refTo={{ kind: "hero", id: h.id }} lang={lang} onOpenRef={onOpenRef} /> : null}
 
       {h.sources ? (
         <View style={s.srcNote}>
