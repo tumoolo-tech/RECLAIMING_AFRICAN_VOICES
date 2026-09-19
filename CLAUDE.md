@@ -1,36 +1,40 @@
-# CLAUDE.md — Claude Code context for Maloba
+# CLAUDE.md — Claude Code context for Ubuntu Heritage
 
-**Maloba** (Setswana: *"yesterday"*) is a cinematic, multilingual, offline-first app that brings
+**Ubuntu Heritage** (working name *Maloba*, Setswana for "yesterday"; renamed 2026-07-03) is a cinematic, multilingual, offline-first app that brings
 South Africa's foundational indigenous literature to life — built for the **AADHIH "Reclaiming African
 Voices" hackathon** (UNISA / BaobabX Academy). This file is the entry point for any Claude Code
 session on this project.
 
-> **Solo project.** The hackathon requires *individual* participation, so there are no multi-person
-> "lanes." One builder (Emma), one assistant (Claude). The shared contract is still
-> **[AGENTS.md](AGENTS.md)** + the live **[STATUS.md](STATUS.md)** board.
+> **Started solo, now a small team.** The hackathon required *individual* participation — one builder
+> (Tumo Olorato Mogame, credited in the README) with Claude as assistant. Since September 2026 two
+> more developers have write access and `main` requires a PR. The shared contract is
+> **[AGENTS.md](AGENTS.md)** + the live **[STATUS.md](STATUS.md)** board + **[STATUS-LOG.md](STATUS-LOG.md)**.
 
 ## Before doing anything
 
 1. Read **[STATUS.md](STATUS.md)** — the live board (done / in-progress / next). Read first, update last.
+   The dated history is in **[STATUS-LOG.md](STATUS-LOG.md)**; skim its top three entries.
 2. Read **[AGENTS.md](AGENTS.md)** — the working rules (grounding, honesty, ethics, git discipline).
 3. Skim **[docs/00-project-plan.md](docs/00-project-plan.md)** — phases and the real timeline.
 
 ## Project one-liner
 
-Maloba turns the works of **Sol Plaatje (*Mhudi*)**, **S.E.K. Mqhayi (*Ityala Lamawele*)**,
+Ubuntu Heritage turns the works of **Sol Plaatje (*Mhudi*)**, **S.E.K. Mqhayi (*Ityala Lamawele*)**,
 **Credo Mutwa (*Indaba, My Children*)** and **B.W. Vilakazi** into an interactive, cinematic graphic
 novel — with AI-generated visuals, dual Child/Adult reading modes, Setswana + English (and other SA
 languages), a community oral-history archive, and full POPIA compliance. It runs on **one Expo
 codebase** (web + Android + iOS) on a **100% free-tier** stack so it costs nothing to keep alive.
 
-## The stack (locked — see [docs/02-tech-stack.md](docs/02-tech-stack.md))
+## The stack (as shipped — see [docs/02-tech-stack.md](docs/02-tech-stack.md))
 
-Expo / React Native (one codebase → web + Android + iOS) · NativeWind (Tailwind) · Lottie ·
-**Pollinations.ai** (free cinematic image generation, URL-based) · **Google Gemini Flash** (narrative
-adaptation: Child/Adult tone, prompt engineering) · **ElevenLabs** (static cinematic intro narration
-only — quota-protected) · **Lelapa AI / Vulavula** (indigenous-language speech-to-text + translation,
-code-switching) · **Supabase** (Postgres + storage + auth, free tier) · **WatermelonDB** (offline-first
-local SQLite + sync).
+Expo / React Native (one codebase; **web is the shipped target**, native is partial — issue #44) ·
+`StyleSheet` + theme tokens (NativeWind and Lottie were planned and never adopted) ·
+**Pollinations.ai** + pre-rendered **Gemini** images (cached, labelled AI) · **Google Gemini** (the
+"Ask Ubuntu" chatbot; Claude optional) · **ElevenLabs** (Listen, English/Afrikaans only, cached) ·
+**Botlhale AI** (indigenous TTS, wired, awaiting a key) · **Lelapa AI / Vulavula** (indigenous STT,
+planned) · **Supabase** (anonymous auth + RLS + storage — the live community feed) · **Solana devnet**
+(the Heritage Ledger) · persistence is localStorage/IndexedDB on web, session-only on native
+(WatermelonDB was planned and never adopted).
 
 ## What Claude should and shouldn't do here
 
@@ -45,7 +49,8 @@ local SQLite + sync).
   than fabricate. This is the project's integrity rule — see [AGENTS.md §4](AGENTS.md).
 - **Don't:** collect a voice recording or any personal data without the POPIA consent flow. See
   [docs/05-popia-compliance.md](docs/05-popia-compliance.md).
-- **Don't:** burn paid API quota in dev. ElevenLabs is static-only; Gemini/Pollinations are free but
+- **Don't:** burn paid API quota in dev. ElevenLabs is runtime for English/Afrikaans only and every
+  clip is cached — never route an indigenous language to it; Gemini/Pollinations are free but
   rate-limited — cache aggressively.
 
 ## Real timeline (as of 2026-09-15)
@@ -65,9 +70,12 @@ ongoing work on `main`.
 
 Development did not stop at the deadline: work continued through 8 Jul, then again from 26 Aug to
 **30 Aug 2026** (Architecture v2, the Know the Road game layer, the ElevenLabs narration voice, and
-all 54 `countries/` files), and resumed on **12 Sep 2026** with docs-and-CI work only — VOICE-01–07
-planned but not built, and typecheck + unit tests now running on every PR into `main`. The last
-commit on `main` is 2026-09-12.
+all 54 `countries/` files). From **12 Sep 2026** the project runs as a small team on `main` with
+PR checks: Phase 7 heritage tourism (`TOUR-01–13`, 49 sourced places with licensed photographs),
+and the post-hackathon backlog from the 12 Sep audit — **40 issues ordered in
+[issue #58](https://github.com/tumoolo-tech/RECLAIMING_AFRICAN_VOICES/issues/58)**, scope decided
+**South Africa first** (continental issues parked). For what is current, read STATUS.md; for what
+happened, STATUS-LOG.md.
 
 Full phased plan: [docs/00-project-plan.md](docs/00-project-plan.md).
 

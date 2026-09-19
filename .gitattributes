@@ -27,3 +27,9 @@
 *.jpg  binary
 *.jpeg binary
 *.pdf  binary
+
+# STATUS-LOG.md is an append-at-top log: every PR inserts an entry at the same spot, so two open
+# PRs always conflict there. `merge=union` keeps BOTH sides' lines instead of stopping — safe for a
+# file where nobody edits old entries. STATUS.md (the board) is deliberately NOT listed: two people
+# changing the same board row is a real disagreement and should conflict.
+STATUS-LOG.md merge=union

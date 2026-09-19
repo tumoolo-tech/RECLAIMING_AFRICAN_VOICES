@@ -79,7 +79,7 @@ independently verifiable.
 **Sustainability.** The whole stack runs on **free-tier infrastructure at zero monthly cost**, so the
 platform can outlive the hackathon as a living, community-owned resource.
 
-**Engineering discipline.** Pure logic is unit-tested (85 tests under Node's test runner); the web
+**Engineering discipline.** Pure logic is unit-tested under Node's test runner (218 tests on 2026-09-19; `npm test` is the source of truth); the web
 build is verified green (`expo export`); the app is deployed on Vercel and a custom domain. The cloud
 community archive was verified **end-to-end on the live site** (a shared recording confirmed present
 in the database with readable audio).

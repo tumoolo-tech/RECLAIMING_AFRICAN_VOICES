@@ -178,7 +178,7 @@ async function main() {
   }
 
   const out = `// GENERATED FILE — do not edit by hand. Regenerate: (cd chain && npm run anchor)
-// On-chain provenance anchors for Maloba's public literary canon (Solana ${CLUSTER}). POPIA-safe:
+// On-chain provenance anchors for Ubuntu Heritage's adaptations of its literary canon (hashes of the app's modules, not the works — issue #34) (Solana ${CLUSTER}). POPIA-safe:
 // only a content hash + IPFS CID + public bibliographic data — never personal data.
 export type HeritageAnchor = {
   id: string;

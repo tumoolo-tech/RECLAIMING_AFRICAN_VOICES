@@ -35,7 +35,7 @@ already live for Botswana.*
 
 | Language | Status | Also spoken in SA? | Source |
 |---|---|---|---|
-| Setswana | National language; lingua franca, spoken by the vast majority | **Yes — the same language.** One of South Africa's eleven official languages (`tn`), spoken by over 6 million people there | Constitution of Botswana; Government of Botswana; narrative § *Linguistic Evolution* |
+| Setswana | National language; lingua franca, spoken by the vast majority | **Yes — the same language.** One of South Africa's twelve official languages (`tn`; eleven spoken plus Sign Language since 2023), spoken by over 6 million people there | Constitution of Botswana; Government of Botswana; narrative § *Linguistic Evolution* |
 | English | Official language | Yes — `en` | Constitution of Botswana; Government of Botswana |
 | Ikalanga | Minority language | No | narrative § *Ancestry* / app `country-languages.ts` |
 | Shekgalagari | Minority language, Bakgalagari | No | narrative § *Subaltern Narratives* |

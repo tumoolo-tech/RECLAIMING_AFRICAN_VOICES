@@ -40,12 +40,23 @@ export function sceneImageUrl(prompt: string, opts?: { w?: number; h?: number; s
 - **Honesty:** every generated image is labelled an *artistic interpretation*, never a historical
   photo or a real person (integrity rule).
 
-## 3. ElevenLabs — cinematic intro narration (static only)
+## 3. ElevenLabs — the Listen voice for English and Afrikaans (runtime, cached)
 
-**Job:** one emotive English (and one Setswana) intro line that plays on first open — the "wow" moment.
+*(Rewritten 2026-09-19. The June design — one static intro line, never at runtime — was overtaken on
+30 Aug 2026; EL-07 still wants that pre-rendered intro.)*
 
-- Generated **once, offline**, saved as mp3 in `assets/audio/`. **Never called at runtime** (10k
-  char/month cap). This preserves the cinematic quality without risking the quota during judging.
+**Job:** the Reader's **Listen** button for the two languages ElevenLabs can actually speak. Verified
+against `GET /v1/models`: of our eleven it covers **English and Afrikaans only**; none of the nine
+indigenous languages appears in any model, and it does not refuse them — it returns confident, wrong
+pronunciation. So `services/tts/select.ts` builds a per-language ladder: ElevenLabs (en/af) → Botlhale
+(the nine) → on-device speech (always, offline). `select.test.ts` asserts no indigenous language is
+ever routed to ElevenLabs.
+
+- Called at runtime; **every clip cached** (IndexedDB on web) on text + language + voice, so a passage
+  is synthesised once. One passage ≈ 800 of the starter tier's 40 000 characters/month.
+- Output `mp3_22050_32` — 6 KB a line rather than 34 KB, because a metered connection pays for it.
+- **The key is bundled to the client** (`EXPO_PUBLIC_ELEVENLABS_API_KEY`) — a paid account readable
+  by anyone who opens the site. Moving it behind a proxy is issue #43.
 
 ## 4. Lelapa AI / Vulavula — indigenous voice (speech → text, text → text)
 

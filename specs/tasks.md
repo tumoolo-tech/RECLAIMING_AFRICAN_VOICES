@@ -1,4 +1,4 @@
-# Tasks — Maloba backlog
+# Tasks — Ubuntu Heritage backlog
 
 `[ ]` todo · `[~]` in progress · `[x]` done. Keep this in sync with [STATUS.md](../STATUS.md). Tasks map
 to phases in [docs/00-project-plan.md](../docs/00-project-plan.md). Mark de-scopes in STATUS.md.
@@ -10,11 +10,11 @@ to phases in [docs/00-project-plan.md](../docs/00-project-plan.md). Mark de-scop
 - [x] T003 .claude settings + project skills
 - [x] T004 Concept-submission draft + this backlog
 - [x] T005 Expo app initialized (blank-typescript, SDK 56) + web support; type-check + web bundle green
-- [ ] T006 NativeWind wired (babel/metro/tailwind) — web + Expo Go parity verified  ← next
+- [x] ~~T006 NativeWind wired~~ — **dropped 2026-09-19: never adopted**; the app uses `StyleSheet` + theme tokens (docs/02)
 - [x] T007 Theme tokens (cinematic baobab-dusk palette, typography, spacing) in `src/theme/`
 - [x] T008 `services/pollinations.ts` + `SceneImage` (loading + graceful fallback; Lottie/cache in Phase 1)
 - [x] T009 `content/mhudi.ts` (2 grounded scenes) renders in `CinematicReader` (mode + language toggles)
-- [ ] T010 Commit Phase 0; STATUS.md updated
+- [x] T010 Commit Phase 0; STATUS.md updated — done 2026-06-29 (`36dcc70`, `42c9350`)
 
 ## Phase 1 — Story core (1–3 Jul)
 
@@ -24,11 +24,11 @@ to phases in [docs/00-project-plan.md](../docs/00-project-plan.md). Mark de-scop
 - [x] T014 Navigation (lightweight in-app state; gallery ↔ reader). Router lib optional later.
 - [~] T015 i18n layer + `LanguageToggle` — toggle works app-wide; dedicated `i18n/` strings file still TODO
 - [x] T016 `ModeToggle` (Child/Adult) wired to scene `text`/`childText`
-- [ ] T017 `services/gemini.ts` — author-time Child + translation drafts (cached into content) ← needs key
+- [ ] T017 `services/gemini.ts` — author-time Child + translation drafts — *superseded by `gen:drafts` / `gen:claude-drafts` (built, awaiting keys); see issue #38 for the review side*
 - [x] T018 `content/ityala-lamawele.ts` (virtual *inkundla*, grounded — 2 scenes)
 - [x] T019 `content/indaba.ts` (Ninavanhu-Ma / preservation, grounded — 2 scenes)
-- [ ] T020 "About the Sources" screen (credit authors + references) ← next
-- [ ] T021 Offline read verified (airplane mode) + images cached (expo-image)
+- [x] T020 "About the Sources" screen (credit authors + references) — done 2026-06-29 (`0f895ab`); rights per work added 2026-09-19 (#34)
+- [ ] T021 Offline read verified (airplane mode) + images cached — *images cached ✓; the aeroplane-mode check is PWA-05 / issue #57*
 
 ## Phase 2 — Community Archive + offline (4–6 Jul)
 
@@ -37,25 +37,25 @@ to phases in [docs/00-project-plan.md](../docs/00-project-plan.md). Mark de-scop
 - [~] T024 Local list UI done (session state); WatermelonDB persistence still TODO (survive reload)
 - [x] T025 Erasure: delete recording — one tap
 - [x] T026 ArchiveScreen (record · list · play · delete · rename)
-- [ ] T027 (stretch) Supabase tables + **RLS** + upload on consent/online ← needs key
-- [ ] T028 (stretch) `services/lelapa.ts` — Vulavula transcribe + store transcript ← needs key
-- [ ] T029 (stretch) WatermelonDB ↔ Supabase sync ← needs key
+- [x] T027 Supabase tables + **RLS** + upload on consent — live since July (`services/archive/cloud.ts`); moderation is #45
+- [ ] T028 Lelapa / Vulavula transcription — *tracked as issue #56*
+- [x] ~~T029 WatermelonDB ↔ Supabase sync~~ — **dropped 2026-09-19: WatermelonDB never adopted**; native persistence is issue #44
 
 ## Phase 3 — Polish + submit (7–9 Jul)
 
-- [ ] T030 Accessibility pass (contrast, text scaling, tap targets, data-saver)
-- [ ] T031 ElevenLabs intro narration — pre-rendered mp3 in `assets/audio/` (static)
-- [ ] T032 Lottie loading/transition polish
-- [ ] T033 4th module `content/vilakazi.ts` (if time)
-- [ ] T034 Record 2–3 min demo video to the shot list
-- [ ] T035 Finalise written narrative ([concept-submission.md](concept-submission.md))
-- [ ] T036 Grounding proofread — no `[NEEDS SOURCE]` remains
-- [ ] T037 **SUBMIT** before 9 Jul 16:00
+- [ ] T030 Accessibility pass — *partly done (v2 labels, DataGate); the rest is issue #49*
+- [ ] T031 ElevenLabs intro narration, pre-rendered — *now EL-07 below*
+- [x] ~~T032 Lottie loading/transition polish~~ — **dropped 2026-09-19: never adopted**; motion is `Animated` (`Motion.tsx`)
+- [x] T033 4th module `content/vilakazi.ts` — done 2026-06-29 (`0f895ab`)
+- [ ] T034 Record 2–3 min demo video — *never recorded; issue #57*
+- [ ] T035 Finalise written narrative — *drafted; whether it was submitted is unrecorded (STATUS.md)*
+- [ ] T036 Grounding proofread — *tracked as issue #31 (266 markers in `countries/`, 21 `verify` stats)*
+- [ ] T037 **SUBMIT** before 9 Jul 16:00 — *outcome unrecorded in this repo; only Tumo can answer (STATUS.md)*
 
 ## Phase 4 — Showcase prep (13–16 Jul, if finalist)
 
-- [ ] T038 Bug-fix + performance pass on a real device
-- [ ] T039 Presentation rehearsal for the live showcase
+- [ ] T038 Bug-fix + performance pass on a real device — *PWA-05 / issue #57*
+- [ ] T039 Presentation rehearsal — *moot unless the showcase happened; unrecorded*
 
 ## Phase 5 — Architecture v2: multi-page transformation (26 Aug – 15 Sep)
 

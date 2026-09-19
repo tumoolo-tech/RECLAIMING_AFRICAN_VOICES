@@ -1,4 +1,4 @@
-# Demo Video Script — Maloba (2–3 min)
+# Demo Video Script — Ubuntu Heritage (2–3 min)
 
 > Recording-ready shot list for the concept submission video. **Target: web build** (`cd app &&
 > npm run web`) — easiest to screen-record cleanly; Expo Go on a phone is the fallback if you'd rather
@@ -13,7 +13,7 @@
 ## Shot 1 — Hook (0:00–0:20)
 
 **On screen:** Home gallery. Four literary pillars + the Cultural Atlas section. Scroll slowly once.
-**Say:** *"This is Maloba — Setswana for 'yesterday'. Mantswe a maloba: the voices of yesterday. It
+**Say:** *"This is Ubuntu Heritage. Mantswe a maloba — the voices of yesterday. It
 brings South Africa's foundational literature and heritage to life — offline, multilingual, and free."*
 
 ## Shot 2 — Humanities depth (0:20–1:00)
@@ -59,7 +59,7 @@ erasure are built into the architecture, not bolted on."*
 anyone's personal data — so what the app says about a text can't be quietly changed. Three of the
 four are public domain; the fourth is in copyright and we summarise it in our own words."*
 **Close on the Home gallery. Say:** *"Zero cost. Community-owned. On African terms — and built with
-African AI. That's Maloba."*
+African AI. That's Ubuntu Heritage."*
 
 ---
 

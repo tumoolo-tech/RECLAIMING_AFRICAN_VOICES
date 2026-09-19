@@ -1,4 +1,4 @@
-# Maloba UI kit — build every page with these
+# Ubuntu Heritage UI kit — build every page with these
 
 One brand, one type system, one source of truth. **Never** hardcode a colour, font name, or font
 size in a screen. Build pages out of these primitives and they stay consistent automatically —

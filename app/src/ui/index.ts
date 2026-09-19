@@ -1,4 +1,4 @@
-// Maloba UI kit — the shared building blocks every page uses. Import from "../ui" so new screens
+// Ubuntu Heritage UI kit — the shared building blocks every page uses. Import from "../ui" so new screens
 // inherit the theme, fonts, spacing and depth automatically. See README.md for the recipe.
 export { Screen } from "./Screen";
 export { ScreenHeader, backLabelFor } from "./ScreenHeader";

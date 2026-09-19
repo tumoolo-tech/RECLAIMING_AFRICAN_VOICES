@@ -1,15 +1,23 @@
 # 01 — Architecture
 
+> **Historical design (June 2026), annotated 2026-09-19.** This is the architecture as planned before
+> the app existed. What was actually built differs in four places, each marked *(as built)* below:
+> **no NativeWind** (`StyleSheet` + `src/theme/tokens.ts` + the `src/ui` kit), **no Lottie**, **no
+> WatermelonDB** (browser storage on web, session-only on native — issue #44), and `components/` rather
+> than `screens/`. The real folder map is the repo itself; the current programme is
+> [13-architecture-v2-plan.md](13-architecture-v2-plan.md) and the Phase 7 layer is
+> [15-heritage-tourism-plan.md](15-heritage-tourism-plan.md).
+
 ## One codebase, three targets
 
-Maloba is a single **Expo / React Native** app that compiles to **web, Android, and iOS** from one
+Ubuntu Heritage is a single **Expo / React Native** app that compiles to **web, Android, and iOS** from one
 TypeScript codebase. This is the core accessibility + sustainability bet: a judge can open it in a
 browser, and a community member can run it on a cheap Android phone, with no separate builds.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                     Maloba (Expo app)                        │
-│  web · Android · iOS — one codebase, NativeWind styling       │
+│                 Ubuntu Heritage (Expo app)                   │
+│  web · Android · iOS — one codebase (as built: StyleSheet)   │
 ├──────────────────────────────────────────────────────────────┤
 │  UI layer                                                     │
 │   • Home gallery (four pillars + Community Archive)           │
@@ -30,7 +38,7 @@ browser, and a community member can run it on a cheap Android phone, with no sep
 │   • supabase      → auth, storage, Postgres (cloud archive)   │
 ├──────────────────────────────────────────────────────────────┤
 │  Persistence                                                  │
-│   • WatermelonDB (SQLite) — offline-first local store         │
+│   • local store (as built: IndexedDB/localStorage on web)    │
 │   • Sync engine → Supabase when online (stretch)              │
 └──────────────────────────────────────────────────────────────┘
 ```
@@ -52,7 +60,7 @@ app/
     screens/               # HomeGallery, ModuleScreen, ReaderScreen, ArchiveScreen, AboutSourcesScreen
     services/              # pollinations.ts, gemini.ts, lelapa.ts, elevenlabs.ts, supabase.ts
     i18n/                  # setswana + english strings; language context
-    db/                    # WatermelonDB schema + models + sync
+    db/                    # (planned WatermelonDB — never built; see services/*/store.web.ts as built)
     theme/                 # colors, spacing, typography tokens (the cinematic look)
     state/                 # story + settings context/stores
   assets/                  # fonts, lottie, pre-rendered intro audio, static fallbacks
@@ -76,13 +84,14 @@ app/
 
 1. Reader opens scene *N* of a module from local content.
 2. It builds a Pollinations URL from `scene.imagePrompt` (optionally enriched by Gemini) and renders it
-   as a full-bleed background `<Image>`, with a Lottie shimmer as placeholder while it loads.
+   as a full-bleed background `<Image>` (as built: an `Animated` fade, no Lottie).
 3. Overlaid text shows `scene.text` (Adult) or `scene.childText` (Child), in the selected language.
 4. Generated image URLs are cached so the same scene never re-fetches (low-data + rate-limit safety).
 
 ## Data flow: recording a community story
 
 1. User taps **Record** → **POPIA consent sheet** appears (must opt in; choose private/public).
-2. On consent, mic records to a local file (Expo AV); metadata written to WatermelonDB immediately.
+2. On consent, mic records to a local file (as built: expo-audio); metadata is kept in IndexedDB on
+   web and in session memory on native (WatermelonDB was never adopted).
 3. (Stretch, online) audio uploads to Supabase Storage with Row-Level Security; Lelapa transcribes;
    transcript saved back. User can mark public or **delete** (erasure) at any time.

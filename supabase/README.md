@@ -63,17 +63,21 @@ RLS runs on every request. That is the POPIA guarantee, in the database itself.
 
 Audio path convention inside the bucket: `<owner_id>/<recording_id>.<ext>`.
 
-## Not wired to the app yet (next step)
+## Wired to the app (live since July 2026; this section rewritten 2026-09-19)
 
-The database is ready; the app does **not** yet talk to it (the archive is still local-only —
-IndexedDB on web). Wiring is a separate change:
+The app talks to this backend on **web** through [`app/src/services/archive/`](../app/src/services/archive/):
 
-1. `npm i @supabase/supabase-js`
-2. A `services/archive/supabase.ts` client that `signInAnonymously()` on first use.
-3. On **"Share with community"** consent: upload the audio to `recordings/<uid>/<id>` and insert the row.
-4. A community feed screen that lists `visibility = 'public'` rows and streams their audio.
-5. Delete = remove object **then** row (the trigger is a backstop).
+| Step | Where |
+|---|---|
+| Anonymous sign-in on first cloud action (hCaptcha token when CAPTCHA protection is on) | `supabase.ts` → `ensureAnonSession()`; `components/CaptchaGate.web.tsx` |
+| **"Share with community"** → upload the audio to `recordings/<uid>/<id>.<ext>` and insert the public row | `cloud.ts` → `uploadPublic()` |
+| The community feed (public rows, newest first) and time-limited playback URLs | `cloud.ts` → `fetchPublicFeed()`, `signedUrlFor()`; rendered in `ArchiveScreen.tsx` |
+| Delete = remove the object **then** the row (the trigger is the backstop) | `cloud.ts` → `deleteCloud()` |
 
-Until then, the Reader/Archive keep working offline exactly as now; this backend simply waits.
-POPIA safeguards that must ship with the wiring: the existing consent gate, a visible "delete", and
-never uploading anything without an explicit **public** consent choice.
+Private recordings are never uploaded — they stay in IndexedDB on the device. **Native** has no captcha
+widget (`CaptchaGate.tsx` is a stub), so cloud sharing is web-only today (issue #44).
+
+**What is still missing, and tracked:** no moderation, reporting or takedown path on the public feed
+(**issue #45** — `docs/12` requires human approval before anything goes public); erasure breaks if the
+anonymous session is lost (**#46**); no country/topic tags on rows (**#47**); transcription (Lelapa)
+not wired (**#56**).
