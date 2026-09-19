@@ -1,4 +1,4 @@
-// Maloba palette — "Modern South Africa" deck identity: deep navy + strong blue section grounds,
+// Ubuntu Heritage palette — "Modern South Africa" deck identity: deep navy + strong blue section grounds,
 // bright YELLOW accent, huge white Helvetica-grotesk headlines, full-colour photo blocks. Single
 // source of truth for colour/spacing/type. The old semantic keys are preserved and repointed so the
 // whole app inherits the new look; new code should prefer the `ds*` (design-system) tokens below.
