@@ -290,16 +290,97 @@ for the thing this layer is actually about — somewhere you might travel to.
 - [x] PAGE-03 `Place.image` + `place-images.ts` — **real licensed photographs or none, never AI**
       (SP-086). Name-and-registry split keeps `places.ts` importable under `node --test` (SP-088).
       Credit and licence render on the page, because CC BY-SA attribution is an obligation (SP-087)
-- [~] PAGE-04 **Source the photographs.** `npm run fetch:place-photo` reads licence and author from
+- [x] PAGE-04 **Source the photographs.** `npm run fetch:place-photo` reads licence and author from
       Commons' own metadata, downloads, converts to webp and prints the record to paste — it never
       edits `places.ts`, because whether a photograph actually shows the place is a human judgement
       (same division as `check-place-links`). **It refuses any licence it does not recognise as
       free, and refuses a file with no recorded author**, since attribution is a licence obligation.
-      **Soweto done (4 of 49)**, each photograph looked at before acceptance. 45 to go
+      **28 of 49 sourced**, each looked at before acceptance — ten downloads were rejected
+      AFTER viewing despite a free licence and a matching filename (a lantern slide, a stadium
+      under cranes, a painting hanging *in* the gallery). The other 21 have no usable file on
+      Commons under several search terms and keep the honest line the page already shows; filling
+      them needs a photographer or a permissions email, not a better query
 - [ ] PAGE-05 **Deep links.** The route exists; the web build does not yet map a URL to it, so a
       place cannot be shared as a link. That was the whole cost SP-036 accepted and SP-085 removed
 - [ ] PAGE-06 **Longer stories.** Every place currently carries the 1–3 sourced sentences written
       for a sheet. The page has room for more, and each new claim needs its own source (T4)
+
+## Phase 11 — A story told by scrolling (2026-09-19)
+
+Tumo, pointing at the Rockstar GTA VI page: *"tell the story as you scroll up with pictures and the
+story."* Chose **Soweto, 16 June 1976**, **reveal-on-scroll** over pinned parallax, and **its own
+route**. Decisions: [docs/sim_plan.md §4.13](../docs/sim_plan.md).
+
+- [x] STORY-01 `content/stories.ts` — panels name a `placeId` or a `dayId` and never their own
+      image path, so the picture, credit and licence come from that record (SP-100)
+- [x] STORY-02 `RevealOnScroll` in `Motion.tsx` — rise-and-fade on entry, identical on web and
+      native. **Animates only once a scroll event has arrived** (SP-103): the first version left
+      panels 2–9 at opacity exactly 0 on web
+- [x] STORY-03 `StoryScrollScreen.tsx` — three panel shapes: place (cropped, darkened, headline
+      over), archival (whole, undarkened, caption beneath — SP-101), typographic (a pause)
+- [x] STORY-04 The `story` route + a card on Home. Nothing existing changed
+- [x] STORY-05 **Sam Nzima's photograph**, by Tumo's decision (SP-102), rendered under SP-101
+- [x] STORY-06 `stories.test.ts` — sources required · every panel's picture resolves and is
+      credited · a panel shows one picture, not two · the panel that shows a place links to that
+      place and no other · **the names Sipuye recovers cannot be edited out** (SP-104)
+
+- [ ] STORY-07 **More stories.** The shape is reusable — point it at another day, place or chapter.
+      Blocked on the same thing the linking layer is: prose. See PAGE-06
+
+## Phase 10 — Topics link to each other (2026-09-19)
+
+Tumo: *"i want topics to be able to link to each other for examples mandela house to mandela and
+vilakazi street to mandela house."* Asked who decides that two topics are linked, Tumo chose
+**automatic name matching** over hand-authored rows. Decisions: [docs/sim_plan.md §4.12](../docs/sim_plan.md).
+
+**Two tiers, because they are different kinds of statement (SP-090).** A *curated* link is
+authored and carries a required reason. A *mention* is derived from prose that already names the
+other topic — it carries no reason, because nobody wrote one, and the `Mention` type has no field
+to put one in. A mention is not a historical claim; it is a way to move through words the app has
+already sourced.
+
+- [x] LINK-01 Register the decisions before the code — `SP-090`…`SP-099`. Also fixed seven files
+      citing the integrity rule as "AGENTS.md §4" (it is §2; §4 is POPIA) and two `**Open**`
+      markers SP-073 had already resolved
+- [x] LINK-02 `place-links.ts` → **`topic-links.ts`**, `placeId: string` → `to: ContentRef`. The
+      direction rule becomes mechanical: store with `from` the kind earlier in `CONTENT_KINDS`,
+      `place` last so every existing row stayed correct (SP-091). Closes the long-standing gap
+      where only one end of a link was checked against its registry (SP-026)
+- [x] LINK-03 `scripts/gen-topics.mjs` → **`topics.generated.ts`**. Generated because six
+      registries `require()` image binaries, so reading them needs `node:fs`, which cannot ship in
+      the React Native bundle (SP-092). Only `{kind,id,name,routable}` — never the prose (SP-093)
+- [x] LINK-04 `topic-mentions.ts` — exact `indexOf` + word boundary + **longest-span-wins**, which
+      is what makes a hand-written surname alias safe (SP-095). Does not reopen SP-016: that bans
+      identifying a record by an approximate name; this finds an exact name inside prose (SP-094)
+- [x] LINK-05 Generate the mentions. **26 live links across 87 topics**, every one read by hand
+      before committing
+- [x] LINK-06 `openRef` + `ROUTE_FOR_KIND` in `App.tsx` — one navigator instead of a prop per
+      destination (SP-098). The `as Route` cast is bought back by `topic-route.test.ts`, which
+      checks something the cast never could: that the mapped route **carries an id**
+- [x] LINK-07 `RelatedTopics.tsx` — three tiers that cannot be mistaken for one another. "What
+      happened here" was inert text holding a `kind` and `id` it threw away; now every tier is
+      pressable and mentions render visibly weaker, never as "related" (SP-041's reserved word)
+- [x] LINK-08 The person's page links back. `PresidentScreen` and `HeroScreen` render the same
+      block, so Mandela's page lists Mandela House without a row being written for it
+- [x] LINK-09 `npm run check:topic-links` — every derived link shown **with the sentence it came
+      from**, which the generated file cannot do because it does not store prose. Plus *near
+      misses*: bare surnames in prose with no alias, the half that finds work
+- [x] LINK-10 **Nine curated links**, all `direct`, each `why` restating a fact already published
+      by both ends. Thematic candidates are NOT seeded — SP-030 reserves those for Tumo
+- [x] LINK-11 Tests: `topic-links` · `topic-mentions` · `topics` · `topics.generated` ·
+      `topic-route`. Every guard mutation-tested
+
+### Open, and Tumo's to decide
+
+- [ ] LINK-12 **`article` has no route.** Indexed as a mention *source* only. Modal (as
+      `NationalDaysScreen` does) or a 25th route — a decision, not a task
+- [ ] LINK-13 **Thematic candidates** for a ruling, per SP-030. Including `module:vilakazi` →
+      `vilakazi-street`, parked since TOUR-05b, and `module:mhudi` → `mafikeng-museum` (the museum
+      gives a display to Plaatje, but to the man rather than the novel)
+- [ ] LINK-14 **More registries in the index.** `provinces`, `national-days` as targets, `totems`,
+      `journey`. Each is blocked on an image-require split or an extensionless-import fix
+- [ ] LINK-15 **The real lever on coverage is PAGE-06.** 26 links is what 1–3 sentences per place
+      buys. Every sentence added to a place grows this graph for free
 
 ## Phase 8 — Languages: measure the gap before closing it (2026-09-18)
 

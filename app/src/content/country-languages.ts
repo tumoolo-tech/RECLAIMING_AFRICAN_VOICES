@@ -1,7 +1,7 @@
 // Which languages are spoken in which country — so choosing a country in the header reorders the
 // language picker to that country's languages instead of always leading with South Africa's.
 //
-// INTEGRITY (AGENTS.md §4). Two rules govern this file:
+// INTEGRITY (AGENTS.md §2). Two rules govern this file:
 //
 //  1. **Every entry cites the instrument that makes the claim.** "What they speak in country X" is a
 //     factual, contestable statement, and getting it wrong is exactly the kind of harm this project
