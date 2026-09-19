@@ -1,4 +1,4 @@
-// The language registry — the single source of truth for every language Maloba speaks.
+// The language registry — the single source of truth for every language Ubuntu Heritage speaks.
 // Data-driven so adding/extending a language is a data edit, never an app-logic change
 // (see .claude/skills/setswana-i18n). Pure & dependency-free so it unit-tests under `node --test`.
 //
