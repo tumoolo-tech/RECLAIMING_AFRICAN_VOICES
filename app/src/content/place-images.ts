@@ -54,3 +54,12 @@ export const PLACE_IMAGES: Record<string, ImageSourcePropType> = {
 
 export const placeImage = (file: string | undefined): ImageSourcePropType | undefined =>
   file ? PLACE_IMAGES[file] : undefined;
+
+/** The same lookup, narrowed to the bundler module id a `require()` of a bundled asset actually
+ *  is. `PLACE_IMAGES` is declared `ImageSourcePropType` because that is the type image components
+ *  want, but a few callers are typed `string | number` and cannot take the wider union. Checked at
+ *  runtime rather than cast, so a future remote URI returns undefined instead of lying. */
+export const placeImageId = (file: string | undefined): number | undefined => {
+  const source = placeImage(file);
+  return typeof source === "number" ? source : undefined;
+};

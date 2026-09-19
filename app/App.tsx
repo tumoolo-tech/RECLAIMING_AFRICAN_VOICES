@@ -25,6 +25,8 @@ import { HeritageLedgerScreen } from "./src/components/HeritageLedgerScreen";
 import { AtlasScreen } from "./src/components/AtlasScreen";
 import { ProvincesScreen, ProvinceScreen, CityScreen } from "./src/components/ProvincesScreens";
 import { PlaceScreen } from "./src/components/PlaceScreen";
+import { StoryScrollScreen } from "./src/components/StoryScrollScreen";
+import { storyById } from "./src/content/stories";
 import { PlaceBookings } from "./src/components/VisitPanel";
 import { placeById } from "./src/content/places";
 import type { ContentRef } from "./src/content/topic-links";
@@ -81,6 +83,7 @@ type Route =
   | { name: "province"; id: string }
   | { name: "city"; id: string }
   | { name: "place"; id: string }
+  | { name: "story"; id: string }
   | { name: "presidents" }
   | { name: "president"; id: string }
   | { name: "days" }
@@ -100,13 +103,13 @@ type Route =
 
 // Route-name groupings for the shell. Deliberately `Set<string>` (see the note in App below).
 const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero"]);
-const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader"]);
+const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader", "story"]);
 const ARCHIVE_ROOMS = new Set(["archive", "heritage", "about"]);
 const WATCH_ROOMS = new Set(["watch", "watchItem"]);
 const ROOT_ROOMS = new Set(["home", "journey", "watch", "kids", "schools", "passport", "countries"]);
 // Routes whose React key must include the id, so moving between two of them remounts (and re-fades)
 // rather than reusing the previous item's mounted state.
-const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem"]);
+const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem", "story"]);
 
 // Which route opens a topic of each kind — the one place that knows (SP-098).
 //
@@ -147,6 +150,13 @@ function PlaceRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; o
       footer={<PlaceBookings placeId={place.id} lang={lang} />}
     />
   );
+}
+
+// One scroll-told story. Top-level for the same reason PlaceRoute and StageRoute are.
+function StoryRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; onBack: () => void; onOpenRef: (ref: ContentRef) => void }) {
+  const story = storyById(id);
+  if (!story) return null;
+  return <StoryScrollScreen story={story} lang={lang} onBack={onBack} onOpenRef={onOpenRef} />;
 }
 
 // One Journey stage. Lives out here on purpose: inlining it in App's route switch made the
@@ -369,6 +379,8 @@ export default function App() {
             onOpenRef={openRef}
           />
         );
+      case "story":
+        return <StoryRoute id={route.id} lang={lang} onBack={back} onOpenRef={openRef} />;
       case "city": {
         const c = cityById(route.id);
         return c ? <CityScreen city={c} onBack={back} onArchive={() => push({ name: "archive" })} onOpenPlace={(id) => push({ name: "place", id })} lang={lang} /> : null;
@@ -501,6 +513,7 @@ export default function App() {
             onWatch={() => push({ name: "watch" })}
             onJourneyRoom={() => push({ name: "journey" })}
             onCountries={() => push({ name: "countries" })}
+            onStory={() => push({ name: "story", id: "soweto-16-june" })}
             onKids={() => push({ name: "kids" })}
             onSchools={() => push({ name: "schools" })}
             country={country}
