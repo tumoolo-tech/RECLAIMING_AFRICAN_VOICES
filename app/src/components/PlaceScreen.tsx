@@ -20,7 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Screen, Icon } from "../ui";
 import { places, type Place } from "../content/places";
 import { placeImage } from "../content/place-images";
-import { contentForPlace } from "../content/topic-links";
+import { contentForPlace, type ContentRef } from "../content/topic-links";
 import { PlaceBody, kindLabel } from "./PlaceBody";
 import { PressScale } from "./Motion";
 import { colors, spacing, radius, fonts, type } from "../theme/tokens";
@@ -57,13 +57,14 @@ export function PlaceScreen({
   place,
   lang,
   onBack,
-  onOpenPlace,
+  onOpenRef,
   footer,
 }: {
   place: Place;
   lang: LangCode;
   onBack: () => void;
-  onOpenPlace: (id: string) => void;
+  /** Open any topic by {kind, id}. One prop instead of one per destination — see SP-098. */
+  onOpenRef: (ref: ContentRef) => void;
   footer?: React.ReactNode;
 }) {
   const img = placeImage(place.image?.file);
@@ -127,7 +128,7 @@ export function PlaceScreen({
               <PressScale
                 key={p.id}
                 style={s.chip}
-                onPress={() => onOpenPlace(p.id)}
+                onPress={() => onOpenRef({ kind: "place", id: p.id })}
                 accessibilityLabel={`${p.name} — ${kindLabel(p, lang)}`}
               >
                 <Text style={s.chipText}>{p.name}</Text>

@@ -27,6 +27,7 @@ import { ProvincesScreen, ProvinceScreen, CityScreen } from "./src/components/Pr
 import { PlaceScreen } from "./src/components/PlaceScreen";
 import { PlaceBookings } from "./src/components/VisitPanel";
 import { placeById } from "./src/content/places";
+import type { ContentRef } from "./src/content/topic-links";
 import { provinceById, cityById } from "./src/content/provinces";
 import { PresidentsScreen, PresidentScreen } from "./src/components/PresidentsScreens";
 import { presidentById } from "./src/content/presidents";
@@ -107,9 +108,34 @@ const ROOT_ROOMS = new Set(["home", "journey", "watch", "kids", "schools", "pass
 // rather than reusing the previous item's mounted state.
 const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem"]);
 
+// Which route opens a topic of each kind — the one place that knows (SP-098).
+//
+// Before this, every jump was its own `onOpenX` prop invented per screen and hand-wired here. That
+// is fine for a handful of fixed destinations and useless for a link that only knows it points at
+// `{kind, id}`. `undefined` means the kind has no route yet, so it is a mention SOURCE but never a
+// TARGET (SP-097) — a chip that looks tappable and does nothing is worse than no chip.
+//
+// Deliberately `Record<string, …>` and NOT keyed on the Route union, for exactly the reason
+// ATLAS_ROOMS above is a `Set<string>`: nothing here narrows, so the type-checker never walks the
+// union. A `case` per kind inside renderRoute is what SP-085 describes going wrong.
+//
+// The cast in `openRef` is the one this file already makes in `navigateTo`. What the cast gives up,
+// `topic-route.test.ts` buys back — and more, because it also checks the route CARRIES AN ID, which
+// the cast does not.
+const ROUTE_FOR_KIND: Record<string, string | undefined> = {
+  place: "place",
+  president: "president",
+  hero: "hero",
+  city: "city",
+  module: "reader",
+  article: undefined, // read in a modal from the Archive; no route of its own yet
+  day: undefined, // `days` is a list, with no per-day route
+  journey: undefined, // `stage` takes a history-trail id, not a journey-slide id
+};
+
 // One place, as a page. Extracted for the same reason StageRoute is: inlining a component in the
 // route switch is what made the type-checker recurse over the union, not the union itself.
-function PlaceRoute({ id, lang, onBack, onOpenPlace }: { id: string; lang: Lang; onBack: () => void; onOpenPlace: (id: string) => void }) {
+function PlaceRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; onBack: () => void; onOpenRef: (ref: ContentRef) => void }) {
   const place = placeById(id);
   if (!place) return null;
   return (
@@ -117,7 +143,7 @@ function PlaceRoute({ id, lang, onBack, onOpenPlace }: { id: string; lang: Lang;
       place={place}
       lang={lang}
       onBack={onBack}
-      onOpenPlace={onOpenPlace}
+      onOpenRef={onOpenRef}
       footer={<PlaceBookings placeId={place.id} lang={lang} />}
     />
   );
@@ -244,6 +270,17 @@ export default function App() {
     }
   };
 
+  // Open any topic by {kind, id} — the single navigator the linking layer needs (SP-098).
+  //
+  // A link knows what it points at, not which screen shows it; before this, every screen invented
+  // its own `onOpenX` prop and only App.tsx knew the mapping. A kind with no route is a no-op
+  // rather than a crash, and SP-097 keeps such links out of the data in the first place, so the
+  // guard here should never fire — it exists so that if one ever does, nothing breaks.
+  const openRef = (ref: ContentRef) => {
+    const name = ROUTE_FOR_KIND[ref.kind];
+    if (name) push({ name, id: ref.id } as Route);
+  };
+
   // Android hardware/gesture back pops the in-app route stack instead of exiting the app.
   // Only handled while there is somewhere to go back to, so back on Home still exits normally.
   // (BackHandler is a web no-op that logs an error, hence the platform guard.)
@@ -329,7 +366,7 @@ export default function App() {
             id={route.id}
             lang={lang}
             onBack={back}
-            onOpenPlace={(id) => push({ name: "place", id })}
+            onOpenRef={openRef}
           />
         );
       case "city": {
