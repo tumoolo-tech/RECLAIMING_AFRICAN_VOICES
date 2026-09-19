@@ -34,9 +34,17 @@ import { t } from "../i18n";
 import type { LangCode } from "../i18n/languages";
 
 const UI = {
+  // Two headings for the same tier, because "here" is a claim about location. On a place it is
+  // exactly right. On Nelson Mandela's page it said "What happened here" above a list of places
+  // he lived and was imprisoned in — he is not somewhere you can stand, and the word quietly
+  // turned a person into one. Seen on screen, not caught by any test.
   happenedHere: {
     en: "What happened here", tn: "Se se diragetseng fano", af: "Wat hier gebeur het", zu: "Okwenzeka lapha", xh: "Okwenzeka apha",
     nso: "Se se diregilego mo", st: "Se etsahetseng mona", ss: "Lokwenteka lapha", ts: "Leswi humeleleke laha", nr: "Okwenzeka lapha", ve: "Zwe zwa itea hafha",
+  },
+  directlyConnected: {
+    en: "Directly connected", tn: "Go amana ka tlhamalalo", af: "Direk verbonde", zu: "Okuxhumene ngqo", xh: "Okunxulumene ngokuthe ngqo",
+    nso: "Go swaragana ka go lebanya", st: "Ho amana ka kotloloho", ss: "Lokuchumene ngco", ts: "Leswi fambelanaka hi ku kongoma", nr: "Okuhlangene ngqo", ve: "Zwo tshimbidzanaho zwo livhaho",
   },
   related: {
     en: "Related", tn: "Tse di amanang", af: "Verwant", zu: "Okuhlobene", xh: "Okunxulumene",
@@ -161,7 +169,7 @@ export function RelatedTopics({
 
   return (
     <>
-      {direct.length ? <Block label={t(UI.happenedHere, lang)}>{direct.map((c) => curatedRow(c))}</Block> : null}
+      {direct.length ? <Block label={t(refTo.kind === "place" ? UI.happenedHere : UI.directlyConnected, lang)}>{direct.map((c) => curatedRow(c))}</Block> : null}
       {thematic.length ? (
         <Block label={t(UI.related, lang)}>{thematic.map((c) => curatedRow(c, t(UI.related, lang)))}</Block>
       ) : null}

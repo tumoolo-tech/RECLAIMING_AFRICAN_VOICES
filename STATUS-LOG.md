@@ -57,10 +57,19 @@
   measured before and after the navigation change — 61.4s against a 60.4–71.6s baseline, so the
   recursion trap `SP-085` describes is not re-sprung.
 
-  **Not visually verified.** `PlaceScreen`'s three tiers were seen working in a browser. The
-  **curated tier and the person pages were not** — the dev server's renderer froze partway through
-  and stayed frozen across a restart and six attempts. They are verified at the data layer and by
-  test, not by eye. Worth a look before the demo.
+  **Seen working**, place page and person page both. Nelson Mandela's page renders the five
+  curated links with their reasons, then his outgoing mentions, then eight incoming ones —
+  none of which was written for that page.
+
+  **And seeing it caught the last bug: the heading said "What happened here" above a list of
+  places he lived in and was imprisoned in.** He is not somewhere you can stand, and the word
+  quietly turned a person into a location. A place keeps that heading; every other kind now reads
+  "Directly connected". No test would have found it — every test was about whether the link was
+  true, and this one was about whether the sentence around it was.
+
+  One thing still unseen: that heading fix itself. The dev server's renderer froze immediately
+  after, and stayed frozen. It is one conditional and it typechecks, but it has not been on a
+  screen — worth a glance before the demo.
 
 - **2026-09-19 (#51)** — **The log moves out of STATUS.md, and the docs stop contradicting the code.**
   This is the first entry written in the new file. **The split:** STATUS.md was 1,611 lines, of which
