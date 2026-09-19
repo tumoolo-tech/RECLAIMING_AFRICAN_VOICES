@@ -72,7 +72,7 @@ test("there are component files to check", () => {
   assert.ok(files.length > 5, `expected to find components, found ${files.length}`);
 });
 
-test("every UI string in every component carries all 11 official languages", () => {
+test("every UI string in every component carries all eleven languages the app speaks (SA has twelve; Sign Language is the twelfth)", () => {
   const failures: string[] = [];
 
   for (const file of files) {
