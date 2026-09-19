@@ -8,6 +8,60 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-19 (topics link to each other)** — Tumo asked for it in one line: *"mandela house to
+  mandela and vilakazi street to mandela house."* Asked who decides that two topics are linked,
+  Tumo chose **automatic name matching** over hand-authored rows, having been shown the risk that
+  the app would assert connections nobody checked.
+
+  **The reconciliation is that a mention is not a claim.** Automatic matching cannot produce an
+  editorial reason, and inventing one is the fabrication AGENTS.md §2 forbids. But if Mandela
+  House's already-sourced sentence contains the words "Vilakazi Street", making those words
+  navigable asserts nothing new — it is a way to move, not a statement about the past. So there
+  are **two tiers and they are different TYPES** (`SP-090`): a curated link carries a required
+  reason; a `Mention` has no `why` and no `relation` field at all, so no component can render an
+  invented reason even by mistake. That is the same technique that makes `TopicLink.why` required.
+
+  **What is live:** 87 topics indexed · **26 derived mentions** · **9 curated links**, each `why`
+  restating a fact already published by both ends. Both of Tumo's examples work, in both
+  directions, and Nelson Mandela's page lists Mandela House without a row having been written for
+  it — one stored row, two pages, derived (`SP-091`).
+
+  **Three things I got wrong and found by looking at the output rather than the tests.**
+
+  1. The surface-length floor was 6. The Nelson Mandela Museum — whose single sentence names Qunu,
+     Mvezo *and* Mandela, three real topics — produced **zero** links. Every topic name of four
+     characters or more turns out to be a distinctive proper noun; length was standing in for
+     distinctiveness and doing it badly.
+  2. A self-match *skipped* its surface instead of claiming it, leaving those characters free for a
+     shorter name — "Nelson Mandela International Day" would have had the president matched inside
+     the day's own title. Your own name is yours.
+  3. A mutual pair rendered **twice**, under both "Also mentioned here" and "Mentioned in". It was
+     in Tumo's own example and the screenshot did not show it; printing the resolver's output did.
+
+  Fixes 1 and 2 took the graph from 19 links to 36.
+
+  **The report found its own bug.** `npm run check:topic-links` has a *near misses* section for
+  bare surnames sitting in prose with no alias. Its first heuristic took the last word of any name,
+  which for a place is a category noun — twenty rows of *District Six says "Museum" but does not
+  link to Mafikeng Museum*. That is how you teach someone to skip a section. Restricted to people,
+  it found exactly one real thing: Motlanthe's record says "Mbeki". Taken.
+
+  **Not seeded, deliberately:** thematic links. `SP-030` reserves those for Tumo one at a time and
+  `SP-055` rejects the arguable by default. One I nearly wrote and should not have —
+  `womens-day → national-womens-memorial` — is **wrong**: the memorial commemorates the ~27,000
+  Boer women and children who died in British concentration camps; Women's Day commemorates the
+  1956 march to the Union Buildings. Different women, different century. Exactly the conflation §9
+  exists to stop, and only reading both records showed it.
+
+  **257 tests** (was 218), typecheck clean, every new guard mutation-tested. `npm run typecheck`
+  measured before and after the navigation change — 61.4s against a 60.4–71.6s baseline, so the
+  recursion trap `SP-085` describes is not re-sprung.
+
+  **Not visually verified.** `PlaceScreen`'s three tiers were seen working in a browser. The
+  **curated tier and the person pages were not** — the dev server's renderer froze partway through
+  and stayed frozen across a restart and six attempts. They are verified at the data layer and by
+  test, not by eye. Worth a look before the demo.
+
 - **2026-09-19 (#51)** — **The log moves out of STATUS.md, and the docs stop contradicting the code.**
   This is the first entry written in the new file. **The split:** STATUS.md was 1,611 lines, of which
   1,313 were this log, and every PR inserted at the same two spots — a board row and the top of the
