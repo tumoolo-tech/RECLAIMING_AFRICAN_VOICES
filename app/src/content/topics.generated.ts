@@ -1,0 +1,151 @@
+// GENERATED FILE — do not edit by hand. Regenerate: npm run gen:topics
+//
+// Every topic that can be linked to or from, and every MENTION found by scanning one topic's prose
+// for another topic's name. 87 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 10) · 35 mentions.
+//
+// WHY A FILE RATHER THAN A RUNTIME SCAN (SP-092): six content registries `require()` image
+// binaries, so reading them needs `node:fs`, which cannot ship in the React Native bundle.
+//
+// A MENTION IS NOT A CLAIM (SP-090). It records that this topic's own already-sourced prose
+// contains that topic's name. It carries no reason, because nobody wrote one — the matched words
+// are the whole of it. Curated links, which DO assert a connection and DO carry a reason, live in
+// `topic-links.ts` and are written by hand.
+//
+// `routable: false` means the kind has no route yet, so it may be a mention SOURCE but never a
+// link TARGET (SP-097).
+//
+// If this file and `src/content` disagree, `topics.generated.test.ts` fails. Prose edits that
+// create or destroy a link therefore land in the same diff as the prose.
+
+// Types live in `topic-mentions.ts` — hand-written code owns the shape, this file owns only data.
+import type { Topic, Mention } from "./topic-mentions.ts";
+
+export type { Topic, Mention };
+
+export const TOPICS: Topic[] = [
+  { kind: "place", id: "robben-island", name: "Robben Island", routable: true },
+  { kind: "place", id: "district-six", name: "District Six", routable: true },
+  { kind: "place", id: "table-mountain", name: "Table Mountain", routable: true },
+  { kind: "place", id: "dorp-street", name: "Dorp Street", routable: true },
+  { kind: "place", id: "jonkershoek", name: "Jonkershoek", routable: true },
+  { kind: "place", id: "constitution-hill", name: "Constitution Hill", routable: true },
+  { kind: "place", id: "apartheid-museum", name: "Apartheid Museum", routable: true },
+  { kind: "place", id: "vilakazi-street", name: "Vilakazi Street", routable: true },
+  { kind: "place", id: "hector-pieterson-memorial", name: "Hector Pieterson Memorial & Museum", routable: true },
+  { kind: "place", id: "mandela-house", name: "Mandela House", routable: true },
+  { kind: "place", id: "regina-mundi-church", name: "Regina Mundi Church", routable: true },
+  { kind: "place", id: "the-big-hole", name: "The Big Hole", routable: true },
+  { kind: "place", id: "sol-plaatje-house", name: "Sol Plaatje House", routable: true },
+  { kind: "place", id: "mcgregor-museum", name: "McGregor Museum", routable: true },
+  { kind: "place", id: "william-humphreys-art-gallery", name: "William Humphreys Art Gallery", routable: true },
+  { kind: "place", id: "donkin-reserve", name: "Donkin Reserve & Lighthouse", routable: true },
+  { kind: "place", id: "route-67", name: "Route 67", routable: true },
+  { kind: "place", id: "algoa-bay", name: "Algoa Bay", routable: true },
+  { kind: "place", id: "st-georges-park", name: "St George's Park", routable: true },
+  { kind: "place", id: "nelson-mandela-museum", name: "Nelson Mandela Museum", routable: true },
+  { kind: "place", id: "mvezo", name: "Mvezo", routable: true },
+  { kind: "place", id: "qunu", name: "Qunu", routable: true },
+  { kind: "place", id: "egazini", name: "Egazini", routable: true },
+  { kind: "place", id: "1820-settlers-monument", name: "1820 Settlers Monument", routable: true },
+  { kind: "place", id: "cathedral-of-st-michael-and-st-george", name: "Cathedral of St Michael & St George", routable: true },
+  { kind: "place", id: "phoenix-settlement", name: "Phoenix Settlement", routable: true },
+  { kind: "place", id: "victoria-street-market", name: "Victoria Street Market", routable: true },
+  { kind: "place", id: "moses-mabhida-stadium", name: "Moses Mabhida Stadium", routable: true },
+  { kind: "place", id: "pietermaritzburg-station", name: "The Gandhi Statue & Station", routable: true },
+  { kind: "place", id: "pmb-city-hall", name: "City Hall", routable: true },
+  { kind: "place", id: "tatham-art-gallery", name: "Tatham Art Gallery", routable: true },
+  { kind: "place", id: "ondini", name: "oNdini Royal Homestead", routable: true },
+  { kind: "place", id: "emakhosini", name: "Emakhosini", routable: true },
+  { kind: "place", id: "ulundi-battlefield", name: "Ulundi Battlefield", routable: true },
+  { kind: "place", id: "waaihoek-wesleyan-church", name: "Waaihoek Wesleyan Church", routable: true },
+  { kind: "place", id: "naval-hill", name: "Naval Hill", routable: true },
+  { kind: "place", id: "national-womens-memorial", name: "National Women's Memorial", routable: true },
+  { kind: "place", id: "oliewenhuis-art-museum", name: "Oliewenhuis Art Museum", routable: true },
+  { kind: "place", id: "bakone-malapa", name: "Bakone Malapa Open-Air Museum", routable: true },
+  { kind: "place", id: "irish-house", name: "The Irish House", routable: true },
+  { kind: "place", id: "dzata-ruins", name: "Dzata Ruins", routable: true },
+  { kind: "place", id: "makhonjwa-mountains", name: "Barberton Makhonjwa Mountains", routable: true },
+  { kind: "place", id: "eureka-city-ruins", name: "Eureka City Ruins", routable: true },
+  { kind: "place", id: "lowveld-national-botanical-garden", name: "Lowveld National Botanical Garden", routable: true },
+  { kind: "place", id: "mafikeng-museum", name: "Mafikeng Museum", routable: true },
+  { kind: "place", id: "barolong-royal-kraal", name: "Barolong Royal Kraal", routable: true },
+  { kind: "place", id: "boekenhoutfontein", name: "Boekenhoutfontein", routable: true },
+  { kind: "place", id: "magaliesberg", name: "The Magaliesberg", routable: true },
+  { kind: "place", id: "pilanesberg-national-park", name: "Pilanesberg National Park", routable: true },
+  { kind: "president", id: "mandela", name: "Nelson Mandela", routable: true },
+  { kind: "president", id: "mbeki", name: "Thabo Mbeki", routable: true },
+  { kind: "president", id: "motlanthe", name: "Kgalema Motlanthe", routable: true },
+  { kind: "president", id: "zuma", name: "Jacob Zuma", routable: true },
+  { kind: "president", id: "ramaphosa", name: "Cyril Ramaphosa", routable: true },
+  { kind: "president", id: "louis-botha", name: "Louis Botha", routable: true },
+  { kind: "president", id: "jan-smuts", name: "Jan Smuts", routable: true },
+  { kind: "president", id: "hertzog", name: "J.B.M. Hertzog", routable: true },
+  { kind: "president", id: "malan", name: "D.F. Malan", routable: true },
+  { kind: "president", id: "strijdom", name: "J.G. Strijdom", routable: true },
+  { kind: "president", id: "verwoerd", name: "H.F. Verwoerd", routable: true },
+  { kind: "president", id: "vorster", name: "B.J. Vorster", routable: true },
+  { kind: "president", id: "pw-botha", name: "P.W. Botha", routable: true },
+  { kind: "president", id: "de-klerk", name: "F.W. de Klerk", routable: true },
+  { kind: "article", id: "time-soweto-photograph", name: "This Photo Inspired the World to Fight Against Apartheid", routable: false },
+  { kind: "article", id: "herstory-soweto-erasure", name: "Herstory: The Soweto uprising and the erasure of Black women", routable: false },
+  { kind: "hero", id: "sobukwe", name: "Robert Mangaliso Sobukwe", routable: true },
+  { kind: "hero", id: "ngoyi", name: "Lilian Ngoyi", routable: true },
+  { kind: "hero", id: "biko", name: "Steve Biko", routable: true },
+  { kind: "hero", id: "winnie", name: "Winnie Madikizela-Mandela", routable: true },
+  { kind: "day", id: "human-rights-day", name: "Human Rights Day", routable: false },
+  { kind: "day", id: "freedom-day", name: "Freedom Day", routable: false },
+  { kind: "day", id: "workers-day", name: "Workers' Day", routable: false },
+  { kind: "day", id: "youth-day", name: "Youth Day", routable: false },
+  { kind: "day", id: "mandela-day", name: "Nelson Mandela International Day", routable: false },
+  { kind: "day", id: "womens-day", name: "National Women's Day", routable: false },
+  { kind: "day", id: "heritage-day", name: "Heritage Day", routable: false },
+  { kind: "day", id: "reconciliation-day", name: "Day of Reconciliation", routable: false },
+  { kind: "module", id: "mhudi", name: "Mhudi", routable: true },
+  { kind: "module", id: "ityala-lamawele", name: "Ityala Lamawele", routable: true },
+  { kind: "module", id: "indaba", name: "Indaba, My Children", routable: true },
+  { kind: "module", id: "vilakazi", name: "Inkondlo kaZulu", routable: true },
+  { kind: "module", id: "unsung-heroes", name: "Unsung Heroes", routable: true },
+  { kind: "module", id: "marriage-rites", name: "Rites of Passage: Marriage", routable: true },
+  { kind: "module", id: "peopling-of-sa", name: "The Peopling of South Africa", routable: true },
+  { kind: "module", id: "peoples-cultures", name: "Peoples & Cultures", routable: true },
+  { kind: "module", id: "traditions", name: "Beliefs & Traditions", routable: true },
+  { kind: "module", id: "food", name: "Food & Flavour", routable: true },
+];
+
+export const MENTIONS: Mention[] = [
+  { from: { kind: "place", id: "robben-island" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "constitution-hill" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
+  { from: { kind: "place", id: "constitution-hill" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "module", id: "vilakazi" }, surface: "Inkondlo kaZulu" },
+  { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "place", id: "mandela-house" }, surface: "Mandela House" },
+  { from: { kind: "place", id: "mandela-house" }, to: { kind: "place", id: "vilakazi-street" }, surface: "Vilakazi Street" },
+  { from: { kind: "place", id: "mandela-house" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "regina-mundi-church" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "place", id: "sol-plaatje-house" }, to: { kind: "module", id: "mhudi" }, surface: "Mhudi" },
+  { from: { kind: "place", id: "route-67" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
+  { from: { kind: "place", id: "nelson-mandela-museum" }, to: { kind: "place", id: "qunu" }, surface: "Qunu" },
+  { from: { kind: "place", id: "mvezo" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "qunu" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "place", id: "naval-hill" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "place", id: "mafikeng-museum" }, to: { kind: "module", id: "mhudi" }, surface: "Mhudi" },
+  { from: { kind: "president", id: "mandela" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
+  { from: { kind: "president", id: "mandela" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "president", id: "mandela" }, to: { kind: "president", id: "de-klerk" }, surface: "F.W. de Klerk" },
+  { from: { kind: "president", id: "mandela" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
+  { from: { kind: "president", id: "mbeki" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "president", id: "motlanthe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "president", id: "zuma" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "president", id: "de-klerk" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "hero", id: "sobukwe" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "hero", id: "winnie" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "day", id: "freedom-day" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "day", id: "mandela-day" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
+  { from: { kind: "day", id: "womens-day" }, to: { kind: "hero", id: "ngoyi" }, surface: "Lilian Ngoyi" },
+  { from: { kind: "module", id: "unsung-heroes" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "module", id: "peoples-cultures" }, to: { kind: "module", id: "ityala-lamawele" }, surface: "Ityala Lamawele" },
+  { from: { kind: "module", id: "peoples-cultures" }, to: { kind: "module", id: "vilakazi" }, surface: "Inkondlo kaZulu" },
+  { from: { kind: "module", id: "food" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+];
