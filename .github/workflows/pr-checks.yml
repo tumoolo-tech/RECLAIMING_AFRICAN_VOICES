@@ -40,3 +40,8 @@ jobs:
 
       - name: Unit tests
         run: npm test
+
+      # Docs lint (issue #51): the product name and the "official languages" claim rotted once each.
+      # Runs after the tests so a red suite is reported first. Reads git ls-files, so needs the checkout.
+      - name: Docs lint
+        run: npm run check:docs
