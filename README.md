@@ -73,7 +73,7 @@ clearly labelled "unreviewed,"** pending native-speaker review — never passed 
 - **Narrative + language AI:** Google Gemini (image/tone) · Anthropic Claude (chatbot + translation
   drafting) · **Lelapa AI / Vulavula** (indigenous STT + translation) · **Botlhale AI** (indigenous TTS)
 - **Voice:** ElevenLabs (static cinematic sounds only, build-time)
-- **Backend:** Supabase (Postgres + storage + auth) · **WatermelonDB** (offline-first local DB + sync)
+- **Backend:** Supabase (Postgres + storage + anonymous auth, RLS) · persistence is localStorage/IndexedDB on web (WatermelonDB was planned, not adopted)
 - **Provenance:** Solana (devnet) + IPFS content IDs for the Heritage Ledger
 
 See [docs/02-tech-stack.md](docs/02-tech-stack.md) for the rationale and free-tier limits, and
@@ -88,7 +88,8 @@ cp .env.example .env      # optional keys; Pollinations + the core app need none
 npm install
 npm run web               # open in the browser (primary demo target)
 # or: npm run start       # scan the QR code with Expo Go on your phone
-npm run typecheck && npm test   # 79 unit tests, pure-logic
+npm run typecheck && npm test   # pure-logic unit tests — the count is whatever `npm test` prints
+npm run check:docs              # docs lint: stale product name, wrong language count
 ```
 
 The app is **fully usable with no keys**. Adding keys upgrades specific features (see the roadmap doc).

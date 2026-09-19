@@ -1,4 +1,4 @@
-# AGENTS.md — how we work on Maloba
+# AGENTS.md — how we work on Ubuntu Heritage
 
 The shared contract for every contributor (human or AI). Read this and **[STATUS.md](STATUS.md)** at the
 start of every session. The rules are tool-agnostic — they apply whether you're in Claude Code, an IDE,
@@ -8,7 +8,7 @@ or anything else.
 
 ## 1. What we're building & why it must win
 
-Maloba is judged against the **Reclaiming African Voices rubric** (see
+Ubuntu Heritage is judged against the **Reclaiming African Voices rubric** (see
 [docs/06-judging-criteria.md](docs/06-judging-criteria.md)). The weighting decides our priorities:
 
 | Criterion | Weight | What it means for our choices |
@@ -81,7 +81,8 @@ Build these in from the start, not at the end:
 
 After any meaningful step, before you stop:
 1. Update the relevant section of [STATUS.md](STATUS.md) (Current focus, Next action, phase tracker).
-2. Add a one-line dated entry to the **Log** at the bottom.
+2. Add a dated entry at the **top of [STATUS-LOG.md](STATUS-LOG.md)** (the board holds state, the log holds
+   history; the log is union-merged so two entries at once never conflict).
 3. **Report failures honestly** — a broken build or a blocked task is logged, not hidden.
 
 ## 8. Definition of Done (every feature)
@@ -90,5 +91,5 @@ After any meaningful step, before you stop:
 - [ ] Content is grounded — no invented history; sources credited.
 - [ ] If it touches personal data: POPIA consent + erasure path present.
 - [ ] Accessible: works offline or degrades gracefully; legible; multilingual-ready.
-- [ ] STATUS.md updated + Log entry added.
+- [ ] STATUS.md board updated + entry added to STATUS-LOG.md.
 - [ ] Maps to a rubric criterion you can name out loud.
