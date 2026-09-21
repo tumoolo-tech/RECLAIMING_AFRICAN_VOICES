@@ -25,8 +25,11 @@ import { HeritageLedgerScreen } from "./src/components/HeritageLedgerScreen";
 import { AtlasScreen } from "./src/components/AtlasScreen";
 import { ProvincesScreen, ProvinceScreen, CityScreen } from "./src/components/ProvincesScreens";
 import { PlaceScreen } from "./src/components/PlaceScreen";
+import { StoryScrollScreen } from "./src/components/StoryScrollScreen";
+import { storyById } from "./src/content/stories";
 import { PlaceBookings } from "./src/components/VisitPanel";
 import { placeById } from "./src/content/places";
+import type { ContentRef } from "./src/content/topic-links";
 import { provinceById, cityById } from "./src/content/provinces";
 import { PresidentsScreen, PresidentScreen } from "./src/components/PresidentsScreens";
 import { presidentById } from "./src/content/presidents";
@@ -80,6 +83,7 @@ type Route =
   | { name: "province"; id: string }
   | { name: "city"; id: string }
   | { name: "place"; id: string }
+  | { name: "story"; id: string }
   | { name: "presidents" }
   | { name: "president"; id: string }
   | { name: "days" }
@@ -99,17 +103,42 @@ type Route =
 
 // Route-name groupings for the shell. Deliberately `Set<string>` (see the note in App below).
 const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero"]);
-const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader"]);
+const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader", "story"]);
 const ARCHIVE_ROOMS = new Set(["archive", "heritage", "about"]);
 const WATCH_ROOMS = new Set(["watch", "watchItem"]);
 const ROOT_ROOMS = new Set(["home", "journey", "watch", "kids", "schools", "passport", "countries"]);
 // Routes whose React key must include the id, so moving between two of them remounts (and re-fades)
 // rather than reusing the previous item's mounted state.
-const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem"]);
+const KEYED_ROUTES = new Set(["reader", "province", "city", "place", "president", "hero", "watchItem", "story"]);
+
+// Which route opens a topic of each kind — the one place that knows (SP-098).
+//
+// Before this, every jump was its own `onOpenX` prop invented per screen and hand-wired here. That
+// is fine for a handful of fixed destinations and useless for a link that only knows it points at
+// `{kind, id}`. `undefined` means the kind has no route yet, so it is a mention SOURCE but never a
+// TARGET (SP-097) — a chip that looks tappable and does nothing is worse than no chip.
+//
+// Deliberately `Record<string, …>` and NOT keyed on the Route union, for exactly the reason
+// ATLAS_ROOMS above is a `Set<string>`: nothing here narrows, so the type-checker never walks the
+// union. A `case` per kind inside renderRoute is what SP-085 describes going wrong.
+//
+// The cast in `openRef` is the one this file already makes in `navigateTo`. What the cast gives up,
+// `topic-route.test.ts` buys back — and more, because it also checks the route CARRIES AN ID, which
+// the cast does not.
+const ROUTE_FOR_KIND: Record<string, string | undefined> = {
+  place: "place",
+  president: "president",
+  hero: "hero",
+  city: "city",
+  module: "reader",
+  article: undefined, // read in a modal from the Archive; no route of its own yet
+  day: undefined, // `days` is a list, with no per-day route
+  journey: undefined, // `stage` takes a history-trail id, not a journey-slide id
+};
 
 // One place, as a page. Extracted for the same reason StageRoute is: inlining a component in the
 // route switch is what made the type-checker recurse over the union, not the union itself.
-function PlaceRoute({ id, lang, onBack, onOpenPlace }: { id: string; lang: Lang; onBack: () => void; onOpenPlace: (id: string) => void }) {
+function PlaceRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; onBack: () => void; onOpenRef: (ref: ContentRef) => void }) {
   const place = placeById(id);
   if (!place) return null;
   return (
@@ -117,10 +146,17 @@ function PlaceRoute({ id, lang, onBack, onOpenPlace }: { id: string; lang: Lang;
       place={place}
       lang={lang}
       onBack={onBack}
-      onOpenPlace={onOpenPlace}
+      onOpenRef={onOpenRef}
       footer={<PlaceBookings placeId={place.id} lang={lang} />}
     />
   );
+}
+
+// One scroll-told story. Top-level for the same reason PlaceRoute and StageRoute are.
+function StoryRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; onBack: () => void; onOpenRef: (ref: ContentRef) => void }) {
+  const story = storyById(id);
+  if (!story) return null;
+  return <StoryScrollScreen story={story} lang={lang} onBack={onBack} onOpenRef={onOpenRef} />;
 }
 
 // One Journey stage. Lives out here on purpose: inlining it in App's route switch made the
@@ -244,6 +280,17 @@ export default function App() {
     }
   };
 
+  // Open any topic by {kind, id} — the single navigator the linking layer needs (SP-098).
+  //
+  // A link knows what it points at, not which screen shows it; before this, every screen invented
+  // its own `onOpenX` prop and only App.tsx knew the mapping. A kind with no route is a no-op
+  // rather than a crash, and SP-097 keeps such links out of the data in the first place, so the
+  // guard here should never fire — it exists so that if one ever does, nothing breaks.
+  const openRef = (ref: ContentRef) => {
+    const name = ROUTE_FOR_KIND[ref.kind];
+    if (name) push({ name, id: ref.id } as Route);
+  };
+
   // Android hardware/gesture back pops the in-app route stack instead of exiting the app.
   // Only handled while there is somewhere to go back to, so back on Home still exits normally.
   // (BackHandler is a web no-op that logs an error, hence the platform guard.)
@@ -329,9 +376,11 @@ export default function App() {
             id={route.id}
             lang={lang}
             onBack={back}
-            onOpenPlace={(id) => push({ name: "place", id })}
+            onOpenRef={openRef}
           />
         );
+      case "story":
+        return <StoryRoute id={route.id} lang={lang} onBack={back} onOpenRef={openRef} />;
       case "city": {
         const c = cityById(route.id);
         return c ? <CityScreen city={c} onBack={back} onArchive={() => push({ name: "archive" })} onOpenPlace={(id) => push({ name: "place", id })} lang={lang} /> : null;
@@ -340,7 +389,7 @@ export default function App() {
         return <PresidentsScreen onBack={back} onOpen={(id) => push({ name: "president", id })} lang={lang} />;
       case "president": {
         const pr = presidentById(route.id);
-        return pr ? <PresidentScreen president={pr} onBack={back} onArchive={() => push({ name: "archive" })} lang={lang} /> : null;
+        return pr ? <PresidentScreen president={pr} onBack={back} onArchive={() => push({ name: "archive" })} onOpenRef={openRef} lang={lang} /> : null;
       }
       case "days":
         return <NationalDaysScreen onBack={back} lang={lang} />;
@@ -350,7 +399,7 @@ export default function App() {
         return <HeroesScreen onBack={back} onOpen={(id) => push({ name: "hero", id })} lang={lang} />;
       case "hero": {
         const h = heroById(route.id);
-        return h ? <HeroScreen hero={h} onBack={back} lang={lang} /> : null;
+        return h ? <HeroScreen hero={h} onBack={back} onOpenRef={openRef} lang={lang} /> : null;
       }
       // ── The v2 rooms ──
       case "watch":
@@ -464,6 +513,7 @@ export default function App() {
             onWatch={() => push({ name: "watch" })}
             onJourneyRoom={() => push({ name: "journey" })}
             onCountries={() => push({ name: "countries" })}
+            onStory={() => push({ name: "story", id: "soweto-16-june" })}
             onKids={() => push({ name: "kids" })}
             onSchools={() => push({ name: "schools" })}
             country={country}

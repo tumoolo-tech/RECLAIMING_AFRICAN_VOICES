@@ -61,7 +61,7 @@ export const citiesForExperience = (e: Experience, all: Place[]): string[] =>
 
 // ── Resolvers ────────────────────────────────────────────────────────────────────────────────────
 //
-// Pure core + bound wrapper, as in `place-links.ts` (SP-064).
+// Pure core + bound wrapper, as in `topic-links.ts` (SP-064).
 //
 // TWO functions on purpose (SP-065). `experiencesAtPlace` returns everything, whatever its status —
 // that is the freshness script's view. `bookableAtPlace` returns only what is `live`, and that is

@@ -5,7 +5,7 @@
 // booking is not a property of a place — one tour visits four of them, and a museum that closes must
 // not delete the street it stands on.
 //
-// INTEGRITY (AGENTS.md §4): `sources` is REQUIRED, so a place with no citation does not compile. An
+// INTEGRITY (AGENTS.md §2): `sources` is REQUIRED, so a place with no citation does not compile. An
 // unsourced landmark stays a bare string in `provinces.ts` rather than being promoted into an entity
 // with invented provenance. `coords` is OPTIONAL (SP-073) — a third of these places have no single
 // point by nature — but where one is given it is a sourced factual claim like any other, because a

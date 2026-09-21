@@ -8,6 +8,9 @@ import { t } from "../i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import { SceneImage } from "./SceneImage";
 import { PressScale, Reveal } from "./Motion";
+import { sowetoStory } from "../content/stories";
+import { placeById } from "../content/places";
+import { placeImageId } from "../content/place-images";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
 import { Icon } from "../ui";
 import { Journey } from "./Journey";
@@ -35,6 +38,17 @@ const PHOTO = "warm documentary photography, golden natural light, photorealisti
 // are best-effort translations of INTERFACE labels (not the literary content, which keeps its honest
 // reviewed/fallback status). A native speaker should still review before final. See setswana-i18n.
 const UI = {
+  storyKicker: {
+    en: "A story, told by scrolling", tn: "Kanegelo, e bolelwa ka go menologa", af: "'n Verhaal, vertel deur te rol",
+    zu: "Indaba, exoxwa ngokuskrola", xh: "Ibali, elibaliswa ngokuskrola", nso: "Kanegelo, e anegwa ka go menola",
+    st: "Pale, e phetwang ka ho silela", ss: "Indzaba, lexoxwa ngekuskrola", ts: "Ntsheketo, lowu hlamuseriwaka hi ku hundzuluxa",
+    nr: "Indaba, exoxwa ngokuskrola", ve: "Tshiitea, tshi anetshelwaho nga u rola",
+  },
+  storyCta: {
+    en: "Read it", tn: "E bale", af: "Lees dit", zu: "Yifunde", xh: "Yifunde",
+    nso: "E bale", st: "E bale", ss: "Yifundze", ts: "Yi hlaye", nr: "Yifunde", ve: "I vhalani",
+  },
+
   begin: {
     en: "Begin reading", tn: "Simolola go bala", af: "Begin lees", zu: "Qala ukufunda", xh: "Qala ukufunda",
     nso: "Thoma go bala", st: "Qala ho bala", ss: "Cala kufundza", ts: "Sungula ku hlaya", nr: "Thoma ukufunda", ve: "Thoma u vhala",
@@ -391,6 +405,7 @@ export function HomeGallery({
   onWatch,
   onJourneyRoom,
   onCountries,
+  onStory,
   onKids,
   onSchools,
   country,
@@ -421,6 +436,8 @@ export function HomeGallery({
    */
   onJourneyRoom: () => void;
   onCountries: () => void;
+  /** Opens the scroll-told story (Phase 11). */
+  onStory: () => void;
   onKids: () => void;
   onSchools: () => void;
   /** For the resume bar: which country's journey, and how far along it is. */
@@ -498,6 +515,19 @@ export function HomeGallery({
         {/* The four pillars are the films the Watch room leads with, so the bookshelf IS the rail;
             "Browse the whole library" opens /watch, where the rest of the catalogue lives. */}
         <LiteratureShelf lang={lang} onOpen={onOpen} onWatch={onWatch} />
+
+        {/* ── A STORY, TOLD BY SCROLLING ─────────────────────────────────────── */}
+        {/* The kicker and the button are UI chrome and translate; the title and standfirst come
+            from the story itself and stay English, exactly as a place's prose does (SP-015). */}
+        <Section
+          tone="slate"
+          image={placeImageId(placeById("vilakazi-street")?.image?.file) ?? heroSource(atlasModules[0])}
+          kicker={t(UI.storyKicker, lang)}
+          title={sowetoStory.title}
+          intro={sowetoStory.standfirst}
+        >
+          <CtaButton label={t(UI.storyCta, lang)} onPress={onStory} />
+        </Section>
 
         {/* ── JOURNEY PREVIEW (V2-07 §4) ─────────────────────────────────────── */}
         <JourneyPreview lang={lang} country={country} progress={progress} onOpen={onJourneyRoom} />

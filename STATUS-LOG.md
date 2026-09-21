@@ -8,6 +8,106 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-19 (a story told by scrolling)** — Tumo pointed at the Rockstar GTA VI page and asked
+  for one demo feature in that shape. I looked at it: full-bleed art about a screen tall, a small
+  kicker over a large headline, a line or two of body, text alternating side to side, a lot of
+  black between. The effect is scale and restraint, **not** scroll-jacking — which is also what
+  makes it portable to a phone. **"Sixteen June"**, reached from a card on Home. Nine panels: four
+  licensed place photographs, Sam Nzima's archival photograph, four typographic beats, and the
+  sources.
+
+  **A panel cannot choose its own picture** (`SP-100`). It names a `placeId` or a `dayId`, and the
+  image, credit and licence all come from that record — so a story cannot illustrate one place with
+  another's photograph, and a credit cannot drift from the file it belongs to.
+
+  **A documentary photograph gets a different panel from a place photograph** (`SP-101`), and this
+  is the part worth keeping. A place photograph is scenery: cropping it to fill a panel loses
+  nothing. Nzima's photograph is evidence — cropping changes what it shows, and a headline across
+  it is writing on the record. So it is shown whole on black, undarkened, with the photographer,
+  the people in the frame and the date beneath it, and the story text below that.
+  `NationalDaysScreen` already drew that line; the new screen must not quietly undo it.
+
+  **A bug that would have shipped a black screen.** The scroll was driven by
+  `Animated.event(…, {useNativeDriver: true})`. Measured in the browser: panel 1 at opacity 0.74,
+  **panels 2 through 9 at exactly 0** — the value never moves on web, so every interpolation clamps
+  to zero. A nine-panel showcase with one visible panel, and the first screenshot looked fine
+  because the first panel is the one that works. The rule that came out of it (`SP-103`): a surface
+  may decline to animate, never to render.
+
+  **The story tells the correction** (`SP-104`). This app holds Thando Sipuye's argument that the
+  familiar telling of 16 June erases the women who organised and marched, and summarises it
+  approvingly. The conventional version in the app's most visible feature would contradict its own
+  scholarship, so the last third names Sibongile Mkhabela, Winnie Motlalepula Kgware and Hermina
+  Leroke, and ends on Antoinette Sithole being a protester rather than only Hector's sister. A test
+  fails if those names go.
+
+  Also caught by looking rather than testing: the typographic beats had nothing giving them height
+  and read as gaps between pictures; and the floating back button was invisible behind the shell's
+  own nav. **269 tests**, typecheck clean, walked end to end in a browser.
+
+- **2026-09-19 (topics link to each other)** — Tumo asked for it in one line: *"mandela house to
+  mandela and vilakazi street to mandela house."* Asked who decides that two topics are linked,
+  Tumo chose **automatic name matching** over hand-authored rows, having been shown the risk that
+  the app would assert connections nobody checked.
+
+  **The reconciliation is that a mention is not a claim.** Automatic matching cannot produce an
+  editorial reason, and inventing one is the fabrication AGENTS.md §2 forbids. But if Mandela
+  House's already-sourced sentence contains the words "Vilakazi Street", making those words
+  navigable asserts nothing new — it is a way to move, not a statement about the past. So there
+  are **two tiers and they are different TYPES** (`SP-090`): a curated link carries a required
+  reason; a `Mention` has no `why` and no `relation` field at all, so no component can render an
+  invented reason even by mistake. That is the same technique that makes `TopicLink.why` required.
+
+  **What is live:** 87 topics indexed · **26 derived mentions** · **9 curated links**, each `why`
+  restating a fact already published by both ends. Both of Tumo's examples work, in both
+  directions, and Nelson Mandela's page lists Mandela House without a row having been written for
+  it — one stored row, two pages, derived (`SP-091`).
+
+  **Three things I got wrong and found by looking at the output rather than the tests.**
+
+  1. The surface-length floor was 6. The Nelson Mandela Museum — whose single sentence names Qunu,
+     Mvezo *and* Mandela, three real topics — produced **zero** links. Every topic name of four
+     characters or more turns out to be a distinctive proper noun; length was standing in for
+     distinctiveness and doing it badly.
+  2. A self-match *skipped* its surface instead of claiming it, leaving those characters free for a
+     shorter name — "Nelson Mandela International Day" would have had the president matched inside
+     the day's own title. Your own name is yours.
+  3. A mutual pair rendered **twice**, under both "Also mentioned here" and "Mentioned in". It was
+     in Tumo's own example and the screenshot did not show it; printing the resolver's output did.
+
+  Fixes 1 and 2 took the graph from 19 links to 36.
+
+  **The report found its own bug.** `npm run check:topic-links` has a *near misses* section for
+  bare surnames sitting in prose with no alias. Its first heuristic took the last word of any name,
+  which for a place is a category noun — twenty rows of *District Six says "Museum" but does not
+  link to Mafikeng Museum*. That is how you teach someone to skip a section. Restricted to people,
+  it found exactly one real thing: Motlanthe's record says "Mbeki". Taken.
+
+  **Not seeded, deliberately:** thematic links. `SP-030` reserves those for Tumo one at a time and
+  `SP-055` rejects the arguable by default. One I nearly wrote and should not have —
+  `womens-day → national-womens-memorial` — is **wrong**: the memorial commemorates the ~27,000
+  Boer women and children who died in British concentration camps; Women's Day commemorates the
+  1956 march to the Union Buildings. Different women, different century. Exactly the conflation §9
+  exists to stop, and only reading both records showed it.
+
+  **257 tests** (was 218), typecheck clean, every new guard mutation-tested. `npm run typecheck`
+  measured before and after the navigation change — 61.4s against a 60.4–71.6s baseline, so the
+  recursion trap `SP-085` describes is not re-sprung.
+
+  **Seen working**, place page and person page both. Nelson Mandela's page renders the five
+  curated links with their reasons, then his outgoing mentions, then eight incoming ones —
+  none of which was written for that page.
+
+  **And seeing it caught the last bug: the heading said "What happened here" above a list of
+  places he lived in and was imprisoned in.** He is not somewhere you can stand, and the word
+  quietly turned a person into a location. A place keeps that heading; every other kind now reads
+  "Directly connected". No test would have found it — every test was about whether the link was
+  true, and this one was about whether the sentence around it was.
+
+  One thing still unseen: that heading fix itself. The dev server's renderer froze immediately
+  after, and stayed frozen. It is one conditional and it typechecks, but it has not been on a
+  screen — worth a glance before the demo.
+
 - **2026-09-19 (#51)** — **The log moves out of STATUS.md, and the docs stop contradicting the code.**
   This is the first entry written in the new file. **The split:** STATUS.md was 1,611 lines, of which
   1,313 were this log, and every PR inserted at the same two spots — a board row and the top of the

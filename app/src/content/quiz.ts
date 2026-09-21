@@ -2,7 +2,7 @@ import type { LocalizedText } from "./types";
 
 // Journey quiz questions — one small check per milestone, tied to content/history-trail.ts.
 //
-// INTEGRITY (AGENTS.md §4). Two rules govern every question here:
+// INTEGRITY (AGENTS.md §2). Two rules govern every question here:
 //
 //  1. The correct answer must be defensible from the milestone's own `note`, or from a branch under
 //     it. Nothing is asked that the app has not already told the reader, from a cited source.

@@ -20,7 +20,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Screen, Icon } from "../ui";
 import { places, type Place } from "../content/places";
 import { placeImage } from "../content/place-images";
-import { contentForPlace } from "../content/place-links";
+import type { ContentRef } from "../content/topic-links";
+import { RelatedTopics } from "./RelatedTopics";
 import { PlaceBody, kindLabel } from "./PlaceBody";
 import { PressScale } from "./Motion";
 import { colors, spacing, radius, fonts, type } from "../theme/tokens";
@@ -29,10 +30,6 @@ import type { LangCode } from "../i18n/languages";
 
 const UI = {
   place: { en: "Place", tn: "Lefelo", af: "Plek", zu: "Indawo", xh: "Indawo", nso: "Lefelo", st: "Sebaka", ss: "Indzawo", ts: "Ndhawu", nr: "Indawo", ve: "Fhethu" },
-  happenedHere: {
-    en: "What happened here", tn: "Se se diragetseng fano", af: "Wat hier gebeur het", zu: "Okwenzeka lapha", xh: "Okwenzeka apha",
-    nso: "Se se diregilego mo", st: "Se etsahetseng mona", ss: "Lokwenteka lapha", ts: "Leswi humeleleke laha", nr: "Okwenzeka lapha", ve: "Zwe zwa itea hafha",
-  },
   nearby: {
     en: "Elsewhere in this city", tn: "Mafelo a mangwe mo motseng ono", af: "Elders in hierdie stad", zu: "Kwenye indawo kuleli dolobha", xh: "Kwenye indawo kwesi sixeko",
     nso: "Mafelong a mangwe motseng wo", st: "Libakeng tse ding toropong ena", ss: "Kulenye indzawo kulelidolobha", ts: "Etindhawini tin'wana edorobeni leri", nr: "Kwenye indawo kiledorobho", ve: "Huṅwe fhethu kha ḽino ḓorobo",
@@ -57,17 +54,17 @@ export function PlaceScreen({
   place,
   lang,
   onBack,
-  onOpenPlace,
+  onOpenRef,
   footer,
 }: {
   place: Place;
   lang: LangCode;
   onBack: () => void;
-  onOpenPlace: (id: string) => void;
+  /** Open any topic by {kind, id}. One prop instead of one per destination — see SP-098. */
+  onOpenRef: (ref: ContentRef) => void;
   footer?: React.ReactNode;
 }) {
   const img = placeImage(place.image?.file);
-  const stories = contentForPlace(place.id);
   const alsoHere = places.filter((p) => p.id !== place.id && p.cityId === place.cityId);
 
   return (
@@ -107,17 +104,10 @@ export function PlaceScreen({
         <PlaceBody place={place} lang={lang} footer={footer} />
       </View>
 
-      {stories.length > 0 ? (
-        <View style={s.block}>
-          <Text style={s.blockLabel}>{t(UI.happenedHere, lang)}</Text>
-          {stories.map((c) => (
-            <View key={`${c.ref.kind}:${c.ref.id}`} style={s.storyRow}>
-              <Text style={s.storyWhy}>{c.why}</Text>
-              {c.relation === "thematic" ? <Text style={s.thematic}>related</Text> : null}
-            </View>
-          ))}
-        </View>
-      ) : null}
+      {/* Was an inert list of reasons: the rows already held `kind` and `id` and threw them away.
+          Now every tier is pressable, and mentions join them — see RelatedTopics for why the three
+          must not look alike. */}
+      <RelatedTopics refTo={{ kind: "place", id: place.id }} lang={lang} onOpenRef={onOpenRef} />
 
       {alsoHere.length > 0 ? (
         <View style={s.block}>
@@ -127,7 +117,7 @@ export function PlaceScreen({
               <PressScale
                 key={p.id}
                 style={s.chip}
-                onPress={() => onOpenPlace(p.id)}
+                onPress={() => onOpenRef({ kind: "place", id: p.id })}
                 accessibilityLabel={`${p.name} — ${kindLabel(p, lang)}`}
               >
                 <Text style={s.chipText}>{p.name}</Text>
@@ -155,9 +145,6 @@ const s = StyleSheet.create({
   body: { marginTop: spacing.xs },
   block: { marginTop: spacing.lg },
   blockLabel: { color: colors.gold, fontFamily: fonts.bodyBold, fontSize: 10, letterSpacing: 1.2, textTransform: "uppercase", marginBottom: spacing.sm },
-  storyRow: { flexDirection: "row", alignItems: "flex-start", gap: spacing.sm, marginTop: spacing.xs },
-  storyWhy: { flex: 1, color: "rgba(255,255,255,0.7)", fontFamily: fonts.body, fontSize: 13, lineHeight: 20 },
-  thematic: { color: colors.muted, fontFamily: fonts.bodyBold, fontSize: 9, letterSpacing: 0.6, textTransform: "uppercase", marginTop: 3 },
   chipRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   chip: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(26,133,167,0.10)", borderWidth: 1, borderColor: "rgba(26,133,167,0.55)", borderRadius: radius.pill, paddingVertical: 7, paddingLeft: 13, paddingRight: 9 },
   chipText: { color: "#fff", fontFamily: fonts.bodyMedium, fontSize: 12 },

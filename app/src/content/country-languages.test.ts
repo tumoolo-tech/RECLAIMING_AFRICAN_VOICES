@@ -42,7 +42,7 @@ test("every claim cites its source — this file states facts about real countri
   for (const [code, entry] of Object.entries(countryLanguages)) {
     assert.ok(
       entry.sourceNote && entry.sourceNote.length > 30,
-      `${code} needs a real sourceNote: "what they speak in X" is a factual claim (AGENTS.md §4)`
+      `${code} needs a real sourceNote: "what they speak in X" is a factual claim (AGENTS.md §2)`
     );
   }
 });
