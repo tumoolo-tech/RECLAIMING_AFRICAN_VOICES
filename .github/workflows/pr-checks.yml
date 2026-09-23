@@ -45,3 +45,9 @@ jobs:
       # Runs after the tests so a red suite is reported first. Reads git ls-files, so needs the checkout.
       - name: Docs lint
         run: npm run check:docs
+
+      # The build was the one thing CI never ran (issue #40) — typecheck and tests both pass on code
+      # that Metro then refuses to bundle. `build:web` is what Vercel deploys, so it is what a PR
+      # should have to survive. Last, because it is the slowest step and the cheapest signals go first.
+      - name: Web build
+        run: npm run build:web
