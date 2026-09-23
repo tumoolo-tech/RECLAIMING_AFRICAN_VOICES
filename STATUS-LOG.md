@@ -8,6 +8,27 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-23 (board de-dupe)** — **The same both-sides merge that broke `package.json` also broke
+  the board, and the hotfix only fixed the first one.** `STATUS.md` came out of the #77/#78 conflict
+  carrying **two `_Last updated:_` lines**, the **PR checks (CI)** row twice and the **Audit backlog**
+  row twice. The duplicates were not merely redundant, they **disagreed**: one PR-checks row read 🔴
+  "NOT a required check — and on 23 Sep that cost us a broken `main`", the other read 🟡 "#40 done
+  (this branch)"; one backlog row listed #38 as done and #40 as *in review*, the other listed neither.
+  A board that says two things is worse than a board that says nothing, because both readings look
+  authoritative.
+  **Resolved by keeping the newer row in each pair and folding in what only the older one carried** —
+  the `engines` / `.nvmrc` item, which was **checked before it was moved, not assumed**: there is no
+  `.nvmrc` anywhere in the repo and no `engines` field in `app/package.json`, so nothing pins the Node
+  version that #77's `run-ts.mjs` launcher was written for. That is still Tumo's, alongside making PR
+  checks required. The merged backlog row now names all six merged issues against their PRs
+  (#36 · #25 · #34 · #51 · #40 · #38 → PRs #69, #71, #72, #75, #77, #78), each one verified against
+  the PR state rather than copied across.
+  **Why this is a separate commit from the hotfix.** #79 had to be small and fast — `main` could not
+  install. This is the other half of the same damage, and it is board prose, so it belongs where it
+  can be read rather than smuggled into an emergency fix. The rule the hotfix entry wrote down is the
+  one that applies: keeping both sides is right for an append-only log and wrong for a map, and a
+  board row is a map.
+
 - **2026-09-23 (hotfix)** — **`main` could not run `npm` at all for about an hour, and the check that
   caught it was not allowed to stop it.** Resolving the `app/package.json` conflict between PR #77 and
   PR #78 kept **both** sides of the hunk: `cache:images` and `check:docs` appeared twice, and the
