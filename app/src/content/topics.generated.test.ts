@@ -18,9 +18,13 @@ test("the generated file is current — run npm run gen:topics if this fails", (
   // generated" here is exactly the mistake articles.test.ts makes with its sort (SP-064).
   const before = readFileSync(new URL("./topics.generated.ts", import.meta.url), "utf8");
   try {
+    // Through scripts/run-ts.mjs, not straight at node: the generator imports `.ts`, which needs
+    // --experimental-strip-types below Node 22.18 and must NOT be given the flag on 26+. Hard-coded
+    // flags here made this test fail on a contributor's Node 22.16 with "stale" when the file was
+    // current — the generator had crashed, and a crash reads the same as a difference (issue #40).
     execFileSync(
       process.execPath,
-      ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON", "scripts/gen-topics.mjs", "--check"],
+      ["scripts/run-ts.mjs", "scripts/gen-topics.mjs", "--check"],
       { cwd: fileURLToPath(new URL("../../", import.meta.url)), stdio: "pipe" },
     );
   } catch (e) {
