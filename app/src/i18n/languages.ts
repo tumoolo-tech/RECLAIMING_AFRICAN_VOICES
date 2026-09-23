@@ -45,22 +45,46 @@ export type LanguageMeta = {
    */
   elevenlabs: string | null;
   reviewedContent: boolean; // human-authored/-reviewed story text exists today
+  /**
+   * Has a speaker read the INTERFACE — buttons, labels, the consent sheet, the data gate?
+   *
+   * Separate from `reviewedContent` (issue #38) because they are different jobs with different risks
+   * and, in practice, different reviewers. Chrome coverage is complete and enforced by
+   * `ui-coverage.test.ts` — all eleven languages, every string — but complete is not the same as
+   * correct: every non-English string was machine-drafted and, as of 2026-09-23, **none has been read
+   * by a speaker**. One flag standing for both would have to say "reviewed" or "not" about two things
+   * that are not in the same state.
+   *
+   * `false` everywhere but English is therefore the honest starting position, not a placeholder. A
+   * language flips when a reviewer returns a sheet (`npm run review:sheet -- <code>`) and is named in
+   * `reviewers` below.
+   */
+  reviewedUi: boolean;
+  /**
+   * Who checked this language, and what they checked. Empty until someone has.
+   *
+   * Named people, with their consent, because credit is the only thing this project can offer a
+   * volunteer reviewer — and because a reader deserves to know whose ear stands behind a "reviewed"
+   * mark. `scope` says what they actually read: a tick that covers the consent sheet is a different
+   * claim from one that covers the whole app.
+   */
+  reviewers: { name: string; scope: string; date: string }[];
 };
 
 // Order: English first, then the indigenous languages. [NEEDS: confirm the exact Botlhale codes for
 // nr/ss/ve with the contact — their public table only fully listed en/zu/xh/st/nso/ts/af/tn.]
 export const LANGUAGES: LanguageMeta[] = [
-  { code: "en", english: "English", endonym: "English", bcp47: "en-ZA", botlhale: "en-ZA", elevenlabs: "en", reviewedContent: true },
-  { code: "tn", english: "Tswana", endonym: "Setswana", bcp47: "tn-ZA", botlhale: "tn-ZA", elevenlabs: null, reviewedContent: true },
-  { code: "zu", english: "Zulu", endonym: "isiZulu", bcp47: "zu-ZA", botlhale: "zu-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "xh", english: "Xhosa", endonym: "isiXhosa", bcp47: "xh-ZA", botlhale: "xh-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "nso", english: "Northern Sotho (Sepedi)", endonym: "Sepedi", bcp47: "nso-ZA", botlhale: "nso-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "st", english: "Southern Sotho", endonym: "Sesotho", bcp47: "st-ZA", botlhale: "st-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "ts", english: "Tsonga", endonym: "Xitsonga", bcp47: "ts-ZA", botlhale: "ts-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "af", english: "Afrikaans", endonym: "Afrikaans", bcp47: "af-ZA", botlhale: "af-ZA", elevenlabs: "af", reviewedContent: false },
-  { code: "ss", english: "Swati", endonym: "siSwati", bcp47: "ss-ZA", botlhale: "ss-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "nr", english: "Southern Ndebele", endonym: "isiNdebele", bcp47: "nr-ZA", botlhale: "nr-ZA", elevenlabs: null, reviewedContent: false },
-  { code: "ve", english: "Venda", endonym: "Tshivenḓa", bcp47: "ve-ZA", botlhale: "ve-ZA", elevenlabs: null, reviewedContent: false },
+  { code: "en", english: "English", endonym: "English", bcp47: "en-ZA", botlhale: "en-ZA", elevenlabs: "en", reviewedContent: true, reviewedUi: true, reviewers: [] },
+  { code: "tn", english: "Tswana", endonym: "Setswana", bcp47: "tn-ZA", botlhale: "tn-ZA", elevenlabs: null, reviewedContent: true, reviewedUi: false, reviewers: [] },
+  { code: "zu", english: "Zulu", endonym: "isiZulu", bcp47: "zu-ZA", botlhale: "zu-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "xh", english: "Xhosa", endonym: "isiXhosa", bcp47: "xh-ZA", botlhale: "xh-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "nso", english: "Northern Sotho (Sepedi)", endonym: "Sepedi", bcp47: "nso-ZA", botlhale: "nso-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "st", english: "Southern Sotho", endonym: "Sesotho", bcp47: "st-ZA", botlhale: "st-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "ts", english: "Tsonga", endonym: "Xitsonga", bcp47: "ts-ZA", botlhale: "ts-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "af", english: "Afrikaans", endonym: "Afrikaans", bcp47: "af-ZA", botlhale: "af-ZA", elevenlabs: "af", reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "ss", english: "Swati", endonym: "siSwati", bcp47: "ss-ZA", botlhale: "ss-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "nr", english: "Southern Ndebele", endonym: "isiNdebele", bcp47: "nr-ZA", botlhale: "nr-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
+  { code: "ve", english: "Venda", endonym: "Tshivenḓa", bcp47: "ve-ZA", botlhale: "ve-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
 ];
 
 export const DEFAULT_LANG: LangCode = "en";
