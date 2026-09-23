@@ -8,6 +8,30 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-23 (hotfix)** — **`main` could not run `npm` at all for about an hour, and the check that
+  caught it was not allowed to stop it.** Resolving the `app/package.json` conflict between PR #77 and
+  PR #78 kept **both** sides of the hunk: `cache:images` and `check:docs` appeared twice, and the
+  duplicated block left `review:sheet` without its trailing comma. The result was **invalid JSON** —
+  not a failing test, but a file `npm` refuses to parse, so `npm ci`, `npm test`, `npm run build:web`
+  and any Vercel deploy all died at the first step on a fresh clone.
+  **The check worked; the policy did not.** The PR-checks run on the merge commit `6660c5f` is
+  recorded as **failure** — CI saw it immediately. But the check has never been made *required*, a
+  line the board has carried since 12 Sep and #40 deliberately left for Tumo, so the merge went
+  through over a red run. That is the whole cost of the deferral, paid once: **making PR checks a
+  required status check on `main` is now the single highest-value thing Tumo can do in the repo
+  settings.** No code needed.
+  **The fix** keeps #77's launcher-routed versions, drops the duplicates, and finishes the one thing
+  #38 left open on purpose: `review:sheet` now goes through `scripts/run-ts.mjs` like the other ten
+  TypeScript-loading scripts, because `gen-review-sheet.mjs` imports `.ts` and that is exactly what the
+  launcher exists for. It could not run on Node 22.16 until this commit; it can now.
+  Verified on the repaired tree: `package.json` parses, **26 scripts, no duplicate keys** ·
+  **292/292 tests** — the first fully green suite on a Node 22.16 machine, which is itself the proof
+  that #77 did what it claimed · typecheck clean · `check:docs` clean · `build:web` green.
+  **The lesson, recorded because it will recur.** A merge-conflict resolution that keeps both sides is
+  the default gesture in every editor's conflict UI, and it is right for an append-only log and wrong
+  for a map — `package.json` scripts, a board row, a registry. STATUS-LOG.md is `merge=union` precisely
+  because it is the first kind; everything else should conflict loudly and be read by a person.
+
 - **2026-09-23 (#38)** — **The reviewer kit: making the first ask small enough that a speaker says yes.**
   Phase 8 measured the gap and was right to; this is the half that acts on it. Ten of the eleven
   languages have never been read by a speaker — the chrome is machine-drafted and 100% complete, which
