@@ -8,6 +8,40 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-23 (#40)** — **A test that failed on one machine and passed in CI, and the flag that
+  cannot be hard-coded either way.** Pulling `main` on Node **22.16** — a current LTS — turned
+  `topics.generated.test.ts` red: *"src/content changed and topics.generated.ts is stale."* It was not
+  stale. The test shells out to the generator; the generator imports `.ts`; below Node 22.18 that
+  needs `--experimental-strip-types`, so it **crashed**, and the test read a crash as a difference.
+  CI pins Node 24 and was green throughout. A false failure that only appears on someone else's
+  machine is the worst kind: the next contributor would have gone looking for a bug in the topic data.
+  **Why the obvious fix is wrong.** Hard-coding the flag looked right until it was checked against the
+  actual versions: needed on 22.6–22.17, a **silent no-op** on 22.18–25, and **undocumented in Node 26**
+  — whose sibling `--experimental-transform-types` was *removed* in v26.0.0. Node 26 is what a fresh
+  install gets today, so hard-coding the flag risks breaking every script for a new contributor, which
+  is worse than the problem it fixes. Leaving it out breaks 22.x. **Neither constant is correct.**
+  **So ask Node instead of guessing.** `scripts/run-ts.mjs` reads `process.features.typescript`
+  (`false` → stripping off, `"strip"` → on, `undefined` → too old to say) and passes the flag **only
+  when this Node actually needs it** — so a version that removed the flag never sees it. Below 22.6 it
+  exits with a sentence telling you which Node to install rather than a stack trace. The **eleven**
+  package.json scripts that load TypeScript now go through it; the eight that do not (`check:docs`,
+  `webp`, `build:web`, `supabase:check`, …) were left alone, so the manifest itself documents which
+  scripts touch `src/`. `fetch:place-photo` was routed through it by mistake and put back — it imports
+  no TypeScript.
+  **The same bug lived inside the test.** `topics.generated.test.ts` spawned `process.execPath` with
+  its own hard-coded flag list. It now spawns the launcher, so there is exactly **one** place in the
+  repo that knows about Node versions. Verified there are no others: `process.execPath` appears in the
+  launcher and that test, nowhere else.
+  **CI gained the step it never had:** `build:web`. Typecheck and tests both pass on code Metro then
+  refuses to bundle, and `build:web` is what Vercel deploys — so it is what a PR should survive. Last
+  in the file, because the cheapest signals should fail first.
+  Verified on Node 22.16, the version that was broken: **269/269** (was 268/269) · typecheck clean ·
+  `check:docs`, `check:languages`, `check:topic-links`, `gen:topics`, `check:place-links` all exit 0 ·
+  `build:web` green · `topics.generated.ts` untouched by any of it · the launcher forwards exit codes
+  (a child exiting 3 exits 3 — a swallowed failure would make CI lie) and refuses an empty invocation.
+  **Deferred deliberately, awaiting Tumo's green light:** `engines`, `.nvmrc`, and making the PR check
+  *required*. Those state a requirement; this change only makes the commands work wherever they land.
+
 - **2026-09-19 (a story told by scrolling)** — Tumo pointed at the Rockstar GTA VI page and asked
   for one demo feature in that shape. I looked at it: full-bleed art about a screen tall, a small
   kicker over a large headline, a line or two of body, text alternating side to side, a lot of
