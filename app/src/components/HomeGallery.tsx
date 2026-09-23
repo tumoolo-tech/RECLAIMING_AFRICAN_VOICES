@@ -10,7 +10,7 @@ import { SceneImage } from "./SceneImage";
 import { PressScale, Reveal } from "./Motion";
 import { sowetoStory } from "../content/stories";
 import { placeById } from "../content/places";
-import { placeImageId } from "../content/place-images";
+import { placeImageSource } from "../content/place-images";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
 import { Icon } from "../ui";
 import { Journey } from "./Journey";
@@ -519,9 +519,17 @@ export function HomeGallery({
         {/* ── A STORY, TOLD BY SCROLLING ─────────────────────────────────────── */}
         {/* The kicker and the button are UI chrome and translate; the title and standfirst come
             from the story itself and stay English, exactly as a place's prose does (SP-015). */}
+        {/* THE PICTURE HAS TO BE ABOUT THE DAY. Two things were wrong here: the lookup silently
+            failed on web and fell through to a generic Atlas illustration, so the card for a story
+            about Soweto in 1976 carried rock art; and the place it named was Vilakazi Street,
+            which is a street with Mandela's house on it rather than anything to do with 16 June.
+            The Hector Pieterson Memorial is the most representative licensed photograph this app
+            holds for this story — it commemorates the schoolchildren killed that day and stands
+            near the place he was shot. No fallback: if that photograph ever goes missing the card
+            should lose its picture, not quietly substitute an unrelated one. */}
         <Section
           tone="slate"
-          image={placeImageId(placeById("vilakazi-street")?.image?.file) ?? heroSource(atlasModules[0])}
+          image={placeImageSource(placeById("hector-pieterson-memorial")?.image?.file)}
           kicker={t(UI.storyKicker, lang)}
           title={sowetoStory.title}
           intro={sowetoStory.standfirst}
@@ -613,7 +621,9 @@ function Section({
 }: {
   tone: "slate" | "light" | "blue";
   reverse?: boolean;
-  image: string | number;
+  /** Optional. A section whose picture is missing renders as type alone rather than borrowing an
+   *  unrelated one — see the note at the Sixteen June call site. */
+  image?: string | number;
   kicker: string;
   title: string;
   intro: string;
@@ -649,7 +659,7 @@ function Section({
       ? scrollY.interpolate({ inputRange: [y - vh, y + 600], outputRange: [-26, 26], extrapolate: "clamp" })
       : 0;
 
-  const imageBlock = (
+  const imageBlock = image === undefined ? null : (
     <View style={[wide ? styles.sectionImageWide : styles.sectionImage, styles.imgClip]}>
       <Animated.View style={[StyleSheet.absoluteFill, styles.imgInner, { transform: [{ translateY: parallax }] }]}>
         <SceneImage source={image} />

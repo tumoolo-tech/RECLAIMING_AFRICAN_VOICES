@@ -102,7 +102,15 @@ type Route =
   | { name: "passport" };
 
 // Route-name groupings for the shell. Deliberately `Set<string>` (see the note in App below).
-const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero"]);
+//
+// `story` HAS to be in OWN_SCROLL, and leaving it out was not a cosmetic mistake. A scroll-told
+// story animates by interpolating its own `Animated.ScrollView`'s scroll offset. Under the "page"
+// mode the shell wraps the route in the shell's ScrollView, so the story's ScrollView is never
+// height-constrained: it grows to its full content height, the shell does all the scrolling, and
+// the story's `onScroll` never fires once. Measured in a browser — the title card sat at opacity 1
+// and translateY(0) at scroll offset 300, the progress rule stayed empty, and every panel fell back
+// to rendering plainly. The story looked finished and had no motion in it at all.
+const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero", "story"]);
 const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader", "story"]);
 const ARCHIVE_ROOMS = new Set(["archive", "heritage", "about"]);
 const WATCH_ROOMS = new Set(["watch", "watchItem"]);
