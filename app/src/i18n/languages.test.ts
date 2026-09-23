@@ -54,3 +54,33 @@ test("English is the default language and the first choice in the picker", () =>
   assert.equal(LANGUAGES[0].code, "en");
   assert.ok(languageByCode(DEFAULT_LANG).reviewedContent, "the default language must have real content");
 });
+
+// ── Review status (issue #38) ──────────────────────────────────────────────────────────────────
+
+test("no language's interface has been read by a speaker yet — and the registry says so", () => {
+  // The honest starting position, pinned so it cannot drift upward by accident. Chrome coverage is
+  // 100% and enforced, but coverage is not correctness: every non-English string was machine-drafted
+  // and none has been reviewed. A flag that flips needs a named reviewer in the same commit.
+  const claimed = LANGUAGES.filter((l) => l.reviewedUi && l.code !== "en").map((l) => l.code);
+  for (const code of claimed) {
+    const meta = LANGUAGES.find((l) => l.code === code)!;
+    assert.ok(
+      meta.reviewers.length > 0,
+      `${code} claims reviewedUi but names no reviewer — a review is a person, not a boolean`,
+    );
+  }
+});
+
+test("English is the source language, so its interface is reviewed by definition", () => {
+  assert.equal(languageByCode("en").reviewedUi, true);
+});
+
+test("a named reviewer carries a scope and a date — a credit with no claim attached is not a record", () => {
+  for (const l of LANGUAGES) {
+    for (const r of l.reviewers) {
+      assert.ok(r.name.length > 0, `${l.code}: a reviewer needs a name`);
+      assert.ok(r.scope.length > 0, `${l.code}: say what ${r.name} actually read — "the consent sheet" is a different claim from "the app"`);
+      assert.match(r.date, /^\d{4}-\d{2}-\d{2}$/, `${l.code}: reviewer date must be ISO (YYYY-MM-DD)`);
+    }
+  }
+});
