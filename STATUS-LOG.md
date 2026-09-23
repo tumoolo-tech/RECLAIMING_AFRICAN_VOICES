@@ -8,6 +8,65 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-23 (#38)** — **The reviewer kit: making the first ask small enough that a speaker says yes.**
+  Phase 8 measured the gap and was right to; this is the half that acts on it. Ten of the eleven
+  languages have never been read by a speaker — the chrome is machine-drafted and 100% complete, which
+  is not the same as correct, and the content is 33% Setswana and **0% in the other nine**. The only
+  review process was one hand-written document for one person, Setswana-only, untouched since July.
+  **Why a volunteer has been saying no.** Reviewing "the app" means ~330 chrome strings plus 248
+  content strings inside a TypeScript codebase. So the sheet is **markdown — a document, not source**
+  — and it is ordered by what a wrong word *costs*, not by where the file walker reached it:
+  **tier 1 is 34 strings** (consent, the data-cost gate, the erasure promise), which is one sitting,
+  and it is the sitting worth having. Tier 2 is navigation and the undoable; tier 4 is the history,
+  last because it is largest and slowest — not because it matters least.
+  The ordering is **data with its reasoning** (`i18n/review-priority.ts`), pinned by tests, so moving
+  the consent sheet down a tier has to be argued for in a diff. Tiers name whole *files*, never line
+  ranges: the passport's privacy promise sits among its streak labels, and a line range would be wrong
+  the first time someone edited the file — so a few low-harm strings ride along in tier 1, the cheaper
+  of the two mistakes, and the comment says so.
+  **`npm run review:sheet -- <code>`** writes `review/<code>.md`: English, the current wording, an empty
+  Correction column, and the real `file:line` for whoever applies it. All ten generated and checked —
+  every reference resolves to a real file and a spot-check lands on the exact string. **It writes only
+  to `review/`**; a tool that edits the strings it is reading is one bad regex away from corrupting
+  eleven languages at once, which is also why there is no write-back parser: a human applies
+  corrections, deliberately, in v1. Generated sheets are gitignored (a stale sheet wastes a reviewer's
+  hour); **returned** sheets are committed, because they are the record of what a person said.
+  **A second counter needed pinning, not deduplicating.** `extract-strings.ts` finds the same strings
+  `coverage.ts` counts, for a different job — "which ones and what do they say" against "how many".
+  Phase 8's SP-082 put counting in one place precisely so numbers could not drift, so a test now
+  asserts the two **agree** file by file. They do: both see 248 content strings.
+  **A hole found on the way, and closed.** `ui-coverage.test.ts` walks `components/**/*.tsx` for
+  `const UI` blocks. `shell/nav.ts` is a `.ts` file with no such block — so **the six nav labels, the
+  most-seen strings in the app**, plus the mobile tabs and one string in `PlayOnceRow`, were guarded by
+  nothing. Nine strings; all eleven languages present today, and nothing would have noticed one going
+  missing. `chrome-gaps.test.ts` covers them from the other side, using the extractor rather than a
+  second brace matcher, and deliberately does **not** edit `ui-coverage.test.ts` — that file is under
+  active work by another contributor, and two overlapping sweeps are easier to keep honest than one
+  both of us edit. Mutation-tested: deleting Tshivenḓa from the Journey label turns it red and names
+  the file, line and language.
+  **`reviewedUi` and `reviewers` join the registry.** One flag could not honestly describe two things
+  in different states, so chrome review is now its own field — `false` for every language but English,
+  which is the true starting position rather than a placeholder — and a review is recorded as a
+  *person*: name, **what they actually read**, and the date. A test fails if a language claims review
+  with nobody named; "reviewed the consent sheet" and "reviewed the app" are different claims and the
+  registry keeps them apart. `specs/reviewer-guide.md` replaces the Emma-specific handoff with
+  something any reviewer can follow, including permission to say the draft is bad — which is the whole
+  reason the sheets exist.
+  **⚠️ Open question for Tumo, raised not answered.** `languages.ts` marks Setswana
+  `reviewedContent: true` and the picker renders a **gold tick** beside it — telling a reader a speaker
+  verified the story text. `content/mhudi.ts` and `content/indaba.ts` say the opposite in as many
+  words: *"the `tn` fields are AI-assisted DRAFTS and must be reviewed by a Setswana speaker."* Both
+  cannot be true. **Did you review the Setswana yourself?** If yes, the notes go and you belong in
+  `reviewers`; if no, the tick is unearned. Left alone deliberately — only Tumo knows, and it removes
+  something a reader can see. Written up at the foot of the reviewer guide.
+  Verified: typecheck clean · **292 tests, 291 pass** · `build:web` green · `check:docs` clean · all
+  ten sheets generate with nothing under `src/` modified. **The one failure is #40's, not this
+  branch's:** `topics.generated.test.ts` spawns node with hard-coded flags and crashes on Node 22.16 —
+  proved pre-existing by stashing every change and watching it fail identically on bare `main`, while
+  the generator itself reports the file current. It passes in CI (Node 24) and PR #77 fixes it. For the
+  same reason `review:sheet` needs Node 22.18+ until #77 lands, when its package.json entry should be
+  routed through `scripts/run-ts.mjs` like the other ten.
+
 - **2026-09-19 (a story told by scrolling)** — Tumo pointed at the Rockstar GTA VI page and asked
   for one demo feature in that shape. I looked at it: full-bleed art about a screen tall, a small
   kicker over a large headline, a line or two of body, text alternating side to side, a lot of
