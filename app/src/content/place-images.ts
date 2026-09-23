@@ -55,11 +55,27 @@ export const PLACE_IMAGES: Record<string, ImageSourcePropType> = {
 export const placeImage = (file: string | undefined): ImageSourcePropType | undefined =>
   file ? PLACE_IMAGES[file] : undefined;
 
-/** The same lookup, narrowed to the bundler module id a `require()` of a bundled asset actually
- *  is. `PLACE_IMAGES` is declared `ImageSourcePropType` because that is the type image components
- *  want, but a few callers are typed `string | number` and cannot take the wider union. Checked at
- *  runtime rather than cast, so a future remote URI returns undefined instead of lying. */
-export const placeImageId = (file: string | undefined): number | undefined => {
+/** The same lookup, narrowed to what a caller typed `string | number` can take.
+ *
+ *  `PLACE_IMAGES` is declared `ImageSourcePropType` because that is the type image components
+ *  want, but a few callers cannot take the wider union.
+ *
+ *  ALL THREE SHAPES ARE REAL, AND ASSUMING ONE OF THEM SHIPPED A WRONG PHOTOGRAPH. This used to
+ *  accept `typeof source === "number"` only, which is what `require()` of a bundled asset returns
+ *  on Android and iOS. On web it returns a URL string, or an object carrying one — so the check
+ *  failed for every caller on the shipped platform, returned undefined, and the caller fell
+ *  through to its `??` fallback. On the Home page that fallback was a generic Atlas illustration,
+ *  so the Sixteen June card advertised a story about Soweto in 1976 with a picture of rock art.
+ *  Silently, because a fallback that works is indistinguishable from a lookup that works.
+ *
+ *  Still checked at runtime rather than cast: an unrecognised shape returns undefined rather than
+ *  lying about what it is. */
+export const placeImageSource = (file: string | undefined): string | number | undefined => {
   const source = placeImage(file);
-  return typeof source === "number" ? source : undefined;
+  if (typeof source === "number" || typeof source === "string") return source;
+  if (source && typeof source === "object" && !Array.isArray(source)) {
+    const uri = (source as { uri?: unknown }).uri;
+    if (typeof uri === "string") return uri;
+  }
+  return undefined;
 };

@@ -144,6 +144,206 @@
   (a child exiting 3 exits 3 — a swallowed failure would make CI lie) and refuses an empty invocation.
   **Deferred deliberately, awaiting Tumo's green light:** `engines`, `.nvmrc`, and making the PR check
   *required*. Those state a requirement; this change only makes the commands work wherever they land.
+- **2026-09-21 (the held shot is now the default, and the pin is CSS)** — Tumo, describing what the
+  screen should do: *"the image is supposed to stay there while you scroll until another picture
+  needs to replace it… you get to see text as it gets revealed little by little over the image."*
+  That is the held reading — the mode built on 21 Sep — and it had been sitting behind a toggle
+  nobody would find, with the plain scrolling reading as the default. **It is now the default**
+  (`SP-108` amended). Every report about this screen turned out to be about the other reading.
+
+  **And the held reading had the vibration bug in its purest form.** The pin was a JavaScript
+  `translateY` that tried to exactly CANCEL the scroll — hold the frame still by moving it down as
+  fast as the page moved up. Cancellation is the worst thing to ask of the main thread, because the
+  target is exact: every millisecond late, and every event `scrollEventThrottle` dropped, shows up
+  as the held picture sliding against a scroll that never stopped. Up and down, as described.
+
+  It is now **`position: sticky`** on web, which asks the browser to do the same job on the
+  compositor where the pin and the scroll are one operation and cannot disagree. `react-native-web`
+  supports it — it uses it for its own sticky headers — though RN's style types do not admit the
+  value, hence one narrow cast. Native keeps the transform (issue #44). The pin is now a LAYOUT
+  decision, separate from the beats: it costs nothing per frame, so it no longer switches off when
+  the beats do.
+
+  **A correction to the entry below.** It records that `onLayout` "does not fire on web" for
+  anything wrapping the scroller. That was wrong, and wrong in a way worth naming: `onLayout`
+  resolves through `UIManager.measure`, which defers on a `setTimeout`, and **background tabs
+  throttle timers to a second or more** — so an automated probe reading the value too soon, with
+  the tab hidden, reports "never fired" whether or not it did. Four elements were instrumented and
+  all four "never fired". Given time, the wrapper fires correctly: verified `stickyH === scrollport
+  height`, 535 = 535, where it had been reporting the window's 639. That hundred-pixel error was
+  real and was clipping the last line of copy below the fold; it is fixed, and the lesson is that
+  this harness cannot be trusted for anything timing-dependent.
+
+  Verified on screen end to end: the picture arrives and holds still, kicker then headline then
+  body then link fade in over it, the frame releases, and the next place comes up beneath.
+
+- **2026-09-21 (the vibrating photograph — the parallax is deleted)** — Tumo, after the blocking fix
+  below: *"it feels like the image is vibrating when I scroll."* A different fault from the long
+  tasks, and a structural one (`SP-112`).
+
+  **The browser scrolls the panel; JavaScript was scrolling the picture inside it.** The panel moves
+  on the compositor, perfectly. The photograph had a scroll-linked `translateY` and a settling scale
+  on top of that, computed on the main thread from a value that arrives late — and worse,
+  `react-native-web` implements `scrollEventThrottle` as `Date.now() - lastTick >= throttle`, so at
+  **16** a 120Hz display or a precision trackpad, both firing scroll about every 8ms, has **every
+  other event dropped**. The frame moved smoothly and the picture inside it moved in unequal steps.
+  The difference between the two is exactly what a reader sees as vibration. Throttle is now **1**.
+
+  **The settling zoom was the worse half and could not have been scheduled away.** Resampling a
+  photograph at a slightly different size every frame makes fine detail crawl — and these pictures
+  are railings, brick courses and foliage. That is a rendering artefact, not a timing one.
+
+  So `ParallaxLayer` is **deleted**, not left unused, and `StagePhoto` no longer pushes in during
+  the hold. A photograph sits still in its panel and the panel scrolls. Verified in the DOM: the
+  images now carry no transform at all, and the only one anywhere near them is the panel's own
+  entrance, four levels up.
+
+  **The rule that came out of it:** on a surface the browser is already scrolling, nothing inside it
+  gets a second, JavaScript-driven motion. Entrances are exempt, and that is the useful line — a
+  reveal runs once and stops, so a frame of lag in it passes unnoticed; an effect that never stops
+  moving has its lag on display for as long as the reader is looking at it. This also returns the
+  screen to what the note at the top of the file always said the reference page does: the effect
+  comes from scale and restraint, and it is *not* parallax. The drift was mine, added on 19 Sep, and
+  it was a mistake.
+
+  **Then Tumo asked for the rest of it, and was right to.** Removing the photograph's motion fixed
+  the picture but left every panel still arriving on a scroll-driven `translateY` — the same fault,
+  one level out. So the reveal, the per-line stagger, the staged beats and the title card's exit
+  are all **opacity-only** now. Nothing on this screen whose position comes from the scroll value
+  survives. Verified in the DOM: **zero scroll-driven transforms**, 23 nodes driven by opacity.
+
+  The argument in one line: an opacity that is a frame late is invisible, because nothing about
+  where anything IS depends on it. There is no reference against which to notice it. It costs a
+  flourish and buys a story that cannot judder by construction. Two movements remain and both are
+  timer-driven with the page standing still, so they have nothing to be out of step with — the
+  title card's entrance and the "Scroll" cue's bob.
+
+  **Honest limit on the verification:** the browser harness cannot reproduce real scrolling — twenty
+  wheel ticks through it produce four synthetic scroll events, so per-event cost is barely
+  exercised and the long-task figures under it are dominated by image decode. The mechanism above
+  was read out of the `react-native-web` source rather than inferred from those numbers, and the
+  absence of transforms was checked directly. Whether it *feels* right is Tumo's call.
+
+- **2026-09-21 (the story was janky, and the Home card was advertising it with the wrong picture)** —
+  Tumo reported both. Both were real and both had been shipped.
+
+  **The Home card for Sixteen June was showing rock art** (`SP-111`). Not a styling slip: the card
+  asked for the Vilakazi Street photograph through `placeImageId`, which accepted only
+  `typeof source === "number"` — what `require()` of a bundled asset returns on Android and iOS.
+  On **web**, the platform this app actually ships, it returns a URL string. So the lookup failed
+  for every caller, returned undefined, and the `?? heroSource(...)` fallback supplied a generic
+  Atlas illustration. A story about Soweto in 1976 was being advertised with a picture of San rock
+  art, and nothing looked broken, because a fallback that renders is indistinguishable from a
+  lookup that works. The lookup now handles all three shapes, `Section.image` is optional so a
+  missing photograph costs the section its picture rather than borrowing an unrelated one — and
+  the card now names the **Hector Pieterson Memorial** rather than Vilakazi Street, which is a
+  street with Mandela's house on it. The memorial commemorates the children killed that day.
+
+  **The jank was measured, not guessed** (`SP-110`). A PerformanceObserver on `longtask` during one
+  pass down the story: **three main-thread blocks — 91ms, 57ms, 112ms**. At a 16.7ms frame budget
+  the worst drops seven frames. Cause: no native animation driver on web, so every `setValue` walks
+  each attached node and writes its style inside the scroll handler — **46 animated nodes, all
+  rewritten on every scroll event**, in a 535px viewport looking at a 4499px story. About forty of
+  those writes were for content nobody could see. Panels now stop animating beyond three screens
+  and decide it for themselves by listening to the scroll value, so the parent never re-renders.
+  After: **one block of 78ms, 23 animated nodes** — 70% less total blocking. The remaining block
+  looks like image decode, which is per-image and not per-frame.
+
+  Also fixed while in there: the progress rule animated `width` from "0%" to "100%" — a layout
+  property, re-laid-out and repainted every scroll frame, on the one element guaranteed to be on
+  screen for the whole story. A full-width rule translated in from the left looks identical and is
+  compositor-only.
+
+  An interim version that kept a coarse scroll position in React state and passed it down is
+  recorded here because it did not work: it re-rendered all nine panels every screen and measured
+  no better than the per-frame cost it was replacing. tsc + 269 tests + check:docs green.
+
+- **2026-09-21 (a second way to read Sixteen June: "In the place")** — Tumo asked for a mode where
+  the reader feels they are standing in one place while the story arrives little by little, pointing
+  at the Rockstar page again. That is not a timing tweak, so it is a **mode** (`SP-108`), chosen on
+  the title card: **Scroll** (the original — the places go past you) and **In the place**.
+
+  **What a held shot is.** A stage takes two and a half screens of scroll and spends all of them in
+  ONE place. The photograph stops dead and stays nailed to the screen; the kicker, then the
+  headline, then the body, then the link arrive on top of it; the scrim deepens by exactly as much
+  as the words currently need, so the picture is never darkened for text that has not arrived. The
+  last third of the hold has everything present and nothing arriving — the reader simply standing
+  there — and that silence is the part that makes it a place rather than a slideshow.
+
+  **It holds still without `position: sticky`**, which is web-only and would have broken this file's
+  one real promise: every effect is an interpolation of scroll position against a measured layout,
+  so web, Android and iOS behave identically. The stage is a tall spacer; inside it one frame
+  exactly a viewport tall is translated down by however far the stage top has passed the top of the
+  screen, clamped to the spacer's slack. The translation cancels the scroll while you cross it and
+  runs out at either end, so stages hand over to each other without a seam.
+
+  **Nzima's photograph is never staged** (`SP-109`). A stage is a full-bleed crop with a headline
+  across it under a deepening scrim — exactly the three things SP-101 forbids for that picture,
+  offered at the most immersive moment in the app. When the held reading reaches it, the mode stops
+  performing and the panel falls back to the ordinary rendering: whole, on black, undarkened,
+  photographer and subjects and date beneath it. Verified on screen. It reads as the story putting
+  the camera down, which is the right thing for it to do there. No new test was needed — the
+  existing `stories.test.ts` already pins the branch it depends on.
+
+  **Two things only seeing it could have taught.** A grouping `<View>` around the panels put every
+  `onLayout` y a title card out and rendered a **black screen** — `RevealOnScroll` and `Stage` both
+  measure against the scroll offset, and `onLayout` reports y relative to the PARENT. Panels are now
+  keyed by mode instead of wrapped, with the reason written above them. And a typographic beat,
+  given the same treatment as a photograph, slid into view as an empty black screen with a lone gold
+  rule on it — because a stage's progress only starts once it is pinned, and a beat has no picture
+  to fill that gap. Its kicker and headline are no longer animated at all: they are simply there on
+  the way in, and only the body and link arrive during the hold.
+
+  **Reduced motion turns the whole mode off** (`SP-106` extends cleanly): stages collapse to natural
+  height with every beat visible. Measured with the preference forced on — `pinnedFrames: 0`,
+  `zeroOpacityDivs: 0`, and the story back to 4449px from 10083px, because scroll length that holds
+  nothing is just scrolling. Same photographs, same prose, held still.
+
+  Chrome strings for the toggle are in this file's `UI` block and carry the same unreviewed status
+  as the rest of it; `t()` falls back to English honestly. tsc + 269 tests green.
+
+- **2026-09-21 (the Sixteen June animation, and the reason there wasn't one)** — Tumo asked to
+  improve the animation on the 16 June story. Measured it in a browser first, and the finding
+  reframed the whole task: **there was no animation running at all.** At scroll offset 300 the
+  title card was still `opacity: 1, translateY(0px)`, the progress rule was empty, and no panel
+  carried an animated style. Every one of them was falling back to SP-103's plain render, which is
+  why nobody had noticed — the story looked finished, because the fallback is a good fallback.
+
+  **The cause was one missing string** (`SP-105`). `OWN_SCROLL` in App.tsx did not contain `story`,
+  so the shell's "page" mode wrapped the route in the shell's own `ScrollView`. The story's
+  `Animated.ScrollView` was then never height-constrained: it grew to its full content height, the
+  shell did all the scrolling, and the story's `onScroll` never fired once. A screen whose entire
+  premise is interpolating its own scroll offset was not the thing being scrolled. Two things fell
+  out of fixing it — the route now supplies its own centred 1160px column (the shell's `pageInner`
+  used to), and `viewport` is measured from the scroller's real box instead of the window, which is
+  ~100px taller because it includes the shell header. The old comment blaming `onLayout` for
+  over-reporting was right about the measurement and wrong about the cause: the box genuinely *was*
+  the whole content, because nothing was constraining it.
+
+  **A reader can now turn all of it off** (`SP-106`). Parallax and rise-on-scroll are the textbook
+  triggers for vestibular symptoms, and the app was offering no way out. One gate in
+  `RevealOnScroll` now switches off the reveal, the stagger and the parallax together, and `Fade`,
+  `Reveal` and the new `Bob` jump to their end state instead of animating. It lands on the same
+  branch as SP-103, so reduced motion is not a degraded screen — it is the same photographs and the
+  same prose, held still.
+
+  **The reveal was animating things that had already arrived** (`SP-107`). SP-103 makes the
+  animation opt in on the first scroll event; at that instant panels the reader had been looking at
+  since the page opened switched from plain rendering to an interpolation and visibly faded. Now a
+  panel already above the fold when the scroll goes live is latched as seen, one way, so scrolling
+  back up never replays an entrance for something that has been read.
+
+  **What actually moves, beyond fixing it:** the reveal is eased rather than linear, so a panel
+  settles instead of stopping dead; a panel's kicker, headline, body and button arrive a beat apart
+  (`Stagger`) so it assembles in reading order rather than sliding up as one slab; a place
+  photograph settles out of a 6% wider crop as it arrives; and the "Scroll" cue bobs — the one
+  timer-driven animation here, and it has to be, because a scroll-driven hint is motionless exactly
+  when the reader needs it. It stops on the first scroll and never returns. Nzima's photograph
+  stays still throughout: SP-101 holds, and a moving crop of a documentary photograph is still a
+  moving crop.
+
+  Verified in the browser rather than asserted — measured mid-reveal, one panel read kicker `0.99`,
+  headline `0.95`, body `0.85`, button `0.66`, each with a decreasing offset. tsc + 269 tests green.
 
 - **2026-09-19 (a story told by scrolling)** — Tumo pointed at the Rockstar GTA VI page and asked
   for one demo feature in that shape. I looked at it: full-bleed art about a screen tall, a small
