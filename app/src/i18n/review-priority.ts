@@ -93,6 +93,47 @@ const TIER_4: TierSpec = {
 
 export const TIERS: TierSpec[] = [TIER_1, TIER_2, TIER_3, TIER_4];
 
+/**
+ * Strings we already KNOW are wrong in a particular language — shown at the top of that language's
+ * review sheet, above the tiers.
+ *
+ * Tiers rank by what a wrong word would cost. This list is different: it is what we have already
+ * found, and it jumps the queue because a reviewer should not spend an hour on the consent sheet
+ * while a scene sits in the app telling their readers something that did not happen.
+ *
+ * Nothing here can be detected automatically. Comparing meaning across two languages is exactly what
+ * no test in this repo can do (see chrome-gaps.test.ts for what the machinery CAN check). Entries are
+ * added by hand when a human finds one, and removed when a reviewer fixes it.
+ */
+export type FlaggedString = {
+  /** Language code the problem affects. */
+  lang: string;
+  /** Path under `app/src/`, for the reviewer and for the test that keeps this list honest. */
+  file: string;
+  /** A distinctive phrase of the CURRENT English, so the row can be found in the sheet. */
+  englishSnippet: string;
+  why: string;
+};
+
+export const FLAGGED_FOR_REVIEW: FlaggedString[] = [
+  {
+    lang: "tn",
+    file: "content/mhudi.ts",
+    englishSnippet: "nearly walked into a black-maned lion",
+    why:
+      "The Setswana for this scene describes a DIFFERENT EVENT from the English. It says Mhudi saved " +
+      "Ra-Thaga from the lion; chapter 2 of the 1930 edition has her flee it, run into him, refuse to " +
+      "be left behind, guide him back to it and charge it beside him. The English was corrected against " +
+      "the book on 2026-09-23; the Setswana is the old translation and was kept rather than deleted. " +
+      "Until someone who speaks Setswana rewrites it, a Setswana reader is reading a version of this " +
+      "scene that is not in the novel. The scene title 'Mhudi le Tau' needs the same look — the English " +
+      "title is now 'The Lion, and the Meeting'.",
+  },
+];
+
+/** The flagged strings for one language, or an empty list. */
+export const flaggedFor = (lang: string): FlaggedString[] => FLAGGED_FOR_REVIEW.filter((f) => f.lang === lang);
+
 /** Where a file's strings belong. `kind` decides the fallback for anything not named in a tier. */
 export function tierFor(relPath: string, kind: "chrome" | "content"): ReviewTier {
   const named = TIERS.find((t) => t.files.includes(relPath));
