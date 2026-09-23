@@ -21,18 +21,19 @@ import { countLocalizedIn, totalCounts, isContentFile, type Counts } from "./cov
 /**
  * Measured 2026-09-18. Coverage may rise; if it falls, this fails.
  *
- * tn 82 → 80 on 2026-09-23, deliberately (issue #33). The Setswana for `mhudi:the-lion` described an
- * event that is not in the novel — the English claimed Mhudi saved Ra-Thaga from a lion, and ch. 2
- * has her flee it, then guide him back to it and charge it beside him. The English was rewritten from
- * the text; the two Setswana strings were removed rather than left behind, because a Setswana reader
- * seeing the invented version while an English reader sees the corrected one is worse than an honest
- * English fallback. They come back when a speaker writes them (`npm run review:sheet -- tn`).
+ * tn stays at 82. Two Setswana strings on `mhudi:the-lion` were removed on 2026-09-23 — they
+ * translate the OLD English, which claimed Mhudi saved Ra-Thaga from a lion, an event ch. 2 does not
+ * contain — and were RESTORED on 2026-09-24 on Tumo's call: this project adds to what is already
+ * here rather than deleting other people's work. The consequence is documented in mhudi.ts, where the
+ * Setswana and the English now describe different events, and it is the first item on the Setswana
+ * review sheet (`npm run review:sheet -- tn`).
  *
- * This is the ratchet working as intended: it caught the drop and made it a decision with a reason.
+ * The ratchet did its job either way: it caught the drop the moment it happened and turned a silent
+ * deletion into a decision somebody had to make on purpose.
  */
 const FLOOR: Partial<Counts> = {
   en: 248,
-  tn: 80,
+  tn: 82,
 };
 
 function contentCounts(): { totals: Counts; files: number } {
