@@ -8,6 +8,30 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-24 (Setswana goes to Botlhale, and Botlhale is ready for a real key)** — Tumo, on the
+  device voice reading Setswana: *"wire up eleven labs for the setwana cause thats bad reading"*
+  (`SP-116`). ElevenLabs does not list Setswana (checked 30 Aug) and CLAUDE.md forbids routing an
+  indigenous language to it; offered a re-check, Botlhale, or forcing it anyway, Tumo chose
+  **Botlhale** — the engine built for this, already wired, never keyed.
+
+  **Found while looking: there is no `app/.env` at all.** So no engine has a key, and every
+  language — English included — has been read by the device voice. That is the "bad reading".
+
+  Read Botlhale's docs and fixed what they settled. **Auth:** an account's `refresh_token` never
+  expires and `/auth/generate` trades it for a 24-hour `IdToken`; the client did not do that
+  exchange, so a pasted token would have died after a day. It now does, from
+  `EXPO_PUBLIC_BOTLHALE_REFRESH_TOKEN`, keeping the IdToken in memory only. **Field name:** the docs
+  say `text` in one place and `text_msg` in another — both are sent. **Caching:** Botlhale returns a
+  URL, which the cache could not keep, so every re-press would have cost a new synthesis; the audio
+  is now downloaded into a data URI and cached (a refused download still plays, uncached).
+  **Languages:** Botlhale's TTS lists seven of our nine indigenous languages; siSwati and isiNdebele
+  now go straight to the device voice instead of failing a round trip first. Tests: token request,
+  IdToken parsing, both field names, the new routing. 308 pass.
+
+  **Not done, and cannot be from here:** no key exists to test against, so no Botlhale request has
+  been made. `vr-ZA` vs `ve-ZA` for Tshivenda is [VERIFY]. The refresh token, like the ElevenLabs
+  key, is bundled into the web client (issue #43) — revoke it after a demo.
+
 - **2026-09-24 (the book reads itself aloud, in eleven languages)** — Tumo asked for voice reading
   of the Sixteen June book in several languages, with ElevenLabs as the voice (`SP-115`).
 

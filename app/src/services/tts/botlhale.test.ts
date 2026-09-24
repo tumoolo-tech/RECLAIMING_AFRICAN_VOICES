@@ -1,6 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildBotlhaleTtsRequest, audioUriFromResponse } from "./botlhale.ts";
+import {
+  buildBotlhaleTtsRequest,
+  audioUriFromResponse,
+  buildBotlhaleTokenRequest,
+  idTokenFromResponse,
+} from "./botlhale.ts";
 
 test("builds a POST to /tts with bearer auth and a form-encoded body", () => {
   const req = buildBotlhaleTtsRequest({
@@ -12,8 +17,9 @@ test("builds a POST to /tts with bearer auth and a form-encoded body", () => {
   assert.equal(req.url, "https://api.botlhale.xyz/tts");
   assert.equal(req.headers.Authorization, "Bearer secret-token");
   assert.equal(req.headers["Content-Type"], "application/x-www-form-urlencoded");
-  // form fields per Botlhale's documented curl/python examples
+  // The docs name the field `text` in the reference and `text_msg` in the examples: send both.
   const form = new URLSearchParams(req.body);
+  assert.equal(form.get("text"), "Dumela");
   assert.equal(form.get("text_msg"), "Dumela");
   assert.equal(form.get("language_code"), "tn-ZA");
 });
@@ -55,4 +61,24 @@ test("returns null when there is no audio (so the caller falls back)", () => {
   assert.equal(audioUriFromResponse({}), null);
   assert.equal(audioUriFromResponse(null), null);
   assert.equal(audioUriFromResponse("nope"), null);
+});
+
+test("trades a refresh token for a Bearer IdToken at /auth/generate", () => {
+  const req = buildBotlhaleTokenRequest({ refreshToken: "rt-123" });
+  assert.equal(req.method, "POST");
+  assert.equal(req.url, "https://api.botlhale.xyz/auth/generate");
+  assert.equal(req.headers.Authorization, undefined, "the exchange itself carries no bearer");
+  assert.equal(new URLSearchParams(req.body).get("refresh_token"), "rt-123");
+  assert.equal(buildBotlhaleTokenRequest({ refreshToken: "x", baseUrl: "https://api-dev.botlhale.xyz/" }).url, "https://api-dev.botlhale.xyz/auth/generate");
+});
+
+test("reads the IdToken and its lifetime from the documented AuthenticationResult", () => {
+  assert.deepEqual(
+    idTokenFromResponse({ AuthenticationResult: { AccessToken: "a", IdToken: "id-1", TokenType: "Bearer", ExpiresIn: 86400 } }),
+    { idToken: "id-1", expiresIn: 86400 }
+  );
+  // The IdToken is the Bearer — never the AccessToken.
+  assert.equal(idTokenFromResponse({ AuthenticationResult: { AccessToken: "a" } }), null);
+  assert.equal(idTokenFromResponse({}), null);
+  assert.equal(idTokenFromResponse(null), null);
 });

@@ -6,7 +6,7 @@
 //   ElevenLabs  English, Afrikaans — the only two of our eleven its models list (verified against
 //               GET /v1/models, 30 Aug 2026; see LanguageMeta.elevenlabs). Best-sounding voice we
 //               have, and the account carries four South African English voices.
-//   Botlhale    the nine indigenous languages. The only engine that TRULY voices Setswana, and the
+//   Botlhale    the indigenous languages its TTS lists (BOTLHALE_TTS_LANGS) — seven of our nine. The only engine that TRULY voices Setswana, and the
 //               reason it stays first choice there even though ElevenLabs would happily return audio
 //               for Setswana text. It would be fluent and it would be wrong.
 //   device      always available, free, offline, quota-free. The floor: the Listen button works with
@@ -21,13 +21,20 @@ import { elevenLabsSupports, type LangCode } from "../../i18n/languages.ts";
 
 export type TtsProviderId = "elevenlabs" | "botlhale" | "device";
 
+/** The languages Botlhale's TTS reference lists (docs-apis.botlhale.xyz, read 2026-09-24): English,
+ *  Afrikaans and seven indigenous languages. NOT siSwati or isiNdebele — asking for those would
+ *  cost a round trip to be refused, so they go straight to the device voice, and the book says so. */
+export const BOTLHALE_TTS_LANGS: ReadonlySet<LangCode> = new Set<LangCode>(["en", "af", "tn", "zu", "xh", "nso", "st", "ts", "ve"]);
+const botlhaleSpeaks = (opts: { lang: LangCode; hasBotlhaleKey: boolean }) =>
+  opts.hasBotlhaleKey && BOTLHALE_TTS_LANGS.has(opts.lang);
+
 export function chooseProvider(opts: {
   lang: LangCode;
   hasElevenLabsKey: boolean;
   hasBotlhaleKey: boolean;
 }): TtsProviderId {
   if (opts.hasElevenLabsKey && elevenLabsSupports(opts.lang)) return "elevenlabs";
-  if (opts.hasBotlhaleKey) return "botlhale";
+  if (botlhaleSpeaks(opts)) return "botlhale";
   return "device";
 }
 
@@ -44,7 +51,7 @@ export function providerLadder(opts: {
 }): TtsProviderId[] {
   const ladder: TtsProviderId[] = [];
   if (opts.hasElevenLabsKey && elevenLabsSupports(opts.lang)) ladder.push("elevenlabs");
-  if (opts.hasBotlhaleKey) ladder.push("botlhale");
+  if (botlhaleSpeaks(opts)) ladder.push("botlhale");
   ladder.push("device");
   return ladder;
 }
