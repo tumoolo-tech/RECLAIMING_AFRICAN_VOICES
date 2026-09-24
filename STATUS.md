@@ -38,7 +38,7 @@ _Last updated: 2026-09-24 (Botlhale ready for Setswana) — via Claude. Previous
 | **All 11 SA languages**: data-driven registry + picker + TTS + honest EN fallback | ✅ framework done (EN/TSW text authored) |
 | **Machine-draft translations** (Botlhale): service + draft-aware Reader + gen script | ✅ built, awaiting token+org_id to run |
 | **Machine-draft translations (Claude)**: `npm run gen:claude-drafts` → 9 languages into `drafts.data.ts` | ✅ built + typecheck/bundle green, **awaiting `ANTHROPIC_API_KEY` to run** |
-| **"Ask Ubuntu" chatbot**: Claude tool-use (Anthropic SDK), RAG over site content only + `navigate_to` orchestrator | ✅ built + **runs in `expo start` dev + prod** (widget wired app-wide; **chrome localized in all 11 languages** + LLM replies in the picked language; nav + site answers work key-free; full chat on `EXPO_PUBLIC_ANTHROPIC_API_KEY`). Moved off LangChain — its `langsmith` dep TDZ-crashed the Expo web dev server. |
+| **"Ask Ubuntu" chatbot**: Claude tool-use (Anthropic SDK), RAG over site content only + `navigate_to` orchestrator | ✅ built + **runs in `expo start` dev + prod** (widget wired app-wide; **chrome localized in all 11 languages** + LLM replies in the picked language; nav + site answers work key-free; full chat through the `/api/chat` proxy on a server-only `ANTHROPIC_API_KEY`). Moved off LangChain — its `langsmith` dep TDZ-crashed the Expo web dev server. |
 | **Visual polish**: cinematic fonts · gradients · image fade+KenBurns · motion · branded launch | ✅ done (compiles; eyeball via `npm run web`) |
 | **Cinematic hero art**: Gemini, cached local PNGs — all **7 modules** (4 literary + 3 Atlas) | ✅ done (idempotent gen; quota-safe) |
 | **Submission package**: written narrative (7 modules + Heritage Ledger) · demo script · review handoff | ✅ drafted (video + Emma's review pending) |
@@ -189,10 +189,10 @@ without the cache the Listen button would stop working around the 12th.
 
 - **EL-05 — nobody has listened to a clip.** No test in this repo can hear anything. The pipeline is
   verified end-to-end (real MP3 bytes, right size, right format); the *sound* is unjudged.
-- **EL-06 — rotate the key after the demo.** `EXPO_PUBLIC_ELEVENLABS_API_KEY` is compiled into the
-  web bundle and is readable by anyone who opens the deployed site, on a **paid** account. Same
-  exposure the Anthropic chatbot key already carries. Longer term this wants a small proxy behind
-  `EXPO_PUBLIC_ELEVENLABS_BASE_URL` rather than a shipped key.
+- **EL-06 — rotate the keys.** Issue #43 took the ElevenLabs, Anthropic, Gemini and Botlhale keys
+  out of the web bundle: they are server-only now, behind the `/api` proxy (`app/api/`). But they
+  were readable from July to September, so **all four still need rotating** — new values go into
+  Vercel's environment variables under the new, un-prefixed names (see `app/.env.example`).
 
 ### Parked (pre-v2, still open)
 
@@ -205,7 +205,7 @@ without the cache the Listen button would stop working around the 12th.
 3. When keys arrive: `services/gemini.ts` (T017) · Supabase + RLS upload (T027) · Lelapa transcribe (T028).
    **Botlhale TTS:** contract now wired from their public docs — `POST api.botlhale.xyz/tts`,
    form-encoded `text_msg`+`language_code`, Bearer token, returns `audio_url`; Setswana = `tn-ZA`.
-   Paste a Bearer token into `app/.env` (`EXPO_PUBLIC_BOTLHALE_API_KEY`) → Listen auto-upgrades to real
+   Set `BOTLHALE_REFRESH_TOKEN` (server-only, Vercel env) → Listen auto-upgrades to real
    Setswana audio. **3 residual unknowns for the contact** (marked in `botlhale.ts`): (a) field name
    `text` vs `text_msg`; (b) dev vs prod host; (c) refresh_token→IdToken flow (using a ready token for
    the demo).

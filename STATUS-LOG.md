@@ -8,6 +8,36 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-24 (the paid keys leave the web bundle — issue #43)** — Tumo: *"pull main and make sure
+  we all good and do issue number 43"*. Main pulled (`b9d74c4`): typecheck clean, 308/308.
+
+  **The problem.** ElevenLabs, Anthropic, Gemini and Botlhale keys were `EXPO_PUBLIC_*`, so compiled
+  into the web bundle and readable by anyone on the deployed site since July.
+
+  **The fix.** A key proxy in `app/api/` — Vercel functions, deployed with the site, free tier, plain
+  `.mjs` so there is no build step to go wrong: `/api/tts` (ElevenLabs + Botlhale), `/api/chat`
+  (Claude, then Gemini), `/api/config` (which engines are on offer — booleans and a public voice id,
+  never a secret). Guards: origin check, per-IP rate limit plus a global cap per instance (429 with
+  Retry-After), body and field size caps. The chat system prompt is the server's own template, so the
+  route is not a free general LLM. The ElevenLabs refusal for indigenous languages is now enforced
+  server-side as well. The client holds no key: it asks `/api/config`, and with no proxy (local
+  `expo start`, a native build without `EXPO_PUBLIC_API_BASE_URL`) it falls to the device voice and
+  retrieval answers — the same floor a keyless build always had. `/api/translate` was not built:
+  nothing translates at runtime (Botlhale/Claude translation is author-time scripts).
+
+  **Verified.** `grep EXPO_PUBLIC_.*API_KEY app/src` → only the Supabase anon key and hCaptcha
+  sitekey. A web build made WITH sentinel values in all the old `EXPO_PUBLIC_*` key vars contains
+  none of them, nor the Anthropic SDK or any upstream API host. `npm run api:dev` + a curl loop:
+  20 × 503 (no key) then 429. 324 tests pass (server contracts ported from the deleted client
+  modules, plus tables cross-checked against `languages.ts`).
+
+  **Not done — needs Tumo.** (1) Rotate all four keys; they were public for months. (2) Put the new
+  values in Vercel env under the un-prefixed names (`ELEVENLABS_API_KEY`, `BOTLHALE_REFRESH_TOKEN`,
+  `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`) and delete the `EXPO_PUBLIC_` ones. (3) The rate limit is
+  in-memory per warm instance — enough to stop a loop, not a distributed attacker; a shared store is
+  the upgrade if that is ever seen. (4) Not yet exercised on a real Vercel deploy — check the
+  preview's `/api/config` returns JSON.
+
 - **2026-09-24 (Setswana goes to Botlhale, and Botlhale is ready for a real key)** — Tumo, on the
   device voice reading Setswana: *"wire up eleven labs for the setwana cause thats bad reading"*
   (`SP-116`). ElevenLabs does not list Setswana (checked 30 Aug) and CLAUDE.md forbids routing an

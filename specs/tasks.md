@@ -230,9 +230,9 @@ Warm African-British**.
       working partway through the month
 - [ ] EL-05 **Listen to a clip and judge it.** No test here can hear anything. Wanted: one English
       passage through Amara, and confirmation that the Afrikaans `eleven_v3` path sounds right
-- [ ] EL-06 **Rotate the key after the demo.** `EXPO_PUBLIC_*` is compiled into the web bundle and is
-      readable by anyone who opens the deployed site — on a **paid** account. Longer term this wants a
-      proxy behind `EXPO_PUBLIC_ELEVENLABS_BASE_URL` rather than a shipped key
+- [ ] EL-06 **Rotate the key.** Issue #43 moved it behind the `/api/tts` proxy (server-only
+      `ELEVENLABS_API_KEY`); the proxy half is done. Still open: the old key was public from July, so
+      it must be rotated — and the Anthropic, Gemini and Botlhale ones with it
 - [ ] EL-07 Pre-render the fixed narration (T031's cinematic intro) at author time instead of live,
       so the demo never depends on quota or a network at all
 

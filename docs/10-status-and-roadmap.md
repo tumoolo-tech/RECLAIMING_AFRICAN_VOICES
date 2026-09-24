@@ -101,9 +101,9 @@ summarised in the app's own words) on a public blockchain. Humanities first; tec
 
 | Feature | What's built | Key needed |
 |---|---|---|
-| **Indigenous neural voice** (Listen upgrades from on-device to Botlhale) | `services/tts/botlhale.ts` — real API contract wired | `EXPO_PUBLIC_BOTLHALE_API_KEY` |
+| **Indigenous neural voice** (Listen upgrades from on-device to Botlhale) | `/api/tts` proxy (`app/api/_lib/tts.mjs`) — real API contract wired | `BOTLHALE_REFRESH_TOKEN` (server-only) |
 | **Automatic transcription** of shared recordings (Lelapa/Vulavula, code-switching) | service layer + Mantswe pure core | Lelapa key |
-| **Chatbot on Claude instead of Gemini** (optional swap) | Anthropic SDK agent w/ `navigate_to` tool | `EXPO_PUBLIC_ANTHROPIC_API_KEY` |
+| **Chatbot on Claude instead of Gemini** (optional swap) | `/api/chat` proxy w/ `navigate_to` tool | `ANTHROPIC_API_KEY` (server-only) |
 
 The app runs fully without these; each simply upgrades or swaps an already-working path.
 (Community cloud sharing and the Gemini chatbot are now **live** — see section 3.)

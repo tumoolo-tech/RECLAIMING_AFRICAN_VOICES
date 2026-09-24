@@ -25,15 +25,17 @@ export type TtsProviderId = "elevenlabs" | "botlhale" | "device";
  *  Afrikaans and seven indigenous languages. NOT siSwati or isiNdebele — asking for those would
  *  cost a round trip to be refused, so they go straight to the device voice, and the book says so. */
 export const BOTLHALE_TTS_LANGS: ReadonlySet<LangCode> = new Set<LangCode>(["en", "af", "tn", "zu", "xh", "nso", "st", "ts", "ve"]);
-const botlhaleSpeaks = (opts: { lang: LangCode; hasBotlhaleKey: boolean }) =>
-  opts.hasBotlhaleKey && BOTLHALE_TTS_LANGS.has(opts.lang);
+const botlhaleSpeaks = (opts: { lang: LangCode; hasBotlhale: boolean }) =>
+  opts.hasBotlhale && BOTLHALE_TTS_LANGS.has(opts.lang);
 
+// `hasElevenLabs` / `hasBotlhale`: the /api/tts proxy reports that engine as configured (issue #43 —
+// the keys live server-side now; the client only knows whether a voice is on offer).
 export function chooseProvider(opts: {
   lang: LangCode;
-  hasElevenLabsKey: boolean;
-  hasBotlhaleKey: boolean;
+  hasElevenLabs: boolean;
+  hasBotlhale: boolean;
 }): TtsProviderId {
-  if (opts.hasElevenLabsKey && elevenLabsSupports(opts.lang)) return "elevenlabs";
+  if (opts.hasElevenLabs && elevenLabsSupports(opts.lang)) return "elevenlabs";
   if (botlhaleSpeaks(opts)) return "botlhale";
   return "device";
 }
@@ -46,11 +48,11 @@ export function chooseProvider(opts: {
  */
 export function providerLadder(opts: {
   lang: LangCode;
-  hasElevenLabsKey: boolean;
-  hasBotlhaleKey: boolean;
+  hasElevenLabs: boolean;
+  hasBotlhale: boolean;
 }): TtsProviderId[] {
   const ladder: TtsProviderId[] = [];
-  if (opts.hasElevenLabsKey && elevenLabsSupports(opts.lang)) ladder.push("elevenlabs");
+  if (opts.hasElevenLabs && elevenLabsSupports(opts.lang)) ladder.push("elevenlabs");
   if (botlhaleSpeaks(opts)) ladder.push("botlhale");
   ladder.push("device");
   return ladder;

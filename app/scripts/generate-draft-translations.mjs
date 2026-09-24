@@ -4,7 +4,7 @@
 // pre-generate + cache). Output: src/content/drafts.data.ts, which the app already reads and labels
 // as "unreviewed machine translation" in the Reader.
 //
-//   Set EXPO_PUBLIC_BOTLHALE_API_KEY and EXPO_PUBLIC_BOTLHALE_ORG_ID (in app/.env), then:
+//   Set BOTLHALE_API_KEY and BOTLHALE_ORG_ID (in app/.env), then:
 //     npm run gen:drafts
 //
 // [NEEDS: confirm org_id + source/target field semantics with the Botlhale contact.]
@@ -30,13 +30,13 @@ if (existsSync(envPath)) {
   }
 }
 
-const apiKey = process.env.EXPO_PUBLIC_BOTLHALE_API_KEY;
-const orgId = process.env.EXPO_PUBLIC_BOTLHALE_ORG_ID;
-const baseUrl = process.env.EXPO_PUBLIC_BOTLHALE_BASE_URL || undefined;
+const apiKey = process.env.BOTLHALE_API_KEY;
+const orgId = process.env.BOTLHALE_ORG_ID;
+const baseUrl = process.env.BOTLHALE_BASE_URL || undefined;
 
 if (!apiKey || !orgId) {
   console.error(
-    "Missing creds. Set EXPO_PUBLIC_BOTLHALE_API_KEY and EXPO_PUBLIC_BOTLHALE_ORG_ID in app/.env first."
+    "Missing creds. Set BOTLHALE_API_KEY and BOTLHALE_ORG_ID in app/.env first."
   );
   process.exit(1);
 }

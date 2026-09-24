@@ -2,7 +2,7 @@
 //
 // It walks a LADDER of engines, chosen per language (see ./select.ts): ElevenLabs for English and
 // Afrikaans, Botlhale for the indigenous languages it lists, on-device speech underneath everything.
-// Any failure at one rung — no key, no network, a 429, an unsupported language — falls to the next,
+// Any failure at one rung — no proxy, no network, a 429, an unsupported language — falls to the next,
 // so "Listen" always does something and never dead-ends.
 //
 // Two properties worth stating plainly, because both are easy to lose in a refactor:
@@ -21,20 +21,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as Speech from "expo-speech";
 import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from "expo-audio";
-import { LangCode, toBcp47, toBotlhaleCode } from "../../i18n/languages";
-import { botlhaleSynthesize } from "./botlhale";
-import { elevenLabsSynthesize, DEFAULT_VOICE_ID } from "./elevenlabs";
+import { LangCode, toBcp47 } from "../../i18n/languages";
+import { remoteSynthesize } from "./remote";
 import { getCachedNarration, putCachedNarration, narrationKey } from "./cache";
 import { chooseProvider, providerLadder, TtsProviderId } from "./select";
+import { getProxyConfig, NO_PROXY, type ProxyConfig } from "../proxy";
 
-// Either credential works (SP-116). The REFRESH token is what a Botlhale account hands out and does
-// not expire; the client trades it for a day-long IdToken itself. A ready IdToken (API_KEY) is still
-// accepted, and stops working after 24 hours.
-const BOTLHALE_KEY = process.env.EXPO_PUBLIC_BOTLHALE_API_KEY ?? "";
-const BOTLHALE_REFRESH = process.env.EXPO_PUBLIC_BOTLHALE_REFRESH_TOKEN ?? "";
-const BOTLHALE_BASE_URL = process.env.EXPO_PUBLIC_BOTLHALE_BASE_URL || undefined;
-const ELEVENLABS_KEY = process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY ?? "";
-const ELEVENLABS_VOICE = process.env.EXPO_PUBLIC_ELEVENLABS_VOICE_ID || DEFAULT_VOICE_ID;
+// No key lives in the app (issue #43). The remote voices are reached through /api/tts, and which of
+// them this deployment offers is read once from /api/config. Until that answers — and forever, where
+// there is no proxy — the ladder is just the device voice, which is what a keyless build always did.
 
 export type UseTts = {
   /** True while audio is being synthesised or played. */
@@ -57,8 +52,17 @@ export function useTts(): UseTts {
   // instead of talking over whatever is playing now.
   const genRef = useRef(0);
 
-  const keys = { hasElevenLabsKey: ELEVENLABS_KEY.length > 0, hasBotlhaleKey: BOTLHALE_KEY.length > 0 || BOTLHALE_REFRESH.length > 0 };
-  const providerFor = useCallback((lang: LangCode) => chooseProvider({ lang, ...keys }), [keys.hasElevenLabsKey, keys.hasBotlhaleKey]);
+  const [proxy, setProxy] = useState<ProxyConfig>(NO_PROXY);
+  useEffect(() => {
+    let live = true;
+    getProxyConfig().then((c) => live && setProxy(c));
+    return () => {
+      live = false;
+    };
+  }, []);
+  const keys = { hasElevenLabs: proxy.elevenlabs, hasBotlhale: proxy.botlhale };
+  const elevenLabsVoice = proxy.elevenlabsVoice ?? "default";
+  const providerFor = useCallback((lang: LangCode) => chooseProvider({ lang, ...keys }), [keys.hasElevenLabs, keys.hasBotlhale]);
 
   // Remote audio plays through the shared player; reset when it finishes.
   useEffect(() => {
@@ -116,7 +120,7 @@ export function useTts(): UseTts {
           return;
         }
 
-        const voice = provider === "elevenlabs" ? ELEVENLABS_VOICE : "default";
+        const voice = provider === "elevenlabs" ? elevenLabsVoice : "default";
         const key = narrationKey({ provider, lang, voice, text: trimmed });
 
         // Cache first, always. A hit costs no quota, no network and no wait.
@@ -128,26 +132,17 @@ export function useTts(): UseTts {
         }
 
         try {
-          const uri =
-            provider === "elevenlabs"
-              ? await elevenLabsSynthesize({ text: trimmed, lang, apiKey: ELEVENLABS_KEY, voiceId: ELEVENLABS_VOICE })
-              : await botlhaleSynthesize({
-                  text: trimmed,
-                  languageCode: toBotlhaleCode(lang),
-                  apiKey: BOTLHALE_KEY || undefined,
-                  refreshToken: BOTLHALE_REFRESH || undefined,
-                  baseUrl: BOTLHALE_BASE_URL,
-                });
+          const uri = await remoteSynthesize({ provider, text: trimmed, lang });
           if (stale()) return;
           // Cache before playing: if playback throws, we have still paid for the clip and should
-          // not pay again. Only self-contained data URIs are kept — botlhaleSynthesize downloads
-          // Botlhale's audio into one where it can, and a bare URL (which may expire) is not kept.
-          if (uri.startsWith("data:")) await putCachedNarration(key, uri);
+          // not pay again. The proxy always returns bytes (it fetches Botlhale's audio URL itself),
+          // so every clip arrives as a self-contained data URI the cache can keep.
+          await putCachedNarration(key, uri);
           if (stale()) return;
           await playUri(uri, provider);
           return;
         } catch (err) {
-          // Quota exhausted, offline, bad key, unsupported language — try the next rung down.
+          // Quota exhausted, rate limited, offline, no proxy, unsupported language — next rung down.
           //
           // Silence here is right for a READER (the Listen button just works, one rung lower) and
           // wrong for a DEVELOPER: "it fell back to the device voice" and "it never tried" look
@@ -160,7 +155,7 @@ export function useTts(): UseTts {
         }
       }
     },
-    [keys.hasElevenLabsKey, keys.hasBotlhaleKey, playUri, stop, speakDevice]
+    [keys.hasElevenLabs, keys.hasBotlhale, elevenLabsVoice, playUri, stop, speakDevice]
   );
 
   // Silence any speech if the screen unmounts mid-sentence.
