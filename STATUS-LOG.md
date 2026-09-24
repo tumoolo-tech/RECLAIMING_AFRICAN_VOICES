@@ -8,6 +8,25 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-24 (Sixteen June opens as a book)** — Tumo: the story should follow the storytelling
+  convention the site already has — *"it needs to be like a book and that should be the default when
+  you open it"* — with **In the place** and the plain scroll still available after (`SP-114`).
+
+  **The same book, not a lookalike.** `Book`, `PaperPage` and `NavButton` moved out of
+  `CinematicReader.tsx` into `components/Book.tsx` (with their styles and the Back/Next strings), and
+  both the literary Reader and the new `StoryBook` use them. The Reader renders exactly as before.
+  `storySpreads` (`content/story-book.ts`, tested) lays the story out: title spread, one spread per
+  panel — place photograph as a plate with credit · licence, Nzima's photograph **whole on a dark
+  plate with its caption**, typographic beats on a quiet page — then sources.
+
+  The reading switcher is now three chips (Book · Scroll · In the place): in the book's top bar, and
+  on the scroll readings' title card. `Book` gained a `reduced` prop — under reduced motion the page
+  changes without the leaf turning — and the literary Reader passes it too. The new "Turn the page to
+  begin" and "Book" strings are unreviewed in every language but English, like their neighbours.
+
+  Typecheck, 295 tests and `build:web` pass. **Not yet seen in a browser** — the browser harness was
+  not connected this session.
+
 - **2026-09-23 (board de-dupe)** — **The same both-sides merge that broke `package.json` also broke
   the board, and the hotfix only fixed the first one.** `STATUS.md` came out of the #77/#78 conflict
   carrying **two `_Last updated:_` lines**, the **PR checks (CI)** row twice and the **Audit backlog**
