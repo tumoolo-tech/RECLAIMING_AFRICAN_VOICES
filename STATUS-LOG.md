@@ -8,6 +8,33 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-24 (the book reads itself aloud, in eleven languages)** — Tumo asked for voice reading
+  of the Sixteen June book in several languages, with ElevenLabs as the voice (`SP-115`).
+
+  **The constraint, stated plainly because it shaped everything.** A voice can only read text that
+  exists, and the story existed only in English. ElevenLabs in this app speaks English and Afrikaans
+  only, and CLAUDE.md forbids sending an indigenous language to it. Tumo chose: ElevenLabs for en/af,
+  **machine drafts** for the text, and the existing engine ladder for the other nine.
+
+  **What shipped.** `story-drafts.data.ts` — the title, standfirst and every panel's kicker,
+  headline and body, in all ten non-English languages, written by Claude and **labelled unreviewed
+  wherever shown**. `story-drafts.test.ts` cannot judge a translation, but it fails if any draft
+  drops a person, place or organisation, or changes a year or number, that its English carries. The
+  book gained the literary Reader's controls: a **language picker** (the story is immersive, so the
+  shell's is hidden) and **Listen**, which reads the current spread in the language its text is
+  actually in and stops on a page turn, a language change or leaving the book. Where the only voice
+  is the device's and it is unlikely to know the language — all nine indigenous languages until
+  Botlhale has a key — a line under Listen says so. The Listen labels and the draft note now live in
+  `Book.tsx`, shared by both books. Engine routing is untouched.
+
+  **Honest about quality.** Afrikaans, isiZulu, isiXhosa and Setswana drafts are likeliest to be
+  close; siSwati, Xitsonga, Tshivenda and isiNdebele the likeliest to carry errors of idiom, and those
+  use the loanword "Juni" rather than risk a wrong month name. **LANG-13** asks a speaker to review.
+  The scroll readings stay English.
+
+  Typecheck and 305 tests pass. **Not heard or seen in a browser** — the browser harness was not
+  connected, and nobody has listened to an ElevenLabs clip yet (EL-05).
+
 - **2026-09-24 (Sixteen June opens as a book)** — Tumo: the story should follow the storytelling
   convention the site already has — *"it needs to be like a book and that should be the default when
   you open it"* — with **In the place** and the plain scroll still available after (`SP-114`).

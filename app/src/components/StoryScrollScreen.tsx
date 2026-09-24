@@ -509,11 +509,17 @@ export function StoryScrollScreen({
   lang,
   onBack,
   onOpenRef,
+  onLangChange,
+  country,
 }: {
   story: Story;
   lang: LangCode;
   onBack: () => void;
   onOpenRef: (ref: ContentRef) => void;
+  /** Only the book reading carries a language picker and narration (SP-115); the scroll readings
+   *  stay English, as SP-015 has them. */
+  onLangChange: (l: LangCode) => void;
+  country?: string;
 }) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -598,6 +604,8 @@ export function StoryScrollScreen({
         lang={lang}
         onBack={onBack}
         onOpenRef={onOpenRef}
+        onLangChange={onLangChange}
+        country={country}
         chooser={<ModeChooser mode={mode} onChange={setMode} lang={lang} compact />}
       />
     );

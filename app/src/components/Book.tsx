@@ -3,6 +3,8 @@ import { View, Text, Pressable, StyleSheet, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { colors, spacing, radius, type, fonts } from "../theme/tokens";
 import { Icon } from "../ui";
+import { languageByCode } from "../i18n";
+import type { LangCode } from "../i18n/languages";
 
 // The book — the site's reading convention. Shared by the literary Reader (CinematicReader) and the
 // Book reading of a scroll-told story (StoryBook), so both are the same object: the same paper, the
@@ -10,6 +12,14 @@ import { Icon } from "../ui";
 
 /** The book's own chrome, shared so the two books say the same words for the same buttons. */
 export const BOOK_UI = {
+  listen: {
+    en: "Listen", tn: "Reetsa", af: "Luister", zu: "Lalela", xh: "Mamela",
+    nso: "Theeletša", st: "Mamela", ss: "Lalela", ts: "Yingisela", nr: "Lalela", ve: "Thetshelesa",
+  },
+  stopListen: {
+    en: "Stop", tn: "Emisa", af: "Stop", zu: "Misa", xh: "Yima",
+    nso: "Emiša", st: "Emisa", ss: "Yima", ts: "Yimisa", nr: "Misa", ve: "Ima",
+  },
   prev: {
     en: "Back", tn: "Morago", af: "Terug", zu: "Emuva", xh: "Emva",
     nso: "Morago", st: "Morao", ss: "Emuva", ts: "Endzhaku", nr: "Emuva", ve: "Murahu",
@@ -19,6 +29,19 @@ export const BOOK_UI = {
     nso: "Tše di latelago", st: "E latelang", ss: "Lokulandzelako", ts: "Leswi landzelaka", nr: "Okulandelako", ve: "Zwi tevhelaho",
   },
 };
+
+/** The honest line under a passage that is not reviewed copy in the reader's language: either a
+ *  machine draft (labelled as one — the integrity rule) or an English fallback. Nothing for
+ *  reviewed text. Shared, so every book says it the same way. */
+export function DraftNote({ status, lang }: { status: "reviewed" | "draft" | "fallback"; lang: LangCode }) {
+  if (status === "fallback") {
+    return <Text style={bookStyles.inkNote}>Shown in English · a reviewed {languageByCode(lang).endonym} translation is coming.</Text>;
+  }
+  if (status === "draft") {
+    return <Text style={bookStyles.inkNote}>{languageByCode(lang).endonym} · machine translation, unreviewed draft.</Text>;
+  }
+  return null;
+}
 
 // ── The book — a turn.js-style flipbook (modelled on the turn.js page-fold behaviour) ───────────────
 // Faithful to turn.js's model: a two-page SPREAD around a centre spine (image plate verso, text

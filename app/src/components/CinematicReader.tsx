@@ -14,12 +14,12 @@ import { sceneImageSource } from "../content/images";
 import { soundtrackClips } from "../content/soundtrackClips";
 import { sharedPlaylist } from "../services/soundtrack";
 import { useTts } from "../services/tts";
-import { t, resolveText, languageByCode } from "../i18n";
+import { t, resolveText } from "../i18n";
 import { draftText } from "../content/drafts";
 import { LinearGradient } from "expo-linear-gradient";
 import { SceneImage } from "./SceneImage";
 import { LanguagePicker } from "./LanguagePicker";
-import { Book, PaperPage, NavButton, bookStyles, BOOK_UI } from "./Book";
+import { Book, PaperPage, NavButton, bookStyles, BOOK_UI, DraftNote } from "./Book";
 import { useReducedMotion } from "./Motion";
 import { colors, spacing, radius, type, fonts } from "../theme/tokens";
 import { Icon } from "../ui";
@@ -54,14 +54,6 @@ const UI = {
   source: {
     en: "Source", tn: "Motswedi", af: "Bron", zu: "Umthombo", xh: "Umthombo",
     nso: "Mothopo", st: "Mohlodi", ss: "Umtfombo", ts: "Xihlovo", nr: "Umthombo", ve: "Tshiko",
-  },
-  listen: {
-    en: "Listen", tn: "Reetsa", af: "Luister", zu: "Lalela", xh: "Mamela",
-    nso: "Theeletša", st: "Mamela", ss: "Lalela", ts: "Yingisela", nr: "Lalela", ve: "Thetshelesa",
-  },
-  stopListen: {
-    en: "Stop", tn: "Emisa", af: "Stop", zu: "Misa", xh: "Yima",
-    nso: "Emiša", st: "Emisa", ss: "Yima", ts: "Yimisa", nr: "Misa", ve: "Ima",
   },
   interpretation: {
     en: "AI image — artistic interpretation, not a historical photo.",
@@ -214,7 +206,7 @@ export function CinematicReader({
               onPress={() => (tts.speaking ? tts.stop() : tts.speak(body, bodyRes.lang))}
               style={[styles.listenBtn, tts.speaking && styles.listenBtnActive]}
               accessibilityRole="button"
-              accessibilityLabel={tts.speaking ? t(UI.stopListen, lang) : t(UI.listen, lang)}
+              accessibilityLabel={tts.speaking ? t(BOOK_UI.stopListen, lang) : t(BOOK_UI.listen, lang)}
             >
               {tts.speaking ? (
                 <Icon.Square size={12} color={colors.night} fill={colors.night} />
@@ -222,7 +214,7 @@ export function CinematicReader({
                 <Icon.Volume2 size={14} color={colors.sand} />
               )}
               <Text style={[styles.listenText, tts.speaking && styles.listenTextActive]}>
-                {tts.speaking ? t(UI.stopListen, lang) : t(UI.listen, lang)}
+                {tts.speaking ? t(BOOK_UI.stopListen, lang) : t(BOOK_UI.listen, lang)}
               </Text>
             </Pressable>
           </View>
@@ -317,12 +309,7 @@ function TextPage({
           <Text style={bookStyles.inkDrop}>{text.slice(0, 1)}</Text>
           {text.slice(1)}
         </Text>
-        {res.status === "fallback" && (
-          <Text style={bookStyles.inkNote}>Shown in English · a reviewed {languageByCode(lang).endonym} translation is coming.</Text>
-        )}
-        {res.status === "draft" && (
-          <Text style={bookStyles.inkNote}>{languageByCode(lang).endonym} · machine translation, unreviewed draft.</Text>
-        )}
+        <DraftNote status={res.status} lang={lang} />
         {single && (
           <Text style={bookStyles.inkNote}>
             {t(UI.interpretation, lang)} · {t(UI.source, lang)}: {scene.sourceNote}
