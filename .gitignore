@@ -45,3 +45,9 @@ coverage/
 # it is the record of what a person said, so review/returned/ is tracked.
 review/*.md
 !review/README.md
+
+# Scratch input for `npm run fetch:text` (issue #33). The fetched .txt is re-creatable by re-running
+# the script; the copy that matters is the one `npm run ingest` writes into
+# app/src/content/sources/<id>/source.txt, which is the verbatim layer the citations point at.
+# Committing both would put the same novel in the repo twice.
+tmp/

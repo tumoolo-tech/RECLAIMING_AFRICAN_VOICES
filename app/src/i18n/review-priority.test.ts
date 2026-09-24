@@ -1,8 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { TIERS, tierFor, tierSpec, type ReviewTier } from "./review-priority.ts";
+import { TIERS, tierFor, tierSpec, FLAGGED_FOR_REVIEW, flaggedFor, type ReviewTier } from "./review-priority.ts";
+import { LANGUAGES } from "./languages.ts";
+
+const LANG_CODES: string[] = LANGUAGES.map((l) => l.code);
 
 // The harm ordering is a judgement (issue #38), so it is pinned rather than trusted. The point of
 // these tests is that moving the consent sheet down a tier has to be argued for in a diff instead of
@@ -71,4 +74,25 @@ test("no file is claimed by two tiers", () => {
 
 test("tierSpec refuses an unknown tier rather than returning something plausible", () => {
   assert.throws(() => tierSpec(9 as ReviewTier), /no such review tier/);
+});
+
+test("every flagged string points at a file that exists and English that is still there", () => {
+  // A flag that no longer matches anything is worse than no flag: it sends a reviewer hunting for a
+  // row that is not in the sheet, and it hides the fact that nobody knows whether the problem is
+  // fixed. If the English was rewritten, the flag needs rewriting or removing in the same change.
+  for (const f of FLAGGED_FOR_REVIEW) {
+    const path = resolve(SRC, f.file);
+    assert.ok(existsSync(path), `flagged: ${f.file} does not exist`);
+    assert.ok(
+      readFileSync(path, "utf8").includes(f.englishSnippet),
+      `flagged: "${f.englishSnippet}" is no longer in ${f.file} — update or remove the flag`,
+    );
+    assert.ok(LANG_CODES.includes(f.lang), `flagged: "${f.lang}" is not a language this app speaks`);
+    assert.ok(f.why.length > 80, `flagged: ${f.file} needs a reason a reviewer can act on`);
+  }
+});
+
+test("a flagged language actually gets its flags, and others do not", () => {
+  assert.equal(flaggedFor("tn").length, FLAGGED_FOR_REVIEW.filter((f) => f.lang === "tn").length);
+  assert.deepEqual(flaggedFor("no-such-language"), []);
 });

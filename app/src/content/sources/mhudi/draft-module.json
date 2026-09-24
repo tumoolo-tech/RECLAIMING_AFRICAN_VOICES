@@ -1,0 +1,381 @@
+{
+  "id": "mhudi",
+  "kind": "literature",
+  "title": "Mhudi",
+  "author": "Sol T. Plaatje",
+  "source": "Mhudi — Copyright Act 98 of 1978, life + 50; Plaatje d. 1932 → public domain in South Africa since 1983",
+  "blurb": {
+    "en": "[NEEDS ADAPTATION]"
+  },
+  "audience": "[NEEDS ADAPTATION]",
+  "scenes": [
+    {
+      "id": "mhudi-ch1",
+      "title": {
+        "en": "Chapter I."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218531,
+      "sourceNote": "Mhudi, Chapter I.: “A Tragedy and its Vendetta. Two centuries ago the Bechuana tribes inhabited the extensive areas between Central Transvaal and the Kalahari Desert. Their entire world lay in the geography covered by the story in these pages. In this domain t…”"
+    },
+    {
+      "id": "mhudi-ch2",
+      "title": {
+        "en": "Chapter II."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218532,
+      "sourceNote": "Mhudi, Chapter II.: “Dark Days. Re-Thaga, in order not to be attacked by wild animals, ‘was wont to sleep in the top branches of some large tree, ‘where he would weave a hammock of ramblers and ropes of inner barks, tying it up with twigs. In this manner he spe…”"
+    },
+    {
+      "id": "mhudi-ch3",
+      "title": {
+        "en": "Chapter III."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218533,
+      "sourceNote": "Mhudi, Chapter III.: “Mhudi’s Alarming Experiences. A royal pair never sat down to a meal with greater relish than the rescued Mhudi and her chivalrous comrade, as together they partook of the wild beef from a flat stone, which served as an improvised dish and t…”"
+    },
+    {
+      "id": "mhudi-ch4",
+      "title": {
+        "en": "Chapter IV."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218534,
+      "sourceNote": "Mhudi, Chapter IV.: “Rays of Sunshine. Mhudi continues her story. “At day-break I found myself at the bottom of a deep ravine, in which I crouched for the greater part of the day—afraid of the crawling, venomous snakes, if I lay there long—and in fear of the ti…”"
+    },
+    {
+      "id": "mhudi-ch5",
+      "title": {
+        "en": "Chapter V."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218535,
+      "sourceNote": "Mhudi, Chapter V.: “Revels after Victory. The town of the Barolong having been mercilessly sacked, their cattle posts and homesteads flattened to the ground and the surviving occupants scattered in all directions, all their belongings having fallen into the ha…”"
+    },
+    {
+      "id": "mhudi-ch6",
+      "title": {
+        "en": "Chapter VI."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218536,
+      "sourceNote": "Mhudi, Chapter VI.: “The Forest Home. That exactly is how our hero and heroine met and became man and wife. There were no home ceremonials, such as the seeking and obtaining of parental consent, because there were no parents; no conferences by uncles and grand-…”"
+    },
+    {
+      "id": "mhudi-ch7",
+      "title": {
+        "en": "Chapter VII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218537,
+      "sourceNote": "Mhudi, Chapter VII.: “Mhudi and I. At times Mhudi and Ra-Thaga found fruitful subjects for animated discussion. On one topic there was a sharp: difference of opinion between man and wife. Ra-Thaga at times felt inclined to believe that the land on which they liv…”"
+    },
+    {
+      "id": "mhudi-ch8",
+      "title": {
+        "en": "Chapter VIII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218538,
+      "sourceNote": "Mhudi, Chapter VIII.: “Strangers. Continuing their stay at Re-Nosi, Ra-Thaga and his wife saw new moons wax and wane, and waning wax again, until one evening when he chanced to be walking out and thought that he heard human voices. This caused him to climb the lo…”"
+    },
+    {
+      "id": "mhudi-ch9",
+      "title": {
+        "en": "Chapter IX."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 218539,
+      "sourceNote": "Mhudi, Chapter IX.: “A Perilous Adventure. Ra-Thaga, on his second morning out, left the Qorannas in camp and went out in search of game. He had not gone very far, when he saw in the bush a tiger eating leisurely at the carcase of a buck. So he ran back the two…”"
+    },
+    {
+      "id": "mhudi-ch10",
+      "title": {
+        "en": "Chapter X."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963859,
+      "sourceNote": "Mhudi, Chapter X.: “Arrival of the Voortrekkers. Ra-Thaga, after a long stay at Mamuse, received some news concerning the Barolong. According to it, the Seleka branch of the tribe had removed from Motlhana’pitse under the guidance of their Chief Moroka-a-Sehun…”"
+    },
+    {
+      "id": "mhudi-ch11",
+      "title": {
+        "en": "Chapter XI."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963858,
+      "sourceNote": "Mhudi, Chapter XI.: “A Timid Man. “Mhudi,” exclaimed Ra-Thaga, when he came home with two companions, “You must see the visitors who arrived at the Chief's court to-day. A most interesting group.” Mhudi: Where from, Basutoland? Ra-Thaga: No, No! They come out o…”"
+    },
+    {
+      "id": "mhudi-ch12",
+      "title": {
+        "en": "Chapter XII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963857,
+      "sourceNote": "Mhudi, Chapter XII.: “Queen Umnandi. Here, we may be permitted to digress and describe the beauty and virtues of one of King Mzilikazi’s wives—the lily of his harem, by name Umnandi, the sweet one. She was a daughter of Umzinyati (the Bison-city) the off-spring…”"
+    },
+    {
+      "id": "mhudi-ch13",
+      "title": {
+        "en": "Chapter XIII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963856,
+      "sourceNote": "Mhudi, Chapter XIII.: “Soothsayers and Battles. The Bangwaketse at Kgwakge—eighty miles to the west of Inzwinyani—were near relatives of the Barolong. And it was natural that their hearts were still aflame with memories of the massacre of Tauana’s people and the…”"
+    },
+    {
+      "id": "mhudi-ch14",
+      "title": {
+        "en": "Chapter XIV."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963855,
+      "sourceNote": "Mhudi, Chapter XIV.: “Light and Shade of Memorable Days. At the Barolong settlement of Thaba Ncho, the day broke as if reluctantly, over a thick mist, which, mingling with the early morning smoke from thousands of hearths in the huts and courtyards, created a li…”"
+    },
+    {
+      "id": "mhudi-ch15",
+      "title": {
+        "en": "Chapter XV."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963854,
+      "sourceNote": "Mhudi, Chapter XV.: “With the Boers at Moroka’s Hoek. During the Boers’ sojourn at Thaba Neho, there sprang up a lively friendship between Phil Jay, a young Boer, and Ra-Thaga. The two were constantly together, at the Boer Settlement, at Moroka’s Hoek, and at t…”"
+    },
+    {
+      "id": "mhudi-ch16",
+      "title": {
+        "en": "Chapter XVI."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963853,
+      "sourceNote": "Mhudi, Chapter XVI.: “Queen Umnandi’s Flight. Sad was the gloom over Inawinyani when the news spread that Umnandi, the brightest star in the social circles of the Matebele and pride of their King, had disappeared without leaving a trace. Only two women and a man…”"
+    },
+    {
+      "id": "mhudi-ch17",
+      "title": {
+        "en": "Chapter XVII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963852,
+      "sourceNote": "Mhudi, Chapter XVII.: “The Spies—Their Adventures. Phil Jay, like many other young Boers, could not write; so that during his absence his friends heard from him only twice when travellers who had met the spies reached Thaba Neho. These verbal messages, however, n…”"
+    },
+    {
+      "id": "mhudi-ch18",
+      "title": {
+        "en": "Chapter XVIII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963851,
+      "sourceNote": "Mhudi, Chapter XVIII.: “Halley’s Comet—Its Influence on the Native Mind. Now a proud race like the Matebele had no idea of the systematic espionage that was carried on among them on behalf of their enemies, even by the very messengers who came to their capital lad…”"
+    },
+    {
+      "id": "mhudi-ch19",
+      "title": {
+        "en": "Chapter XIX."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963850,
+      "sourceNote": "Mhudi, Chapter XIX.: “War against the Matebele. Potgieter held his last council of war at Thaba Neho. He told the Barolongs that the Boers had their forces and munitions all complete, and, if the Natives would join them, they were ready to march against the Mate…”"
+    },
+    {
+      "id": "mhudi-ch20",
+      "title": {
+        "en": "Chapter XX."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963828,
+      "sourceNote": "Mhudi, Chapter XX.: “Mhudi’s Leap in the Dark. Mhudi was suffering from an attack of malarial fever when the armies of the Allies left Thaba Ncho. Although she was growing worse, she assured Ra-Thaga that she dared not prevent him from carrying out his long nur…”"
+    },
+    {
+      "id": "mhudi-ch21",
+      "title": {
+        "en": "Chapter XXI."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963827,
+      "sourceNote": "Mhudi, Chapter XXI.: “Mhudi and Umnandi. The friendship between Phil Jay and Ra-Thaga had not suffered in the least from the events of the past few days; so leaving the wagons among the trees near the dell, they went to sit-under a shady wild syringa, a little d…”"
+    },
+    {
+      "id": "mhudi-ch22",
+      "title": {
+        "en": "Chapter XXII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963826,
+      "sourceNote": "Mhudi, Chapter XXII.: “The Exodus. Mailikazi, was the last to leave with his bodyguard. Trembling under the weight of the sad news from the front, he quailed at sight of the deserted huts of his great city. In the middle of the morning he overtook the bulk of his…”"
+    },
+    {
+      "id": "mhudi-ch23",
+      "title": {
+        "en": "Chapter XXII."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963825,
+      "sourceNote": "Mhudi, Chapter XXII.: “A Happy Reunion. It was a hopeful nation that moved forward, and for months afterwards the Bechuanaland forests were alive with swarms of Matebele travelling persistently towards the land of promise to found a new Matebeleland. Before final…”"
+    },
+    {
+      "id": "mhudi-ch24",
+      "title": {
+        "en": "Chapter XXIV."
+      },
+      "text": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "childText": {
+        "en": "[NEEDS ADAPTATION]"
+      },
+      "imagePrompt": "",
+      "seed": 963824,
+      "sourceNote": "Mhudi, Chapter XXIV.: “A Contented Home Coming. Phil Jay on receiving the order to go back, was overcome with joy. He saw before him the image of Annetje and looked forward to a happy re-union with her. On the road he often left his party and the slow moving oxwa…”"
+    }
+  ],
+  "references": [
+    "Copyright Act 98 of 1978, life + 50; Plaatje d. 1932 → public domain in South Africa since 1983"
+  ],
+  "rights": {
+    "status": "public-domain",
+    "authorDied": 1932,
+    "basis": "Copyright Act 98 of 1978, life + 50; Plaatje d. 1932 → public domain in South Africa since 1983"
+  }
+}

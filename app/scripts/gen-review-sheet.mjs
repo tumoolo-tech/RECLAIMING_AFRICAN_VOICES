@@ -26,7 +26,7 @@ import { join, relative, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { LANGUAGES } from "../src/i18n/languages.ts";
 import { extractStrings, hasStrings } from "../src/i18n/extract-strings.ts";
-import { TIERS, tierFor, tierSpec } from "../src/i18n/review-priority.ts";
+import { TIERS, tierFor, tierSpec, flaggedFor } from "../src/i18n/review-priority.ts";
 
 const APP = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(APP, "src");
@@ -98,6 +98,24 @@ function sheetFor(lang, files) {
   out.push("- Write **`?`** if the English itself is unclear, or if the idea does not translate — say so, and we will change the English.");
   out.push("- You do not have to finish. **Tier 1 alone is worth more than the rest put together.**");
   out.push("");
+
+  // Known-wrong strings jump the queue: a reviewer should not work through the consent copy while a
+  // scene sits in the app telling their readers something that did not happen.
+  const flagged = flaggedFor(lang);
+  if (flagged.length) {
+    out.push(`## ⚠️ Start here — ${flagged.length} string(s) we already know are wrong`);
+    out.push("");
+    out.push(
+      `These are not ranked by risk like the tiers below; they are things that have already been found. ` +
+        `Please look at them before anything else.`,
+    );
+    out.push("");
+    for (const f of flagged) {
+      out.push(`- **\`${f.file}\`** — search this sheet for *"${f.englishSnippet}"*.`);
+      out.push(`  ${f.why}`);
+      out.push("");
+    }
+  }
 
   for (const t of TIERS) {
     const mine = rows.filter((r) => r.tier === t.tier);

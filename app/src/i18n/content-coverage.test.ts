@@ -18,7 +18,19 @@ import { countLocalizedIn, totalCounts, isContentFile, type Counts } from "./cov
 //
 // Run `npm run check:languages` for the readable picture.
 
-/** Measured 2026-09-18. Coverage may rise; if it falls, this fails. */
+/**
+ * Measured 2026-09-18. Coverage may rise; if it falls, this fails.
+ *
+ * tn stays at 82. Two Setswana strings on `mhudi:the-lion` were removed on 2026-09-23 — they
+ * translate the OLD English, which claimed Mhudi saved Ra-Thaga from a lion, an event ch. 2 does not
+ * contain — and were RESTORED on 2026-09-24 on Tumo's call: this project adds to what is already
+ * here rather than deleting other people's work. The consequence is documented in mhudi.ts, where the
+ * Setswana and the English now describe different events, and it is the first item on the Setswana
+ * review sheet (`npm run review:sheet -- tn`).
+ *
+ * The ratchet did its job either way: it caught the drop the moment it happened and turned a silent
+ * deletion into a decision somebody had to make on purpose.
+ */
 const FLOOR: Partial<Counts> = {
   en: 248,
   tn: 82,
