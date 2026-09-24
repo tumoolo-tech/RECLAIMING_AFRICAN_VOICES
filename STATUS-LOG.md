@@ -8,6 +8,76 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-24 (Setswana goes to Botlhale, and Botlhale is ready for a real key)** — Tumo, on the
+  device voice reading Setswana: *"wire up eleven labs for the setwana cause thats bad reading"*
+  (`SP-116`). ElevenLabs does not list Setswana (checked 30 Aug) and CLAUDE.md forbids routing an
+  indigenous language to it; offered a re-check, Botlhale, or forcing it anyway, Tumo chose
+  **Botlhale** — the engine built for this, already wired, never keyed.
+
+  **Found while looking: there is no `app/.env` at all.** So no engine has a key, and every
+  language — English included — has been read by the device voice. That is the "bad reading".
+
+  Read Botlhale's docs and fixed what they settled. **Auth:** an account's `refresh_token` never
+  expires and `/auth/generate` trades it for a 24-hour `IdToken`; the client did not do that
+  exchange, so a pasted token would have died after a day. It now does, from
+  `EXPO_PUBLIC_BOTLHALE_REFRESH_TOKEN`, keeping the IdToken in memory only. **Field name:** the docs
+  say `text` in one place and `text_msg` in another — both are sent. **Caching:** Botlhale returns a
+  URL, which the cache could not keep, so every re-press would have cost a new synthesis; the audio
+  is now downloaded into a data URI and cached (a refused download still plays, uncached).
+  **Languages:** Botlhale's TTS lists seven of our nine indigenous languages; siSwati and isiNdebele
+  now go straight to the device voice instead of failing a round trip first. Tests: token request,
+  IdToken parsing, both field names, the new routing. 308 pass.
+
+  **Not done, and cannot be from here:** no key exists to test against, so no Botlhale request has
+  been made. `vr-ZA` vs `ve-ZA` for Tshivenda is [VERIFY]. The refresh token, like the ElevenLabs
+  key, is bundled into the web client (issue #43) — revoke it after a demo.
+
+- **2026-09-24 (the book reads itself aloud, in eleven languages)** — Tumo asked for voice reading
+  of the Sixteen June book in several languages, with ElevenLabs as the voice (`SP-115`).
+
+  **The constraint, stated plainly because it shaped everything.** A voice can only read text that
+  exists, and the story existed only in English. ElevenLabs in this app speaks English and Afrikaans
+  only, and CLAUDE.md forbids sending an indigenous language to it. Tumo chose: ElevenLabs for en/af,
+  **machine drafts** for the text, and the existing engine ladder for the other nine.
+
+  **What shipped.** `story-drafts.data.ts` — the title, standfirst and every panel's kicker,
+  headline and body, in all ten non-English languages, written by Claude and **labelled unreviewed
+  wherever shown**. `story-drafts.test.ts` cannot judge a translation, but it fails if any draft
+  drops a person, place or organisation, or changes a year or number, that its English carries. The
+  book gained the literary Reader's controls: a **language picker** (the story is immersive, so the
+  shell's is hidden) and **Listen**, which reads the current spread in the language its text is
+  actually in and stops on a page turn, a language change or leaving the book. Where the only voice
+  is the device's and it is unlikely to know the language — all nine indigenous languages until
+  Botlhale has a key — a line under Listen says so. The Listen labels and the draft note now live in
+  `Book.tsx`, shared by both books. Engine routing is untouched.
+
+  **Honest about quality.** Afrikaans, isiZulu, isiXhosa and Setswana drafts are likeliest to be
+  close; siSwati, Xitsonga, Tshivenda and isiNdebele the likeliest to carry errors of idiom, and those
+  use the loanword "Juni" rather than risk a wrong month name. **LANG-13** asks a speaker to review.
+  The scroll readings stay English.
+
+  Typecheck and 305 tests pass. **Not heard or seen in a browser** — the browser harness was not
+  connected, and nobody has listened to an ElevenLabs clip yet (EL-05).
+
+- **2026-09-24 (Sixteen June opens as a book)** — Tumo: the story should follow the storytelling
+  convention the site already has — *"it needs to be like a book and that should be the default when
+  you open it"* — with **In the place** and the plain scroll still available after (`SP-114`).
+
+  **The same book, not a lookalike.** `Book`, `PaperPage` and `NavButton` moved out of
+  `CinematicReader.tsx` into `components/Book.tsx` (with their styles and the Back/Next strings), and
+  both the literary Reader and the new `StoryBook` use them. The Reader renders exactly as before.
+  `storySpreads` (`content/story-book.ts`, tested) lays the story out: title spread, one spread per
+  panel — place photograph as a plate with credit · licence, Nzima's photograph **whole on a dark
+  plate with its caption**, typographic beats on a quiet page — then sources.
+
+  The reading switcher is now three chips (Book · Scroll · In the place): in the book's top bar, and
+  on the scroll readings' title card. `Book` gained a `reduced` prop — under reduced motion the page
+  changes without the leaf turning — and the literary Reader passes it too. The new "Turn the page to
+  begin" and "Book" strings are unreviewed in every language but English, like their neighbours.
+
+  Typecheck, 295 tests and `build:web` pass. **Not yet seen in a browser** — the browser harness was
+  not connected this session.
+
 - **2026-09-23 (board de-dupe)** — **The same both-sides merge that broke `package.json` also broke
   the board, and the hotfix only fixed the first one.** `STATUS.md` came out of the #77/#78 conflict
   carrying **two `_Last updated:_` lines**, the **PR checks (CI)** row twice and the **Audit backlog**

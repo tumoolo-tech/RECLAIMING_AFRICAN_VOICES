@@ -1,7 +1,7 @@
 // useTts — the one hook the UI calls for narration.
 //
 // It walks a LADDER of engines, chosen per language (see ./select.ts): ElevenLabs for English and
-// Afrikaans, Botlhale for the nine indigenous languages, on-device speech underneath everything.
+// Afrikaans, Botlhale for the indigenous languages it lists, on-device speech underneath everything.
 // Any failure at one rung — no key, no network, a 429, an unsupported language — falls to the next,
 // so "Listen" always does something and never dead-ends.
 //
@@ -27,7 +27,11 @@ import { elevenLabsSynthesize, DEFAULT_VOICE_ID } from "./elevenlabs";
 import { getCachedNarration, putCachedNarration, narrationKey } from "./cache";
 import { chooseProvider, providerLadder, TtsProviderId } from "./select";
 
+// Either credential works (SP-116). The REFRESH token is what a Botlhale account hands out and does
+// not expire; the client trades it for a day-long IdToken itself. A ready IdToken (API_KEY) is still
+// accepted, and stops working after 24 hours.
 const BOTLHALE_KEY = process.env.EXPO_PUBLIC_BOTLHALE_API_KEY ?? "";
+const BOTLHALE_REFRESH = process.env.EXPO_PUBLIC_BOTLHALE_REFRESH_TOKEN ?? "";
 const BOTLHALE_BASE_URL = process.env.EXPO_PUBLIC_BOTLHALE_BASE_URL || undefined;
 const ELEVENLABS_KEY = process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY ?? "";
 const ELEVENLABS_VOICE = process.env.EXPO_PUBLIC_ELEVENLABS_VOICE_ID || DEFAULT_VOICE_ID;
@@ -53,7 +57,7 @@ export function useTts(): UseTts {
   // instead of talking over whatever is playing now.
   const genRef = useRef(0);
 
-  const keys = { hasElevenLabsKey: ELEVENLABS_KEY.length > 0, hasBotlhaleKey: BOTLHALE_KEY.length > 0 };
+  const keys = { hasElevenLabsKey: ELEVENLABS_KEY.length > 0, hasBotlhaleKey: BOTLHALE_KEY.length > 0 || BOTLHALE_REFRESH.length > 0 };
   const providerFor = useCallback((lang: LangCode) => chooseProvider({ lang, ...keys }), [keys.hasElevenLabsKey, keys.hasBotlhaleKey]);
 
   // Remote audio plays through the shared player; reset when it finishes.
@@ -130,13 +134,14 @@ export function useTts(): UseTts {
               : await botlhaleSynthesize({
                   text: trimmed,
                   languageCode: toBotlhaleCode(lang),
-                  apiKey: BOTLHALE_KEY,
+                  apiKey: BOTLHALE_KEY || undefined,
+                  refreshToken: BOTLHALE_REFRESH || undefined,
                   baseUrl: BOTLHALE_BASE_URL,
                 });
           if (stale()) return;
           // Cache before playing: if playback throws, we have still paid for the clip and should
-          // not pay again. Botlhale hands back a URL that may expire, so only self-contained data
-          // URIs are worth keeping.
+          // not pay again. Only self-contained data URIs are kept — botlhaleSynthesize downloads
+          // Botlhale's audio into one where it can, and a bare URL (which may expire) is not kept.
           if (uri.startsWith("data:")) await putCachedNarration(key, uri);
           if (stale()) return;
           await playUri(uri, provider);

@@ -89,6 +89,7 @@ import type { ContentRef } from "../content/topic-links";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
 import { t } from "../i18n";
 import type { LangCode } from "../i18n/languages";
+import { StoryBook } from "./StoryBook";
 
 const UI = {
   readOn: {
@@ -112,16 +113,53 @@ const UI = {
     en: "Read it", tn: "E bale", af: "Lees dit", zu: "Yifunde", xh: "Yifunde",
     nso: "E bale", st: "E bale", ss: "Yifundze", ts: "Yi hlaye", nr: "Yifunde", ve: "I vhalani",
   },
+  modeBook: {
+    en: "Book", tn: "Buka", af: "Boek", zu: "Incwadi", xh: "Incwadi",
+    nso: "Puku", st: "Buka", ss: "Incwadzi", ts: "Buku", nr: "Incwadi", ve: "Bugu",
+  },
   modeStay: {
     en: "In the place", tn: "Mo lefelong", af: "In die plek", zu: "Endaweni", xh: "Endaweni",
     nso: "Lefelong", st: "Sebakeng", ss: "Endzaweni", ts: "Endhawini", nr: "Endaweni", ve: "Fhethuni",
   },
 };
 
-/** The two readings. `scroll` is the original: the places go past the reader. `stay` holds each
+/** The three readings. `book` is the DEFAULT and the app's own convention: the story as a paper
+ *  spread with a page turn, the same book the literary modules are read in (`StoryBook`, SP-114).
+ *  The two scroll readings follow. `scroll` is the original: the places go past the reader. `stay` holds each
  *  place still for a few screens and lets the story arrive on top of it — Tumo's ask, and the part
  *  of the reference page that actually makes you feel somewhere rather than merely shown something. */
-type Mode = "scroll" | "stay";
+type Mode = "book" | "scroll" | "stay";
+
+/** The reading switcher. Three chips, all always visible — a toggle that hides the option you are
+ *  not on makes you guess what the other one does. Rendered on the scroll readings' title card and
+ *  in the book's top bar, so every reading can reach every other. */
+function ModeChooser({ mode, onChange, lang, compact }: { mode: Mode; onChange: (m: Mode) => void; lang: LangCode; compact?: boolean }) {
+  const chips: { key: Mode; label: string }[] = [
+    { key: "book", label: t(UI.modeBook, lang) },
+    { key: "scroll", label: t(UI.scroll, lang) },
+    { key: "stay", label: t(UI.modeStay, lang) },
+  ];
+  return (
+    <View style={compact ? s.modeCompact : null}>
+      {compact ? null : <Text style={s.modesLabel}>{t(UI.modeLabel, lang)}</Text>}
+      <View style={s.modeRow}>
+        {chips.map((c) => {
+          const on = c.key === mode;
+          return (
+            <PressScale
+              key={c.key}
+              style={[s.modeChip, on ? s.modeChipOn : null]}
+              onPress={() => onChange(c.key)}
+              accessibilityLabel={c.label}
+            >
+              <Text style={[s.modeText, on ? s.modeTextOn : null]}>{c.label}</Text>
+            </PressScale>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
 
 /** Screens of scroll spent in one place. A photograph earns the longer hold; a typographic beat has
  *  nothing to look at, so holding it as long would just read as a stall. */
@@ -471,11 +509,17 @@ export function StoryScrollScreen({
   lang,
   onBack,
   onOpenRef,
+  onLangChange,
+  country,
 }: {
   story: Story;
   lang: LangCode;
   onBack: () => void;
   onOpenRef: (ref: ContentRef) => void;
+  /** Only the book reading carries a language picker and narration (SP-115); the scroll readings
+   *  stay English, as SP-015 has them. */
+  onLangChange: (l: LangCode) => void;
+  country?: string;
 }) {
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -509,16 +553,16 @@ export function StoryScrollScreen({
   // title card's exit is driven from this file rather than by one of them.
   const reduced = useReducedMotion();
 
-  // Which reading. DEFAULTS TO THE HELD ONE, because it is the story this screen is trying to
-  // tell: you arrive somewhere, the picture stops, and the words assemble on top of it until it is
-  // time to move on. Shipping that behind a toggle meant nobody met it unless they went looking,
-  // and every report about this screen turned out to be about the other reading.
+  // Which reading. DEFAULTS TO THE BOOK (SP-114, Tumo, 24 Sep): a story opens the way every other
+  // piece of literature in this app opens, as a paper spread with a page turn. The held reading —
+  // you arrive somewhere, the picture stops, the words assemble on top of it — was the default
+  // before that (SP-108) and is the second chip; the plain scroll is the third.
   //
   // Session state on purpose: no store, no localStorage, nothing written about the reader anywhere.
-  // The toggle lives on the title card, which is the only place in the story where the question
-  // "how do you want to read this" is worth asking — and because it sits at the top, a reader can
-  // only change it from the top, so there is no scroll position to preserve.
-  const [mode, setMode] = useState<Mode>("stay");
+  // In a scroll reading the toggle lives on the title card, so a reader can only change it from the
+  // top and there is no scroll position to preserve. In the book it sits in the top bar, and leaving
+  // the book mounts the scroll reading at its top.
+  const [mode, setMode] = useState<Mode>("book");
   const stay = mode === "stay";
 
   // The title card leaves as the first photograph arrives: it fades out over the first two-thirds
@@ -548,6 +592,24 @@ export function StoryScrollScreen({
     outputRange: ["-100%", "0%"],
     extrapolate: "clamp",
   });
+
+  // THE BOOK REPLACES THE SCROLLER rather than living inside it: a book turns pages, it does not
+  // scroll, and none of the scroll machinery above has anything to drive. Returned after every hook
+  // so switching reading never changes the hook order. Switching to a scroll reading mounts it
+  // fresh, at the top, on its title card.
+  if (mode === "book") {
+    return (
+      <StoryBook
+        story={story}
+        lang={lang}
+        onBack={onBack}
+        onOpenRef={onOpenRef}
+        onLangChange={onLangChange}
+        country={country}
+        chooser={<ModeChooser mode={mode} onChange={setMode} lang={lang} compact />}
+      />
+    );
+  }
 
   return (
     <Screen tone="dark" scroll={false} padded={false}>
@@ -633,26 +695,9 @@ export function StoryScrollScreen({
 
           {/* The choice is offered before the story starts, not buried in a settings screen: it
               changes how the next twenty screens behave, so it belongs where the reader decides to
-              begin. Two chips, both always visible — a toggle that hides the option you are not on
-              makes you guess what the other one does. */}
+              begin. The same three chips the book carries in its top bar — see `ModeChooser`. */}
           <Reveal delay={260} style={s.modes}>
-            <Text style={s.modesLabel}>{t(UI.modeLabel, lang)}</Text>
-            <View style={s.modeRow}>
-              <PressScale
-                style={[s.modeChip, !stay ? s.modeChipOn : null]}
-                onPress={() => setMode("scroll")}
-                accessibilityLabel={t(UI.scroll, lang)}
-              >
-                <Text style={[s.modeText, !stay ? s.modeTextOn : null]}>{t(UI.scroll, lang)}</Text>
-              </PressScale>
-              <PressScale
-                style={[s.modeChip, stay ? s.modeChipOn : null]}
-                onPress={() => setMode("stay")}
-                accessibilityLabel={t(UI.modeStay, lang)}
-              >
-                <Text style={[s.modeText, stay ? s.modeTextOn : null]}>{t(UI.modeStay, lang)}</Text>
-              </PressScale>
-            </View>
+            <ModeChooser mode={mode} onChange={setMode} lang={lang} />
           </Reveal>
 
           {/* The cue lost its word when the mode chips arrived: one of them is already labelled
@@ -768,7 +813,8 @@ const s = StyleSheet.create({
     color: colors.muted, fontFamily: fonts.bodyBold, fontSize: 10, letterSpacing: 1.4,
     textTransform: "uppercase", marginBottom: spacing.sm,
   },
-  modeRow: { flexDirection: "row", gap: spacing.sm },
+  modeRow: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  modeCompact: { flexShrink: 1 },
   modeChip: {
     borderWidth: 1, borderColor: "rgba(255,255,255,0.22)", borderRadius: radius.pill,
     paddingVertical: 8, paddingHorizontal: 16,

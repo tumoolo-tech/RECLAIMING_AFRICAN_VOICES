@@ -161,10 +161,14 @@ function PlaceRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; o
 }
 
 // One scroll-told story. Top-level for the same reason PlaceRoute and StageRoute are.
-function StoryRoute({ id, lang, onBack, onOpenRef }: { id: string; lang: Lang; onBack: () => void; onOpenRef: (ref: ContentRef) => void }) {
+function StoryRoute({
+  id, lang, country, onBack, onOpenRef, onLangChange,
+}: {
+  id: string; lang: Lang; country?: string; onBack: () => void; onOpenRef: (ref: ContentRef) => void; onLangChange: (l: Lang) => void;
+}) {
   const story = storyById(id);
   if (!story) return null;
-  return <StoryScrollScreen story={story} lang={lang} onBack={onBack} onOpenRef={onOpenRef} />;
+  return <StoryScrollScreen story={story} lang={lang} country={country} onBack={onBack} onOpenRef={onOpenRef} onLangChange={onLangChange} />;
 }
 
 // One Journey stage. Lives out here on purpose: inlining it in App's route switch made the
@@ -388,7 +392,7 @@ export default function App() {
           />
         );
       case "story":
-        return <StoryRoute id={route.id} lang={lang} onBack={back} onOpenRef={openRef} />;
+        return <StoryRoute id={route.id} lang={lang} country={country} onBack={back} onOpenRef={openRef} onLangChange={chooseLang} />;
       case "city": {
         const c = cityById(route.id);
         return c ? <CityScreen city={c} onBack={back} onArchive={() => push({ name: "archive" })} onOpenPlace={(id) => push({ name: "place", id })} lang={lang} /> : null;

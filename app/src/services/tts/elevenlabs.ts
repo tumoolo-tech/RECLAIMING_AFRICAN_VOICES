@@ -114,7 +114,7 @@ export function refuseReason(opts: { lang: LangCode; text: string; apiKey: strin
 }
 
 /** Pure: MP3 bytes -> a data URI the audio player can take straight. */
-export function bytesToDataUri(bytes: ArrayBuffer | Uint8Array): string {
+export function bytesToDataUri(bytes: ArrayBuffer | Uint8Array, mime = "audio/mpeg"): string {
   const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
   let binary = "";
   // Chunked so a long clip cannot blow the argument limit of String.fromCharCode.
@@ -127,7 +127,7 @@ export function bytesToDataUri(bytes: ArrayBuffer | Uint8Array): string {
       ? btoa(binary)
       : // eslint-disable-next-line no-undef
         Buffer.from(view).toString("base64");
-  return `data:audio/mpeg;base64,${b64}`;
+  return `data:${mime};base64,${b64}`;
 }
 
 /**

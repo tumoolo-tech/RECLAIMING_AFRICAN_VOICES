@@ -419,6 +419,10 @@ next person to claim "multilingual" has a real number to put behind it.
       carries `NOTE(setswana): tn fields are AI-assisted DRAFTS — review`, and the same is true of
       every `tn` string this session added. Counting them as coverage is honest only while they are
       labelled as drafts
+- [ ] LANG-13 **Review the Sixteen June story drafts with speakers** (`app/src/content/story-drafts.data.ts`,
+      SP-115). Ten languages, machine-drafted 2026-09-24 and narrated aloud in the book reading, so an
+      error is heard as well as read. Priority: `tn` (with LANG-11), then `ss`, `ts`, `ve`, `nr`,
+      whose drafts carry the least confidence. Check month names especially — four use "Juni"
 
 ## Phase 7 — Heritage tourism: a story becomes a place you can stand in (planned 2026-09-17, not started)
 

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { chooseProvider, providerLadder } from "./select.ts";
+import { chooseProvider, providerLadder, BOTLHALE_TTS_LANGS } from "./select.ts";
 import { LANGUAGES } from "../../i18n/languages.ts";
 
 const BOTH = { hasElevenLabsKey: true, hasBotlhaleKey: true };
@@ -20,7 +20,11 @@ test("NO indigenous language is ever routed to ElevenLabs — not even as a fall
   // The integrity rule as a test. ElevenLabs returns fluent, confident, WRONG audio for these; it
   // does not error, so nothing downstream would notice. This is where it gets noticed.
   for (const lang of INDIGENOUS) {
-    assert.equal(chooseProvider({ lang, ...BOTH }), "botlhale", `${lang} must not go to ElevenLabs`);
+    assert.equal(
+      chooseProvider({ lang, ...BOTH }),
+      BOTLHALE_TTS_LANGS.has(lang) ? "botlhale" : "device",
+      `${lang} must not go to ElevenLabs`
+    );
     assert.equal(
       providerLadder({ lang, ...BOTH }).includes("elevenlabs"),
       false,
@@ -34,6 +38,17 @@ test("NO indigenous language is ever routed to ElevenLabs — not even as a fall
 
 test("Botlhale stays first choice for Setswana even though ElevenLabs sounds better", () => {
   assert.equal(chooseProvider({ lang: "tn", ...BOTH }), "botlhale");
+});
+
+test("siSwati and isiNdebele skip Botlhale, which does not list them, and go to the device voice", () => {
+  // Botlhale's TTS reference (read 2026-09-24) lists seven of our nine indigenous languages. Asking
+  // it for the other two would only cost a round trip to be refused.
+  for (const lang of ["ss", "nr"] as const) {
+    assert.deepEqual(providerLadder({ lang, ...BOTH }), ["device"]);
+  }
+  for (const lang of ["tn", "zu", "xh", "nso", "st", "ts", "ve"] as const) {
+    assert.deepEqual(providerLadder({ lang, ...BOTH }), ["botlhale", "device"]);
+  }
 });
 
 test("with no keys at all, every language still has an engine", () => {
