@@ -35,10 +35,15 @@ The authoritative, commented list is [`app/.env.example`](../app/.env.example) �
 the four keys this section listed in June (ElevenLabs, Botlhale, Anthropic, hCaptcha have joined) and
 it explains which keys are bundled to the client. This doc no longer duplicates it.
 
-> Note: `EXPO_PUBLIC_*` vars are bundled into the client. Only put **public/anon** keys here. The
-> Supabase anon key is safe *only* with Row-Level Security enabled (see [05](05-popia-compliance.md)).
-> Gemini/Lelapa keys in a public bundle are acceptable for a hackathon demo but should move behind a
-> Supabase Edge Function before any real public release — noted as a sustainability follow-up.
+> **Hard rule (issue #43): no paid or quota-bearing key is `EXPO_PUBLIC_*`.** Those vars are bundled
+> into the client and readable by anyone. Only public-by-design values go there: the Supabase anon key
+> (safe *only* with Row-Level Security — see [05](05-popia-compliance.md)), the hCaptcha sitekey, and
+> `EXPO_PUBLIC_API_BASE_URL`. ElevenLabs, Botlhale, Anthropic and Gemini keys are **server-only**,
+> read by the key proxy in [`app/api/`](../app/api/) — Vercel functions deployed with the site, free
+> tier: `/api/tts`, `/api/chat`, `/api/config`. The proxy checks the origin, rate-limits per IP (and a
+> global cap per instance), caps request sizes, and keeps the ElevenLabs refusal for indigenous
+> languages server-side. Without a reachable proxy the app degrades exactly as a keyless build always
+> did: on-device speech, retrieval answers. `npm run api:dev` runs the same handlers locally.
 
 ## Install notes
 

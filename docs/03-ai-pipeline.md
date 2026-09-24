@@ -55,8 +55,10 @@ ever routed to ElevenLabs.
 - Called at runtime; **every clip cached** (IndexedDB on web) on text + language + voice, so a passage
   is synthesised once. One passage ≈ 800 of the starter tier's 40 000 characters/month.
 - Output `mp3_22050_32` — 6 KB a line rather than 34 KB, because a metered connection pays for it.
-- **The key is bundled to the client** (`EXPO_PUBLIC_ELEVENLABS_API_KEY`) — a paid account readable
-  by anyone who opens the site. Moving it behind a proxy is issue #43.
+- **The key is server-only** (`ELEVENLABS_API_KEY`), read by the `/api/tts` proxy
+  ([`app/api/tts.mjs`](../app/api/tts.mjs)). Until issue #43 it was bundled to the client. The proxy
+  rate-limits per IP and refuses the indigenous languages itself, so a hand-made request cannot get
+  around the selector either.
 
 ## 4. Lelapa AI / Vulavula — indigenous voice (speech → text, text → text)
 

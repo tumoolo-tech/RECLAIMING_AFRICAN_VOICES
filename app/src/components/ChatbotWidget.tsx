@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
 import { Icon } from "../ui";
-import { askChatbot, chatbotHasKey, type ChatTurn } from "../services/chatbot";
+import { askChatbot, chatbotHasLlm, type ChatTurn } from "../services/chatbot";
 import { loadChat, saveChat, clearChat } from "../services/chatbot/memory";
 import { CHAT_UI } from "../services/chatbot/uiStrings";
 import { onAsk } from "../services/chatbot/askBus";
@@ -53,6 +53,15 @@ export function ChatbotWidget({ lang, onNavigate }: { lang: Lang; onNavigate: (p
   // Memory: restore the prior conversation on mount (device-local; survives a refresh on web).
   const [messages, setMessages] = useState<Msg[]>(() => loadChat());
   const scrollRef = useRef<ScrollView>(null);
+  // Whether the /api/chat proxy offers full conversation; until it answers, assume not (say so).
+  const [hasLlm, setHasLlm] = useState(false);
+  useEffect(() => {
+    let live = true;
+    chatbotHasLlm().then((ok) => live && setHasLlm(ok));
+    return () => {
+      live = false;
+    };
+  }, []);
 
   // Persist the conversation whenever it changes (never uploaded — POPIA: device-local only).
   useEffect(() => {
@@ -174,7 +183,7 @@ export function ChatbotWidget({ lang, onNavigate }: { lang: Lang; onNavigate: (p
                   </Pressable>
                 ))}
               </View>
-              {!chatbotHasKey() && <Text style={styles.offlineNote}>{t(CHAT_UI.offline, lang)}</Text>}
+              {!hasLlm && <Text style={styles.offlineNote}>{t(CHAT_UI.offline, lang)}</Text>}
             </View>
           ) : (
             messages.map((m, i) => (

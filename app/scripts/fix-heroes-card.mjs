@@ -9,7 +9,7 @@ for (const line of readFileSync(resolve(appDir, ".env"), "utf8").split(/\r?\n/))
   const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
   if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim();
 }
-const apiKey = process.env.GEMINI_API_KEY || process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY;
 
 const src = resolve(appDir, "assets/generated/heroes-heroines-card-v1.webp");
 const meta = await sharp(src).metadata();

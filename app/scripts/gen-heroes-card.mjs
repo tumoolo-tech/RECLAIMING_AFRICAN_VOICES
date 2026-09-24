@@ -12,7 +12,7 @@ if (existsSync(envPath)) {
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].trim();
   }
 }
-const apiKey = process.env.GEMINI_API_KEY || process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) { console.error("Missing GEMINI_API_KEY in app/.env"); process.exit(1); }
 
 const PROMPT =

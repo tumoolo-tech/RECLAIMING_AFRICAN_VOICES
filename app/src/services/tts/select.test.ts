@@ -3,10 +3,10 @@ import assert from "node:assert/strict";
 import { chooseProvider, providerLadder, BOTLHALE_TTS_LANGS } from "./select.ts";
 import { LANGUAGES } from "../../i18n/languages.ts";
 
-const BOTH = { hasElevenLabsKey: true, hasBotlhaleKey: true };
-const ELEVEN_ONLY = { hasElevenLabsKey: true, hasBotlhaleKey: false };
-const BOTLHALE_ONLY = { hasElevenLabsKey: false, hasBotlhaleKey: true };
-const NEITHER = { hasElevenLabsKey: false, hasBotlhaleKey: false };
+const BOTH = { hasElevenLabs: true, hasBotlhale: true };
+const ELEVEN_ONLY = { hasElevenLabs: true, hasBotlhale: false };
+const BOTLHALE_ONLY = { hasElevenLabs: false, hasBotlhale: true };
+const NEITHER = { hasElevenLabs: false, hasBotlhale: false };
 
 /** The nine ElevenLabs cannot speak. Kept as a literal list so a registry edit has to face this test. */
 const INDIGENOUS = ["tn", "zu", "xh", "nso", "st", "ts", "ss", "nr", "ve"] as const;
