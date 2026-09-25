@@ -17,6 +17,7 @@ import { recordingsStore } from "../services/archive/store";
 import { RecordingMeta, prepend, removeById, renameById, updateById } from "../services/archive/recordings";
 import { hasSupabase, hasSession, checkConnection } from "../services/archive/supabase";
 import { fetchPublicFeed, signedUrlFor, uploadPublic, deleteCloud, type FeedItem } from "../services/archive/cloud";
+import { reportRecording, REPORT_REASON_MAX } from "../services/archive/moderation";
 import { CaptchaGate, CAPTCHA_ENABLED } from "./CaptchaGate";
 
 // The Community Archive — the heart of Community Impact (25%). Users record their own oral histories
@@ -142,6 +143,39 @@ const UI = {
     en: "From the community", tn: "Go tswa setšhabeng", af: "Van die gemeenskap", zu: "Kuvela emphakathini", xh: "Kuvela eluntwini",
     nso: "Go tšwa setšhabeng", st: "Ho tswa setjhabeng", ss: "Kuvela emmangweni", ts: "Ku suka evaakini", nr: "Kuvela emphakathini", ve: "Zwi bva tshitshavhani",
   },
+  // Issue #45. Reporting a recording, and telling a sharer the truth: since 0002_moderation.sql a
+  // shared recording waits for a person to listen to it before anyone else can.
+  report: {
+    en: "Report", tn: "Tlhagisa", af: "Rapporteer", zu: "Bika", xh: "Xela",
+    nso: "Bega", st: "Tlaleha", ss: "Bika", ts: "Vika", nr: "Bika", ve: "Vhiga",
+  },
+  reportAsk: {
+    en: "What is wrong with this recording?", tn: "Go phoso eng ka kgatiso e?", af: "Wat is verkeerd met hierdie opname?",
+    zu: "Yini okungalungile ngalokhu okuqoshiwe?", xh: "Yintoni engalunganga ngolu rekhodi?",
+    nso: "Ke eng seo se fošagetšego ka kgatišo ye?", st: "Ke eng se fosahetseng ka kgatiso ena?",
+    ss: "Yini lokungakalungi ngalokhu lokucondwe?", ts: "Xana xi hoxe yini hi rhikhodo leyi?",
+    nr: "Khuyini okungakalungi ngalokhu okurekhodiweko?", ve: "Ndi mini zwo khakhea nga ha tsimbo iyi?",
+  },
+  reportSent: {
+    en: "Thank you — a person will look at it.", tn: "Re a leboga — motho o tla e lebelela.", af: "Dankie — iemand sal daarna kyk.",
+    zu: "Siyabonga — umuntu uzoyibheka.", xh: "Enkosi — umntu uza kuyijonga.",
+    nso: "Re leboga — motho o tla e lebelela.", st: "Re leboha — motho o tla e sheba.",
+    ss: "Siyabonga — umuntfu utayibuka.", ts: "Ha khensa — munhu u ta yi languta.",
+    nr: "Siyathokoza — umuntu uzoyiqala.", ve: "Ri a livhuwa — muthu u ḓo i sedza.",
+  },
+  awaitingReview: {
+    en: "Sent for review ✓ — a person listens to every recording before it appears in the community feed.",
+    tn: "E romelletswe tlhatlhobo ✓ — motho o reetsa kgatiso nngwe le nngwe pele e tlhagelela mo setšhabeng.",
+    af: "Vir nasien gestuur ✓ — iemand luister na elke opname voordat dit in die gemeenskapsvoer verskyn.",
+    zu: "Kuthumelwe ukubuyekezwa ✓ — umuntu ulalela konke okuqoshiwe ngaphambi kokuthi kuvele.",
+    xh: "Kuthunyelwe kuhlolwa ✓ — umntu umamela yonke irekhodi phambi kokuba ivele.",
+    nso: "E rometšwe tekolo ✓ — motho o theetša kgatišo ye nngwe le ye nngwe pele e tšwelela.",
+    st: "E rometsoe tlhahlobo ✓ — motho o mamela kgatiso e ngoe le e ngoe pele e hlaha.",
+    ss: "Kutfunyelwe kubukwa ✓ — umuntfu ulalela konkhe lokucondwe ngaphambi kwekutsi kuvele.",
+    ts: "Yi rhumeriwe eku kamberiwa ✓ — munhu u yingisela rhikhodo yin'wana ni yin'wana yi nga si humelela.",
+    nr: "Kuthunyelwe ukubuyekezwa ✓ — umuntu ulalela koke okurekhodiweko ngaphambi kobana kuvele.",
+    ve: "Yo rumelwa u ṱolwa ✓ — muthu u thetshelesa tsimbo iṅwe na iṅwe i sa athu u bvelela.",
+  },
   communityEmpty: {
     en: "No shared stories yet — be the first to share one.", tn: "Ga go na dikanegelo tse di abetsweng — nna wa ntlha go abelana.",
     af: "Nog geen gedeelde stories nie — wees die eerste om een te deel.", zu: "Azikho izindaba ezabiwe okwamanje — yiba ngowokuqala ukwabelana.",
@@ -196,6 +230,8 @@ export function ArchiveScreen({
   const [captchaFor, setCaptchaFor] = useState<null | { kind: "test" } | { kind: "share"; rec: RecordingMeta }>(null);
   const [cloudBusy, setCloudBusy] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<string | null>(null);
+  // Which feed item is being reported, and the reason so far (issue #45). null = no box open.
+  const [reporting, setReporting] = useState<{ id: string; reason: string } | null>(null);
 
   const refreshFeed = () => {
     if (hasSupabase()) fetchPublicFeed().then(setFeed).catch(() => {});
@@ -227,7 +263,7 @@ export function ArchiveScreen({
       if (res.ok) {
         await recordingsStore.update(rec.id, { cloudId: res.cloudId, storagePath: res.storagePath });
         setRecordings((rs) => updateById(rs, rec.id, { cloudId: res.cloudId, storagePath: res.storagePath }));
-        setCloudStatus("Shared to the community ✓");
+        setCloudStatus(t(UI.awaitingReview, lang));
         refreshFeed();
       } else {
         setCloudStatus(`Share failed: ${res.message}`);
@@ -253,6 +289,27 @@ export function ArchiveScreen({
     if (!job) return;
     if (job.kind === "test") verifyCloud(token);
     else doShare(job.rec, token);
+  }
+
+  // Issue #45. Reporting is two taps on purpose: "Report" opens a reason box rather than filing
+  // something immediately, because a report with no reason is not actionable by whoever reads it.
+  function reportFeedItem(item: FeedItem) {
+    setCloudStatus(null);
+    setReporting({ id: item.id, reason: "" });
+  }
+
+  async function sendReport() {
+    if (!reporting) return;
+    const res = await reportRecording({ cloudId: reporting.id, reason: reporting.reason });
+    if (res.ok) {
+      setReporting(null);
+      setCloudStatus(t(UI.reportSent, lang));
+      return;
+    }
+    // A failure the reporter caused (empty reason) keeps the box open so they can fix it; one we
+    // caused closes it, because asking them to retype into a box that cannot work is worse.
+    setCloudStatus(res.message);
+    if (!res.retryable) setReporting(null);
   }
 
   async function playRemote(item: FeedItem) {
@@ -479,7 +536,8 @@ export function ArchiveScreen({
             <Muted style={styles.cloudStatus}>{t(UI.communityEmpty, lang)}</Muted>
           ) : (
             feed.map((f) => (
-              <View key={f.id} style={styles.feedRow}>
+              <View key={f.id}>
+              <View style={styles.feedRow}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.feedTitle} numberOfLines={1}>{f.title}</Text>
                   <Muted style={styles.date}>
@@ -491,6 +549,34 @@ export function ArchiveScreen({
                   <Icon.Play size={13} color="#000" fill="#000" />
                   <Text style={styles.playText}>{t(UI.play, lang)}</Text>
                 </Pressable>
+                {/* Issue #45. Anyone who can hear a recording can say it should not be here. The
+                    report holds no reporter identity (POPIA) — see services/archive/moderation.ts. */}
+                <Pressable
+                  style={styles.reportBtn}
+                  onPress={() => reportFeedItem(f)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${t(UI.report, lang)}: ${f.title}`}
+                >
+                  <Text style={styles.reportText}>{t(UI.report, lang)}</Text>
+                </Pressable>
+              </View>
+              {reporting?.id === f.id ? (
+                <View style={styles.reportBox}>
+                  <TextInput
+                    style={styles.reportInput}
+                    value={reporting.reason}
+                    onChangeText={(reason) => setReporting({ id: f.id, reason })}
+                    placeholder={t(UI.reportAsk, lang)}
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    multiline
+                    maxLength={REPORT_REASON_MAX}
+                    accessibilityLabel={t(UI.reportAsk, lang)}
+                  />
+                  <Pressable style={styles.playBtn} onPress={sendReport} accessibilityRole="button" accessibilityLabel={t(UI.report, lang)}>
+                    <Text style={styles.playText}>{t(UI.report, lang)}</Text>
+                  </Pressable>
+                </View>
+              ) : null}
               </View>
             ))
           )}
@@ -567,6 +653,10 @@ const styles = StyleSheet.create({
   itemActions: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.sm },
   playBtn: { backgroundColor: "#fff", borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 18, flexDirection: "row", alignItems: "center", gap: 6 },
   playText: { color: "#000", fontFamily: fonts.bodySemi, fontSize: type.small },
+  reportBtn: { borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.28)" },
+  reportText: { color: "rgba(255,255,255,0.72)", fontFamily: fonts.bodySemi, fontSize: type.small },
+  reportBox: { flexDirection: "row", alignItems: "flex-end", gap: spacing.sm, paddingBottom: spacing.sm },
+  reportInput: { flex: 1, minHeight: 44, color: "#fff", fontFamily: fonts.body, fontSize: type.small, borderWidth: 1, borderColor: "rgba(255,255,255,0.22)", borderRadius: radius.md, paddingHorizontal: 12, paddingVertical: 8 },
   delBtn: { borderRadius: radius.pill, paddingVertical: 8, paddingHorizontal: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.3)", flexDirection: "row", alignItems: "center", gap: 6 },
   delText: { color: "rgba(255,255,255,0.7)", fontFamily: fonts.bodySemi, fontSize: type.small },
   cloudCard: { marginTop: spacing.xl, padding: spacing.md },
