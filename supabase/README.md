@@ -18,9 +18,26 @@ access is enforced entirely by **Row-Level Security (RLS)**.
    - `public.recordings` (metadata + consent) with RLS,
    - a **private** `recordings` storage bucket with RLS,
    - an erasure trigger (deleting a row deletes its audio object too).
-2. **Enable anonymous auth.** Dashboard → **Authentication → Sign In / Providers → Anonymous** → enable.
+2. **⚠️ Run the moderation schema — this one is outstanding.** Paste all of
+   [`migrations/0002_moderation.sql`](migrations/0002_moderation.sql) → **Run**. Also idempotent. Until
+   this runs, **every shared recording is live the moment it is uploaded, with no approval step and no
+   working report button** — which is the state the feed has been in since July (issue #45).
+   It adds:
+   - `status` on `recordings`, defaulting to **`pending`**, and a read policy that makes `public` mean
+     *approved*. The gate is in RLS, so it also covers old app builds and anything using the
+     publishable key directly.
+   - a fix to `0001`'s "update own" policy, which let an uploader set `status='approved'` on their own
+     recording and walk through the gate.
+   - a `reports` table (no reporter identity — POPIA, see [docs/05](../docs/05-popia-compliance.md)).
+   - a 20-per-device-per-day upload cap, so one loop cannot fill the free tier's 1 GB.
+   - a one-time amnesty: anything already shared is grandfathered `approved`, so no existing
+     contributor's recording disappears.
+
+   **After it runs** the app needs no redeploy — the report button and the approval gate both start
+   working. Then moderate from the SQL editor; the queries are at the foot of the migration file.
+3. **Enable anonymous auth.** Dashboard → **Authentication → Sign In / Providers → Anonymous** → enable.
    Without this the client can't get an `auth.uid()` and every RLS check will (correctly) deny access.
-3. **Confirm the keys** are in `app/.env` (already added):
+4. **Confirm the keys** are in `app/.env` (already added):
    ```
    EXPO_PUBLIC_SUPABASE_URL=https://ogdlpfykyklblpfrgqwv.supabase.co
    EXPO_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_...
@@ -77,7 +94,8 @@ The app talks to this backend on **web** through [`app/src/services/archive/`](.
 Private recordings are never uploaded — they stay in IndexedDB on the device. **Native** has no captcha
 widget (`CaptchaGate.tsx` is a stub), so cloud sharing is web-only today (issue #44).
 
-**What is still missing, and tracked:** no moderation, reporting or takedown path on the public feed
-(**issue #45** — `docs/12` requires human approval before anything goes public); erasure breaks if the
+**What is still missing, and tracked:** moderation is **built but not activated** — the schema, the
+approval gate and the report button all exist, and step 2 above is the one action that switches them on
+(**issue #45**; `docs/12` requires human approval before anything goes public). Erasure breaks if the
 anonymous session is lost (**#46**); no country/topic tags on rows (**#47**); transcription (Lelapa)
 not wired (**#56**).
