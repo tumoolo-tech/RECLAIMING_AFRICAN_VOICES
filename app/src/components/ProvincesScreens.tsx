@@ -178,7 +178,11 @@ export function ProvinceScreen({ province, onBack, onOpenCity, lang }: { provinc
 
       <View style={s.miniRow}>
         <Mini v={province.capital} l={t(UI.capital, lang)} />
-        <Mini v={province.populationStat.value} l={t(UI.people2022, lang)} />
+        {/* The population carries its evidence state (issue #31). It used to render through a plain
+            Mini, so a figure labelled "Census 2022" appeared as a bare fact while the data marked it
+            unverified — the honesty pill existed on city stats and never reached the nine that name a
+            source. `stat` makes Mini show it; a bare Mini (capital, languages) has no claim to state. */}
+        <Mini v={province.populationStat.value} l={t(UI.people2022, lang)} stat={province.populationStat} lang={lang} />
         <Mini v={province.languages.split(" · ")[0] + "…"} l={t(UI.languages, lang)} />
       </View>
 
@@ -296,11 +300,20 @@ export function CityScreen({ city, onBack, onArchive, onOpenPlace, lang }: { cit
 }
 
 // ---------- shared bits ----------
-function Mini({ v, l }: { v: string; l: string }) {
+function Mini({ v, l, stat, lang }: { v: string; l: string; stat?: Stat; lang?: LangCode }) {
   return (
     <View style={s.mini}>
       <Text style={s.miniV}>{v}</Text>
       <Text style={s.miniL}>{l}</Text>
+      {/* Only a figure that HAS an evidence state shows one. Passing `stat` is what opts a number in;
+          the capital of a province is not a claim anybody needs to verify. */}
+      {stat && lang ? (
+        <View style={[s.pill, stat.status === "cited" ? s.pillCited : s.pillVerify]}>
+          <Text style={[s.pillText, { color: stat.status === "cited" ? "#3fbf6a" : colors.orange }]}>
+            {stat.status === "cited" ? t(UI.cited, lang) : t(UI.toVerify, lang)}
+          </Text>
+        </View>
+      ) : null}
     </View>
   );
 }
