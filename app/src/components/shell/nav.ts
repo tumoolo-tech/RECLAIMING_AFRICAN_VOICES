@@ -83,3 +83,13 @@ export const ME_LABEL: Record<Lang, string> = {
 
 /** The breakpoint where the header's nav row gives way to the bottom tab bar. */
 export const WIDE_MIN = 900;
+
+/**
+ * The tab bar's own height, ABOVE the safe-area inset — a reserved floor, applied by MobileTabBar as
+ * `minHeight` so the number and the layout cannot disagree.
+ *
+ * It lives here rather than in MobileTabBar because the floating layer has to clear it, and putting
+ * it in the component made `ui/floating.ts` import a component that imports the ui barrel — a cycle.
+ * These are layout facts about the shell, which is what this file is for.
+ */
+export const TAB_BAR_H = 56;
