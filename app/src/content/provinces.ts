@@ -6,7 +6,25 @@
 import type { ImageSourcePropType } from "react-native";
 
 export type StatStatus = "cited" | "verify";
-export type Stat = { label: string; value: string; status: StatStatus };
+
+/**
+ * A number shown to a reader, with the state of its evidence (issue #31).
+ *
+ * `status: "cited"` now requires a `source`, enforced by `stats.test.ts`. Before that rule existed,
+ * all nine province population figures were marked `"verify"` while their LABEL said "Census 2022" —
+ * a citation on screen with nothing behind it in the repo. The numbers turned out to be right, which
+ * is luck rather than method: nobody had checked them against the release.
+ *
+ * `"verify"` is a legitimate state and stays. What is not legitimate is a label that names a source
+ * the data cannot produce.
+ */
+export type Stat = {
+  label: string;
+  value: string;
+  status: StatStatus;
+  /** Required when `status` is `"cited"`: the publication a reader could go and check. */
+  source?: string;
+};
 export type Leader = { when: string; name: string; role: string; era?: "past" | "now" };
 
 export type City = {
@@ -52,7 +70,7 @@ export const provinces: Province[] = [
     name: "Western Cape",
     capital: "Cape Town",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~7.4M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~7.4M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 7 433 019" },
     languages: "Afrikaans · isiXhosa · English",
     overview:
       "The provinces were drawn in 1994, but the Western Cape's story runs from the Khoikhoi and San, through the 1652 Dutch station at the Cape, the wine-lands and the Overberg, to the cities of today.",
@@ -109,7 +127,7 @@ export const provinces: Province[] = [
     name: "Gauteng",
     capital: "Johannesburg",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~15.1M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~15.1M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 15 099 422" },
     languages: "isiZulu · Sesotho · English · Afrikaans",
     overview:
       "Gauteng — 'place of gold' in Sesotho — was carved from the old Transvaal in 1994. It is South Africa's smallest but most populous province, built around the gold reef and the freedom struggle.",
@@ -164,7 +182,7 @@ export const provinces: Province[] = [
     name: "Northern Cape",
     capital: "Kimberley",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~1.36M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~1.36M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 1 355 946" },
     languages: "Afrikaans · Setswana · isiXhosa",
     overview:
       "The largest province by land yet smallest by population — the Kalahari, the Karoo, and the diamond fields. Its story runs from the Khoisan and Griqua to the diamond rush and Sol Plaatje.",
@@ -202,7 +220,7 @@ export const provinces: Province[] = [
     name: "Eastern Cape",
     capital: "Bhisho",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~7.2M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~7.2M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 7 230 204" },
     languages: "isiXhosa · Afrikaans · English",
     overview:
       "Formed in 1994 from the old Cape Province and the Ciskei and Transkei 'homelands', the Eastern Cape is the Xhosa heartland and the frontier where the Cape Colony met the amaXhosa in a century of wars. It gave the liberation struggle Nelson Mandela, Oliver Tambo, Steve Biko, Walter Sisulu and Robert Sobukwe.",
@@ -287,7 +305,7 @@ export const provinces: Province[] = [
     name: "KwaZulu-Natal",
     capital: "Pietermaritzburg",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~12.4M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~12.4M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 12 423 907" },
     languages: "isiZulu · English · Afrikaans",
     overview:
       "KwaZulu-Natal joins the old British colony of Natal with KwaZulu, the Zulu heartland. It is the land of the Zulu kingdom forged by King Shaka, of the 1879 Anglo-Zulu War, and of a large community descended from indentured Indian labourers — among them a young lawyer, M.K. Gandhi.",
@@ -368,7 +386,7 @@ export const provinces: Province[] = [
     name: "Free State",
     capital: "Bloemfontein",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~2.9M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~3.0M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 2 964 412" },
     languages: "Sesotho · Afrikaans · isiXhosa",
     overview:
       "The central plains between the Vaal and the Orange were Sotho-Tswana and, later, Voortrekker country — the Orange Free State Boer republic. It is where the ANC was founded in 1912, and where the gold of the northern goldfields built new towns from nothing.",
@@ -425,7 +443,7 @@ export const provinces: Province[] = [
     name: "Limpopo",
     capital: "Polokwane",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~6.6M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~6.6M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 6 572 721" },
     languages: "Sepedi · Xitsonga · Tshivenḓa",
     overview:
       "South Africa's northernmost province, named for the Limpopo River, is the land of the Bapedi, the Vhavenḓa and the Vatsonga. It holds Mapungubwe — a 13th-century kingdom and the country's earliest known state, whose golden rhino rewrote the story of pre-colonial southern Africa.",
@@ -484,7 +502,7 @@ export const provinces: Province[] = [
     name: "Mpumalanga",
     capital: "Mbombela",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~5.1M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~5.1M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 5 143 324" },
     languages: "siSwati · isiZulu · Xitsonga",
     overview:
       "Mpumalanga — 'the place where the sun rises' — drops from the Highveld down the Great Escarpment to the Lowveld. It holds much of the Kruger National Park, the Barberton greenstone belt of some of the oldest rocks on Earth, and the heritage of the Swazi, Ndebele and Tsonga peoples.",
@@ -537,7 +555,7 @@ export const provinces: Province[] = [
     name: "North West",
     capital: "Mahikeng",
     formed: "1994",
-    populationStat: { label: "People (Census 2022)", value: "~3.8M", status: "verify" },
+    populationStat: { label: "People (Census 2022)", value: "~3.8M", status: "cited", source: "Stats SA, Census 2022, Statistical Release P0301.4 (10 October 2023), Table 2.2 — 3 804 548" },
     languages: "Setswana · Afrikaans · isiXhosa",
     overview:
       "The North West is the Setswana heartland — the country of the Barolong, Bahurutshe, Bakwena and other Tswana chiefdoms whose decentralised agro-towns and Kgotla governance shaped the highveld. It holds the world's richest platinum reserves, and its Barolong history runs straight into Sol Plaatje's Mhudi.",
