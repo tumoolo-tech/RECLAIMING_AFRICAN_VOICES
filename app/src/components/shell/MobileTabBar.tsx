@@ -5,7 +5,7 @@ import { Lang } from "../../content/types";
 import { t } from "../../i18n";
 import { colors, spacing, fonts } from "../../theme/tokens";
 import { Icon, type IconProps } from "../../ui";
-import { NAV, TABS, ME_LABEL, type NavId } from "./nav";
+import { NAV, TABS, ME_LABEL, TAB_BAR_H, type NavId } from "./nav";
 
 // The phone navigation — four tabs, per wireframes 2b and 2h. Six nav items cannot survive a thumb,
 // so Archive, Kids and Schools are reached from inside a room (Home, Atlas, and the Passport's
@@ -39,8 +39,11 @@ export function MobileTabBar({
 }) {
   const insets = useSafeAreaInsets();
 
+  // The home indicator on a modern phone; a small breath on anything without one.
+  const pad = Math.max(insets.bottom, spacing.sm);
+
   return (
-    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
+    <View style={[styles.bar, { minHeight: TAB_BAR_H + pad, paddingBottom: pad }]}>
       {TABS.map((id) => {
         const on = id === active;
         const Glyph = ICONS[id];

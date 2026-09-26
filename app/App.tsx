@@ -599,8 +599,14 @@ export default function App() {
           )}
         </View>
         {/* The conversational guide floats above every screen (answers only from site content; can
-            navigate). Rendered outside the shell so it persists across navigation. */}
-        {ready && !storyActive && <ChatbotWidget lang={lang} onNavigate={navigateTo} />}
+            navigate). Rendered outside the shell so it persists across navigation.
+
+            Gated on `immersive`, not `storyActive`: the FAB is chrome, and immersive already means no
+            chrome — AppShell drops the header, footer and tab bar on the same flag. It was the one
+            piece that did not get the memo, which is why it sat on top of the reader's Next button.
+            A reader who wants the guide closes the scene and asks; a reader who wants Next should
+            not have to. */}
+        {ready && !immersive && <ChatbotWidget lang={lang} onNavigate={navigateTo} />}
       </View>
     </SafeAreaProvider>
   );

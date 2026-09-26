@@ -12,7 +12,7 @@ import { sowetoStory } from "../content/stories";
 import { placeById } from "../content/places";
 import { placeImageSource } from "../content/place-images";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
-import { Icon } from "../ui";
+import { Icon, useFloatingBottom, FAB_H } from "../ui";
 import { Journey } from "./Journey";
 import { SiteFooter } from "./shell/SiteFooter";
 import { HomeHero, HomeJourneyStory, useHomeJourney } from "./home/HomeHero";
@@ -447,6 +447,9 @@ export function HomeGallery({
 }) {
   const { width, height } = useWindowDimensions();
   const wide = width >= 768;
+  // What the bottom edge already owes the tab bar. The scroll cue stacks on top of the chatbot FAB,
+  // so it starts from the same number the FAB does rather than picking its own.
+  const floatingBottom = useFloatingBottom();
   const heroH = Math.max(520, height); // full-viewport hero (like the reference's h-screen)
   // Drives scroll-in reveals + image parallax across the page.
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -585,9 +588,14 @@ export function HomeGallery({
       </Animated.ScrollView>
       </ScrollCtx.Provider>
 
-      {/* Scroll affordances on the right edge (vertically centred, clear of the bottom-right chatbot):
-          a bouncing "scroll for more" chevron near the top, a "back to top" arrow near the bottom. */}
-      <View style={styles.scrollCue} pointerEvents="box-none">
+      {/* Scroll affordances on the right edge: a bouncing "scroll for more" chevron, and a "back to
+          top" arrow once you are down the page.
+
+          These were vertically CENTRED, to keep clear of the bottom-right chatbot — but the hero
+          wordmark is centred too, so on a phone the chevron landed on the word "Heritage". Dodging
+          one element put it on another. They now stack above the FAB, which is itself placed by
+          `useFloatingBottom`, so the whole bottom-right column moves as one. */}
+      <View style={[styles.scrollCue, { bottom: floatingBottom + FAB_H + spacing.sm }]} pointerEvents="box-none">
         {cue === "down" && (
           <PressScale style={styles.cueBtn} onPress={scrollDownOne} accessibilityLabel={t(UI.scrollDown, lang)}>
             <Animated.View style={{ transform: [{ translateY: bounce.interpolate({ inputRange: [0, 1], outputRange: [-3, 5] }) }] }}>
@@ -1006,8 +1014,9 @@ const SLATE = "#000000"; // ground → pure black
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: SLATE },
-  // Right-edge scroll cue, vertically centred.
-  scrollCue: { position: "absolute", right: spacing.lg, top: 0, bottom: 0, justifyContent: "center", zIndex: 30 },
+  // Right edge, stacked above the chatbot FAB — `bottom` is supplied at the call site from
+  // useFloatingBottom() + FAB_H, because only the hook knows whether the tab bar is on screen.
+  scrollCue: { position: "absolute", right: spacing.lg, alignItems: "center", zIndex: 30 },
   cueBtn: {
     width: 46,
     height: 46,

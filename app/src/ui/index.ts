@@ -7,3 +7,4 @@ export { Rule } from "./Rule";
 export { Display, Title, Kicker, SectionLabel, Body, Meta, Muted } from "./Type";
 export { Icon } from "./Icon";
 export type { IconProps } from "./Icon";
+export { useFloatingBottom, FAB_H } from "./floating";

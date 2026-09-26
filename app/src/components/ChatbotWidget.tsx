@@ -11,7 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { colors, spacing, radius, fonts } from "../theme/tokens";
-import { Icon } from "../ui";
+import { Icon, useFloatingBottom } from "../ui";
 import { askChatbot, chatbotHasLlm, type ChatTurn } from "../services/chatbot";
 import { loadChat, saveChat, clearChat } from "../services/chatbot/memory";
 import { CHAT_UI } from "../services/chatbot/uiStrings";
@@ -47,6 +47,9 @@ function RichText({ text, style }: { text: string; style: any }) {
 export function ChatbotWidget({ lang, onNavigate }: { lang: Lang; onNavigate: (pageId: string) => void }) {
   const { width, height } = useWindowDimensions();
   const wide = width >= 768;
+  // How far the bottom edge is already spoken for (the phone tab bar). NOT derived from `wide` above:
+  // that is this widget's own layout breakpoint (768) and the tab bar's is the shell's (900).
+  const floatingBottom = useFloatingBottom();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -126,7 +129,7 @@ export function ChatbotWidget({ lang, onNavigate }: { lang: Lang; onNavigate: (p
     return (
       <Pressable
         nativeID="ask-ubuntu-fab"
-        style={[styles.fab, { bottom: spacing.lg, right: spacing.lg }]}
+        style={[styles.fab, { bottom: floatingBottom, right: spacing.lg }]}
         onPress={() => setOpen(true)}
         accessibilityRole="button"
         accessibilityLabel={t(CHAT_UI.openGuide, lang)}
@@ -138,10 +141,15 @@ export function ChatbotWidget({ lang, onNavigate }: { lang: Lang; onNavigate: (p
   }
 
   const panelW = wide ? 380 : Math.min(width - spacing.md * 2, 420);
-  const panelH = wide ? Math.min(560, height - 120) : height - 120;
+  // The panel grows UPWARDS from `floatingBottom`, so its height has to give that back — otherwise
+  // raising the FAB to clear the tab bar pushes the panel's top edge under the notch by the same
+  // amount. 96 is the gap the panel has always left at the top; it stays 96.
+  const panelTopGap = 96;
+  const panelMaxH = height - floatingBottom - panelTopGap;
+  const panelH = wide ? Math.min(560, panelMaxH) : panelMaxH;
 
   return (
-    <View style={[styles.panelWrap, { bottom: spacing.lg, right: wide ? spacing.lg : spacing.md, left: wide ? undefined : spacing.md }]}>
+    <View style={[styles.panelWrap, { bottom: floatingBottom, right: wide ? spacing.lg : spacing.md, left: wide ? undefined : spacing.md }]}>
       <View style={[styles.panel, { width: wide ? panelW : undefined, height: panelH }]}>
         {/* Header */}
         <View style={styles.header}>
