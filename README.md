@@ -94,6 +94,27 @@ npm run check:docs              # docs lint: stale product name, wrong language 
 
 The app is **fully usable with no keys**. Adding keys upgrades specific features (see the roadmap doc).
 
+### Checking a change on a real phone
+
+Nothing in the test suite renders (issue #53), so a layout or interaction change is only really
+checked by looking at it — and the deployed site is the wrong place to look, because a merge is not a
+deploy. Serve the working tree instead:
+
+```bash
+npm run web:fresh         # same Wi-Fi: open http://<your-pc-ip>:8081 on the phone
+npm run web:tunnel        # from anywhere: a public https URL, via @expo/ngrok
+```
+
+`--tunnel` prints **"Tunnel ready"** and then shows you `localhost:8081` — it does not print the
+public URL. Read it from ngrok's local API while the server runs:
+
+```bash
+curl -s http://127.0.0.1:4040/api/tunnels     # -> public_url: https://<id>.exp.direct
+```
+
+Both hot-reload, so a fix is a refresh away. The tunnel URL is reachable by anyone who has it while
+it runs — stop the server when you are done.
+
 ## Documentation
 
 Start here: **[CLAUDE.md](CLAUDE.md)** (project context) → **[AGENTS.md](AGENTS.md)** (working rules) →
