@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Lang } from "../content/types";
 import { allModules } from "../content";
+import { mediaSources } from "../content/media-rights";
 import { t } from "../i18n";
 import { Screen, ScreenHeader, Card, Title, Body, Meta, Muted } from "../ui";
 import { spacing } from "../theme/tokens";
@@ -53,7 +54,40 @@ const UI = {
     en: "References", tn: "Metswedi", af: "Verwysings", zu: "Izinkomba", xh: "Iimbekiselo",
     nso: "Ditšhupetšo", st: "Ditshupiso", ss: "Tinkhomba", ts: "Swikombiso", nr: "Iinkomba", ve: "Zwiredzwa",
   },
+  // ── Issue #35 — the media half of "acknowledge your sources" ────────────────────────────────
+  mediaLabel: {
+    en: "Music, film and voices", tn: "Mmino, difilimi le mantswe", af: "Musiek, film en stemme",
+    zu: "Umculo, ifilimu namazwi", xh: "Umculo, ifilimu namazwi", nso: "Mmino, difilimi le mantšu",
+    st: "'Mino, difilimi le mantswe", ss: "Umculo, ifilimu nemavi", ts: "Vuyimbeleri, tifilimi ni marito",
+    nr: "Umbhino, ifilimu namezwi", ve: "Muzika, difilimi na maipfi",
+  },
+  mediaIntro: {
+    en: "The music, films, poetry and photographs in this app were made by other people. Here is who they are. Where a source is still being confirmed, we say so rather than leave it blank.",
+    tn: "Mmino, difilimi, maboko le ditshwantsho tse di mo go application e di dirilwe ke batho ba bangwe. Bao ke bone. Fa motswedi o sa ntse o netefadiwa, re a bolela go na le go o tlogela o le lolea.",
+    af: "Die musiek, films, poësie en foto's in hierdie app is deur ander mense gemaak. Hier is wie hulle is. Waar 'n bron nog bevestig word, sê ons dit eerder as om dit leeg te laat.",
+    zu: "Umculo, amafilimu, izinkondlo nezithombe kule app kwenziwa abanye abantu. Nampa. Lapho umthombo usaqinisekiswa, siyakusho kunokuwushiya ungenalutho.",
+    xh: "Umculo, iifilimu, imibongo nemifanekiso kule app yenziwe ngabanye abantu. Nabo aba. Apho umthombo usaqinisekiswa, siyakuxela endaweni yokuwushiya ungenanto.",
+    nso: "Mmino, difilimi, direto le dinepe tše di lego ka gare ga app ye di dirilwe ke batho ba bangwe. Ke bona bao. Ge mothopo o sa netefatšwa, re a bolela go e na le go o tlogela o se na selo.",
+    st: "'Mino, difilimi, dithothokiso le dinepe tse ka har'a app ena di entsoe ke batho ba bang. Ke bana. Moo mohlodi o ntseng o netefatsoa, rea bolela ho e-na le ho o siea o se na letho.",
+    ss: "Umculo, emafilimu, tinkondlo netitfombe kule app kwentiwa ngulabanye bantfu. Nabo laba. Lapho umtfombo usaciniseka, siyakusho kunekuwushiya ungenalutfo.",
+    ts: "Vuyimbeleri, tifilimi, switlhokovetselo ni swifaniso leswi nga eka app leyi swi endliwe hi vanhu van'wana. Hi lava. Laha xihlovo xa ha tiyisisiwaka, ha swi vula ku ri ni ku xi siya xi nga ri na nchumu.",
+    nr: "Umbhino, amafilimu, iinkondlo neenthombe ezikule app zenziwa ngabanye abantu. Ngibo laba. Lapho umthombo usaqinisekiswa, siyakutjho kunokuwutjhiya ungenalitho.",
+    ve: "Muzika, difilimi, nyimbo na zwinepe zwi re kha app iyi zwo itwa nga vhaṅwe vhathu. Ndi vhenevha. Hune tshiko tsha kha ḓi khwaṱhisedzwa, ri a zwi amba u fhira u tshi sia tshi si na tshithu.",
+  },
+  mediaConfirming: {
+    en: "Source being confirmed", tn: "Motswedi o a netefadiwa", af: "Bron word bevestig",
+    zu: "Umthombo uyaqinisekiswa", xh: "Umthombo uyaqinisekiswa", nso: "Mothopo o a netefatšwa",
+    st: "Mohlodi oa netefatsoa", ss: "Umtfombo uyaciniseka", ts: "Xihlovo xa tiyisisiwa",
+    nr: "Umthombo uyaqinisekiswa", ve: "Tshiko tshi khou khwaṱhisedzwa",
+  },
 };
+
+/** What the About screen shows for one media source. `[NEEDS SOURCE]` is the repo's internal marker
+ *  for a fact nobody has established (AGENTS.md §4) — a reader should see an honest sentence in
+ *  their own language instead of a code marker, which is the same thing said politely. */
+function namedHolder(holder: string): string | null {
+  return holder.startsWith("[NEEDS SOURCE]") ? null : holder;
+}
 
 export function AboutSourcesScreen({ lang, onBack }: { lang: Lang; onBack: () => void }) {
   return (
@@ -85,6 +119,23 @@ export function AboutSourcesScreen({ lang, onBack }: { lang: Lang; onBack: () =>
         <Muted style={styles.disclaimerText}>{t(UI.disclaimer, lang)}</Muted>
       </Card>
 
+      {/* #35 — the media register, rendered. The books above have credited their authors since the
+          start; the music, films, poems, anthem and photographs did not credit anyone here, and a
+          reader had no way to find out who made them. Driven by content/media-rights.ts so this
+          screen cannot fall behind the bundle: a test fails if an asset has no entry there. */}
+      <Card style={styles.card}>
+        <Title>{t(UI.mediaLabel, lang)}</Title>
+        <Muted style={styles.source}>{t(UI.mediaIntro, lang)}</Muted>
+        {mediaSources.map((m) => (
+          <View key={m.id} style={styles.mediaRow}>
+            <Meta>{m.title}</Meta>
+            <Muted style={styles.refItem}>
+              {m.attribution ?? namedHolder(m.holder) ?? t(UI.mediaConfirming, lang)}
+            </Muted>
+          </View>
+        ))}
+      </Card>
+
       {/* Creator credit — solo entry for the AADHIH "Reclaiming African Voices" hackathon. */}
       <Card style={styles.creator}>
         <Meta style={styles.creatorLabel}>Created by</Meta>
@@ -103,6 +154,7 @@ const styles = StyleSheet.create({
   rights: { marginTop: spacing.xs, lineHeight: 18 },
   refLabel: { marginTop: spacing.md },
   refItem: { marginTop: 4 },
+  mediaRow: { marginTop: spacing.sm },
   disclaimer: { marginTop: spacing.sm },
   disclaimerText: { fontStyle: "italic" },
   creator: { marginTop: spacing.md },
