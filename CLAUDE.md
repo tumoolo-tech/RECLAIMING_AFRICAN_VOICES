@@ -30,7 +30,7 @@ codebase** (web + Android + iOS) on a **100% free-tier** stack so it costs nothi
 Expo / React Native (one codebase; **web is the shipped target**, native is partial — issue #44) ·
 `StyleSheet` + theme tokens (NativeWind and Lottie were planned and never adopted) ·
 **Pollinations.ai** + pre-rendered **Gemini** images (cached, labelled AI) · **Google Gemini** (the
-"Ask Ubuntu" chatbot; Claude optional) · **ElevenLabs** (Listen, English/Afrikaans only, cached) ·
+"Ask Ubuntu" chatbot; Claude optional) · **ElevenLabs** (Listen, English/Afrikaans + Setswana by decision, cached) ·
 **Botlhale AI** (indigenous TTS, wired, awaiting a key) · **Lelapa AI / Vulavula** (indigenous STT,
 planned) · **Supabase** (anonymous auth + RLS + storage — the live community feed) · **Solana devnet**
 (the Heritage Ledger) · persistence is localStorage/IndexedDB on web, session-only on native
@@ -49,9 +49,11 @@ planned) · **Supabase** (anonymous auth + RLS + storage — the live community 
   than fabricate. This is the project's integrity rule — see [AGENTS.md §4](AGENTS.md).
 - **Don't:** collect a voice recording or any personal data without the POPIA consent flow. See
   [docs/05-popia-compliance.md](docs/05-popia-compliance.md).
-- **Don't:** burn paid API quota in dev. ElevenLabs is runtime for English/Afrikaans only and every
-  clip is cached — never route an indigenous language to it; Gemini/Pollinations are free but
-  rate-limited — cache aggressively.
+- **Don't:** burn paid API quota in dev. ElevenLabs is runtime for English/Afrikaans and every
+  clip is cached — never route an indigenous language to it, with **one recorded exception:
+  Setswana**, sent to ElevenLabs first by Tumo's decision (SP-117). Adding another needs its own
+  decision (`LanguageMeta.elevenlabsByDecision`). Gemini/Pollinations are free but rate-limited —
+  cache aggressively.
 
 ## Real timeline (as of 2026-09-15)
 
