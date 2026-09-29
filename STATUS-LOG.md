@@ -28,6 +28,36 @@
   proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
   tests pass.
 
+- **2026-09-29 (Albertina Sisulu gets her own book)** — Tumo: *"now do a story for albertina sisulu"*
+  (`SP-122`), after the Walter book.
+
+  **What it is.** `content/albertina.ts` has thirteen scenes, from Camama in 1918 (born as the Spanish
+  flu arrived) to her burial beside Walter in 2011. They rest on SAHO's biography and Wikipedia for
+  details traced there to their own citations. Elinor Sisulu's biography is not reproduced. The story
+  is hers, not Walter's wife's: the scholarship fought for in *Imvo Zabantsundu*, the nurse who saw
+  Black patients left on the floor, and the midwife carrying Federation pamphlets in her suitcase.
+  Then Phefeni station at 2am on 9 August 1956, and the first woman held under the 90-day law. Then
+  seventeen years banned and letters to Robben Island in code ("gardens" for the underground, "worms"
+  for informers), a UDF co-presidency won from a prison cell, and the only woman among the sixteen
+  accused of treason in 1985.
+
+  **The hardest page.** Dr Abu Baker Asvat was shot at his surgery on 27 January 1989 and died in her
+  presence. At the TRC in December 1997 a commissioner asked whether she was shielding Madikizela-
+  Mandela, and three days later told her she had been vindicated. The book reports the rumours about
+  who arranged the killing as rumours, names no killer, and points to `winnie.ts` for the TRC's own
+  finding. Child mode keeps the killing, without detail.
+
+  **Where the sources disagree.** Birthplace (both given). The Women's League year (left out). Years
+  banned: SAHO's "18, the longest anyone" against 17 by the dates, so seventeen, with the superlative
+  dropped. The wedding venue (left out). SAHO's misprinted 1963 for the Rivonia sentences. The 1984
+  appeal outcome (in neither source).
+
+  **Ways in.** She has no hero page, but the topic scanner now links **Constitution Hill**, where she
+  was detained, and the Walter Sisulu book to hers.
+
+  **Not done.** The Asvat and TRC pages rest on Wikipedia's summary (ALB-01). English only (ALB-02).
+  Nobody has read it in a browser yet.
+
 - **2026-09-29 (Walter Sisulu gets his own book)** — Tumo: *"now do a story for sisulu"*, then chose
   Walter over Albertina or a joint book (`SP-121`).
 
