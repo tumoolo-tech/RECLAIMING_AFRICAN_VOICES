@@ -28,6 +28,31 @@
   proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
   tests pass.
 
+- **2026-09-29 (Oliver Tambo gets his own book)** — Tumo: *"now do a story for oliver tambo"*
+  (`SP-123`).
+
+  **What it is.** `content/tambo.ts` has thirteen scenes, from a village near Bizana in 1917 to his
+  gravestone and the airport renamed on what would have been his 89th birthday. They rest on SAHO's
+  biography, SAPA's 1997 report of the ANC's second TRC submission, and Wikipedia for details traced
+  there to their own citations. No biography is reproduced. The book follows him from the boy named
+  Kaizana after the Kaiser and the first-class Junior Certificate (with a UNISA scholarship) to Fort
+  Hare, which expelled him and later made him its Chancellor. Then the maths teacher, the law partner
+  studying through UNISA by candlelight, and thirty years in exile: the UN, Morogoro, Radio Freedom,
+  "render South Africa ungovernable", and home in 1990 without his voice.
+
+  **Told whole.** The page *The decisions of war* covers the 1983 Church Street bomb (19 killed) and
+  the mutinies and abuse in the Angola camps. **The attribution is corrected.** Wikipedia says the
+  TRC "identified" Tambo as approving Church Street, but the source it cites is SAPA reporting the
+  ANC's own submission. The book says it that way, and gives the rest of that submission: the
+  instruction that the target be unmistakably military, and that by 1983 the unit no longer reported
+  to him directly.
+
+  **Where the sources disagree** (birthplace spelling, the Treason Trial verb, SAHO's Stockholm and
+  1951 errors, his title from 1967 to 1969, the cause of death), the book says less.
+
+  **Not done.** The Church Street and camps page needs checking against the TRC Report and the camp
+  commissions (TAM-01). English only (TAM-02). Nobody has read it in a browser yet.
+
 - **2026-09-29 (Albertina Sisulu gets her own book)** — Tumo: *"now do a story for albertina sisulu"*
   (`SP-122`), after the Walter book.
 
