@@ -438,6 +438,9 @@ next person to claim "multilingual" has a real number to put behind it.
       AIDS-criticism and TRC-scope sentences rest on Wikipedia's summary; confirm each against the source
       Wikipedia cites before the book is called reviewed.
 - [ ] MAN-02 **Setswana (and other) translations of the Mandela book.** English only today, shown as such.
+- [ ] SIS-01 **A way in to the Walter Sisulu book** (SP-121). He has no hero page, so the book is reached from
+      the Atlas only. Tumo to decide: add a hero entry (needs a sourced photograph or none), or leave it.
+- [ ] SIS-02 **Setswana (and other) translations of the Walter Sisulu book.** English only today.
 - [ ] WIN-03 **Setswana (and other) translations of the Winnie book.** English only today, shown as such. The
       Stompie Seipei and TRC pages need a reviewer's care in every language.
 

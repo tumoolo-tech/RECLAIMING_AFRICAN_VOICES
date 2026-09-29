@@ -28,6 +28,29 @@
   proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
   tests pass.
 
+- **2026-09-29 (Walter Sisulu gets his own book)** — Tumo: *"now do a story for sisulu"*, then chose
+  Walter over Albertina or a joint book (`SP-121`).
+
+  **What it is.** `content/sisulu.ts` has twelve scenes, from Qutubeni in 1912 to his death at Linden
+  in 2003. They rest on SAHO's biography (ref. B-0065415), Wikipedia for details traced there to
+  their own citations, and Mandela's 2003 tribute. There are three short quotations: Lembede's
+  "married to the nation", his Rivonia vow (court testimony), and his words on release. Neither his
+  own book nor Elinor Sisulu's biography is reproduced. He is told as the subject, not as Mandela's
+  mentor: the organiser who made the ANC a mass movement, and the teacher of Syllabus A in the lime
+  quarry. The hard facts are kept in: the failed 1946 railway sabotage, secret SACP membership, and
+  the MK High Command.
+
+  **Where the sources disagree.** Youth League: 1943 or 1944, and it was founded in 1944. Congress of
+  the People: SAHO's 1956 is a misprint for 1955. Years in prison: 26, by the dates. The 1963 sentence
+  length appears in one source only, so it is left out.
+
+  **The first topic exclusion.** The scanner linked the book's "Mbeki" to Thabo Mbeki's president
+  page, but the Mbeki arrested at Liliesleaf was his father, Govan. That makes this the first row in
+  `TOPIC_EXCLUSIONS`, pair-scoped with a reason, as the file asks.
+
+  **Not done.** He has no hero page, so the book is reached from the Atlas only (SIS-01, needs Tumo).
+  English only (SIS-02). Nobody has read it in a browser yet.
+
 - **2026-09-29 (Nelson Mandela gets his own book)** — Tumo: *"now do a story for mandela"*
   (`SP-120`), the third life told as a book after Biko and Winnie.
 
