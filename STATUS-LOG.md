@@ -28,6 +28,32 @@
   proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
   tests pass.
 
+- **2026-09-29 (Winnie Madikizela-Mandela gets her own book)** — Tumo: *"now lets do winnie story"*
+  (`SP-119`), in the same form as the Biko book (SP-118).
+
+  **What it is.** `content/winnie.ts` has eleven scenes, from Bizana in 1936 to her funeral at Orlando
+  Stadium in 2018, read in the same book as Mhudi and opened from her hero page (the generic
+  `hero.book` button) and the Atlas. The scenes rest on South African History Online's biography,
+  SAPA's 29 October 1998 report of the TRC final report, and Wikipedia for a few details, each traced
+  there to its own citation. Her own books are not reproduced. The pictures show places only, and
+  every prompt forbids faces.
+
+  **Told whole.** The banning, the 491 days, Brandfort and her work there are in the book. So are the
+  Mandela United Football Club, the abduction and killing of Stompie Seipei, the 1991 conviction, and
+  the TRC's finding that she was politically and morally accountable. Each is told in the words of its
+  source, and the last page says both are true. Child mode softens the words and keeps the facts.
+
+  **The research corrected the app.** It resolved the hero page's three `[VERIFY]` marks: the
+  Baragwanath post, the 491 days, and the Brandfort dates (1977–86). It also added her birth date. In
+  three places the sources disagree, and the book says less: the date the body was found ("early
+  January 1989"), SAHO's misprinted year for the fire (1988, not 1998), and her deputy-minister term
+  (left out). The Soweto Parents' Association and the Asvat apology were checked again against SAHO
+  before commit.
+
+  **Not done.** The 17 photographs in `assets/heroes/winnie/` have no recorded source (WIN-01). The
+  TRC finding is quoted through SAPA's report, not the primary chapter (WIN-02). English only (WIN-03).
+  Nobody has read it in a browser yet.
+
 - **2026-09-25 (Steve Biko gets his own book)** — Tumo: *"i want steve biko to have his own
   dedicated book where we tell his bio"* (`SP-118`). Tumo chose researched-and-cited facts, Adult +
   Child, and real photographs where their source is known with AI scenes of places for the rest.
