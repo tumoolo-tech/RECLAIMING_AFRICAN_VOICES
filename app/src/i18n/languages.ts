@@ -44,6 +44,13 @@ export type LanguageMeta = {
    * ear, presented as authoritative. So the selector never routes those languages here.
    */
   elevenlabs: string | null;
+  /**
+   * Sent to ElevenLabs ANYWAY, by a recorded decision, although `elevenlabs` is null. Only Setswana,
+   * only because Tumo decided it (SP-117, 2026-09-24/29), knowing ElevenLabs does not list it and
+   * may mispronounce it. The request goes to `eleven_v3` with no language code. Adding a language
+   * here overrides the CLAUDE.md rule for it and needs its own SP entry.
+   */
+  elevenlabsByDecision?: true;
   reviewedContent: boolean; // human-authored/-reviewed story text exists today
   /**
    * Has a speaker read the INTERFACE — buttons, labels, the consent sheet, the data gate?
@@ -75,7 +82,7 @@ export type LanguageMeta = {
 // nr/ss/ve with the contact — their public table only fully listed en/zu/xh/st/nso/ts/af/tn.]
 export const LANGUAGES: LanguageMeta[] = [
   { code: "en", english: "English", endonym: "English", bcp47: "en-ZA", botlhale: "en-ZA", elevenlabs: "en", reviewedContent: true, reviewedUi: true, reviewers: [] },
-  { code: "tn", english: "Tswana", endonym: "Setswana", bcp47: "tn-ZA", botlhale: "tn-ZA", elevenlabs: null, reviewedContent: true, reviewedUi: false, reviewers: [] },
+  { code: "tn", english: "Tswana", endonym: "Setswana", bcp47: "tn-ZA", botlhale: "tn-ZA", elevenlabs: null, elevenlabsByDecision: true, reviewedContent: true, reviewedUi: false, reviewers: [] },
   { code: "zu", english: "Zulu", endonym: "isiZulu", bcp47: "zu-ZA", botlhale: "zu-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
   { code: "xh", english: "Xhosa", endonym: "isiXhosa", bcp47: "xh-ZA", botlhale: "xh-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
   { code: "nso", english: "Northern Sotho (Sepedi)", endonym: "Sepedi", bcp47: "nso-ZA", botlhale: "nso-ZA", elevenlabs: null, reviewedContent: false, reviewedUi: false, reviewers: [] },
@@ -114,6 +121,13 @@ export function toElevenLabsCode(code: LangCode): string | null {
 /** Whether ElevenLabs can actually voice this language — see `LanguageMeta.elevenlabs`. */
 export function elevenLabsSupports(code: LangCode): boolean {
   return languageByCode(code).elevenlabs !== null;
+}
+
+/** Whether ElevenLabs is ASKED to voice this language: the ones it lists, plus any sent by recorded
+ *  decision (`elevenlabsByDecision`, SP-117 — Setswana only). */
+export function elevenLabsVoices(code: LangCode): boolean {
+  const l = languageByCode(code);
+  return l.elevenlabs !== null || l.elevenlabsByDecision === true;
 }
 
 /** Whether we trust on-device speech for this language. Conservative: only English is reliable

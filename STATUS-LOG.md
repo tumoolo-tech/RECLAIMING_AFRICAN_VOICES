@@ -8,6 +8,26 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-29 (Setswana goes to ElevenLabs — by decision)** — Tumo, 24 Sep: *"use eleven labs
+  that was really bad"*; rebuilt today on its own branch (`SP-117`). The first version was written
+  against the old client-side keys and no longer applied once #43 moved them into the `/api/tts`
+  proxy. Before deciding, Tumo was told that what they had heard was the **browser's own voice** (no
+  engine had a key) and that ElevenLabs does not list Setswana; offered "add keys first and compare",
+  Tumo chose ElevenLabs anyway.
+
+  **What changed.** Setswana's ladder is now **ElevenLabs → Botlhale → device**. The exception is
+  marked once in the language registry (`LanguageMeta.elevenlabsByDecision`) and mirrored in the
+  proxy (`ELEVENLABS_BY_DECISION`), with a test holding them together. The request goes to
+  `eleven_v3` with **no `language_code`**, so ElevenLabs is not handed a code it does not list. The
+  other eight indigenous languages are unchanged, and both the selector and the proxy are still
+  tested never to send them there — the proxy test now proves it with isiZulu, and a new one proves
+  Setswana goes through as decided. CLAUDE.md's rule and `.env.example` now name the exception.
+
+  **The risk, stated once.** ElevenLabs may read Setswana fluently and wrongly, and every new clip
+  costs paid credits (cached once made). Nobody has heard it. It needs `ELEVENLABS_API_KEY` on the
+  proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
+  tests pass.
+
 - **2026-09-24 (the paid keys leave the web bundle — issue #43)** — Tumo: *"pull main and make sure
   we all good and do issue number 43"*. Main pulled (`b9d74c4`): typecheck clean, 308/308.
 

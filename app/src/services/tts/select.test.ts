@@ -8,8 +8,10 @@ const ELEVEN_ONLY = { hasElevenLabs: true, hasBotlhale: false };
 const BOTLHALE_ONLY = { hasElevenLabs: false, hasBotlhale: true };
 const NEITHER = { hasElevenLabs: false, hasBotlhale: false };
 
-/** The nine ElevenLabs cannot speak. Kept as a literal list so a registry edit has to face this test. */
-const INDIGENOUS = ["tn", "zu", "xh", "nso", "st", "ts", "ss", "nr", "ve"] as const;
+/** The eight indigenous languages that never reach ElevenLabs. Setswana is the one exception, by
+ *  decision (SP-117), and is tested on its own below. Kept as a literal list so a registry edit has
+ *  to face this test. */
+const INDIGENOUS = ["zu", "xh", "nso", "st", "ts", "ss", "nr", "ve"] as const;
 
 test("English and Afrikaans go to ElevenLabs when there is a key", () => {
   assert.equal(chooseProvider({ lang: "en", ...BOTH }), "elevenlabs");
@@ -36,8 +38,14 @@ test("NO indigenous language is ever routed to ElevenLabs — not even as a fall
   }
 });
 
-test("Botlhale stays first choice for Setswana even though ElevenLabs sounds better", () => {
-  assert.equal(chooseProvider({ lang: "tn", ...BOTH }), "botlhale");
+test("Setswana goes to ElevenLabs first, then Botlhale, then the device — by decision (SP-117)", () => {
+  assert.deepEqual(providerLadder({ lang: "tn", ...BOTH }), ["elevenlabs", "botlhale", "device"]);
+  assert.deepEqual(providerLadder({ lang: "tn", ...BOTLHALE_ONLY }), ["botlhale", "device"]);
+  assert.deepEqual(providerLadder({ lang: "tn", ...ELEVEN_ONLY }), ["elevenlabs", "device"]);
+});
+
+test("Setswana is the only language sent to ElevenLabs by decision", () => {
+  assert.deepEqual(LANGUAGES.filter((l) => l.elevenlabsByDecision).map((l) => l.code), ["tn"]);
 });
 
 test("siSwati and isiNdebele skip Botlhale, which does not list them, and go to the device voice", () => {
@@ -46,7 +54,7 @@ test("siSwati and isiNdebele skip Botlhale, which does not list them, and go to 
   for (const lang of ["ss", "nr"] as const) {
     assert.deepEqual(providerLadder({ lang, ...BOTH }), ["device"]);
   }
-  for (const lang of ["tn", "zu", "xh", "nso", "st", "ts", "ve"] as const) {
+  for (const lang of ["zu", "xh", "nso", "st", "ts", "ve"] as const) {
     assert.deepEqual(providerLadder({ lang, ...BOTH }), ["botlhale", "device"]);
   }
 });
