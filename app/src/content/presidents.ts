@@ -22,6 +22,8 @@ export type President = {
   know?: string[];
   quote?: { text: string; attr: string };
   sources?: string;
+  /** A module that tells this life as a book (content/index.ts). The president page links to it. */
+  book?: string;
 };
 
 export const presidents: President[] = [
@@ -34,19 +36,19 @@ export const presidents: President[] = [
     term: "1994 – 1999",
     role: "Anti-apartheid icon; 27 years imprisoned; the first democratically-elected president.",
     era: "democratic",
-    born: "1918 · Mvezo, E. Cape",
-    died: "2013 · Johannesburg",
+    born: "18 July 1918 · Mvezo, E. Cape",
+    died: "5 December 2013 · Houghton, Johannesburg",
     party: "ANC",
     struggle:
       "Mandela joined the ANC in 1944 and helped found its Youth League. As apartheid hardened, he co-founded Umkhonto we Sizwe, its armed wing. Convicted at the 1964 Rivonia Trial, he was sentenced to life and spent 27 years in prison — much of it on Robben Island. Released on 11 February 1990, he shared the 1993 Nobel Peace Prize with F.W. de Klerk and, in 1994, became South Africa's first democratically-elected president.",
     life: [
       { when: "1918", name: "Born in Mvezo", role: "Eastern Cape; of the Thembu royal house" },
       { when: "1944", name: "Joins the ANC", role: "Co-founds the ANC Youth League" },
-      { when: "1962", name: "Arrested", role: "Sentenced to five years; his 27 years in prison begin" },
+      { when: "1962", name: "Arrested near Howick", role: "5 August; sentenced to five years. His 27 years in prison begin" },
       { when: "1964", name: "Rivonia Trial", role: "Sentenced to life imprisonment" },
       { when: "1990", name: "Released", role: "Walks free on 11 February" },
       { when: "1994", name: "Elected President", role: "South Africa's first free election" },
-      { when: "2013", name: "Dies in Johannesburg", role: "Aged 95", era: "past" },
+      { when: "2013", name: "Dies in Johannesburg", role: "At home in Houghton, aged 95; buried in Qunu", era: "past" },
     ],
     family: [
       { rel: "Spouse", name: "Evelyn Mase · 1944–58" },
@@ -62,7 +64,8 @@ export const presidents: President[] = [
     // From the dock at the Rivonia Trial — court record, 20 April 1964 (the popular "impossible
     // until it's done" line is widely misattributed and has no verified Mandela source).
     quote: { text: "It is an ideal which I hope to live for and to achieve. But if needs be, it is an ideal for which I am prepared to die.", attr: "Nelson Mandela · Rivonia Trial, 20 April 1964" },
-    sources: "Long Walk to Freedom · the Nelson Mandela Foundation. Hard chapters are told honestly, never sanitised.",
+    sources: "Long Walk to Freedom · the Nelson Mandela Foundation · South African History Online, 'Nelson Rolihlahla Mandela'. Hard chapters are told honestly, never sanitised. Dates and places checked 2026-09-29 (SP-120).",
+    book: "mandela",
   },
   {
     id: "mbeki",

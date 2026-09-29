@@ -28,6 +28,33 @@
   proxy (`npm run api:dev` locally, or Vercel) and a Setswana speaker's ear (EL-05, LANG-13). 341
   tests pass.
 
+- **2026-09-29 (Nelson Mandela gets his own book)** — Tumo: *"now do a story for mandela"*
+  (`SP-120`), the third life told as a book after Biko and Winnie.
+
+  **What it is.** `content/mandela.ts`, titled *The Life of Nelson Mandela*: twelve scenes from
+  Mvezo in 1918 to his burial in Qunu in 2013. The scenes rest on SAHO, the Nelson Mandela
+  Foundation's biography and Wikipedia (for details traced there to their own citations). The one
+  quotation is his statement from the dock at Rivonia, a court record. *Long Walk to Freedom* is not
+  reproduced. His **president** page gains a `book` field and the *Read the life as a book* button;
+  the book is also in the Atlas.
+
+  **Without the halo.** The book keeps the turn to armed struggle in 1961 and the sabotage campaign,
+  and that the US kept him on its terrorism watch list until 2008. It says the TRC investigated the ANC
+  as well as the state, and that critics said his government did too little against HIV/AIDS. The last
+  scene tells how he took up that fight after office. Child mode keeps all of it. His two UNISA degrees
+  (BA 1943, LLB 1989 in prison) are there because the Foundation records them.
+
+  **A bug avoided.** Titled plain "Nelson Mandela", the book took over seven existing links from his
+  president page, because the topic scanner ranks `module` ahead of `president` on a name tie. The
+  distinct title leaves every existing link as it was. A Robben Island image prompt also stopped
+  naming Table Mountain, because prompts are scanned like prose.
+
+  **The research corrected the president page:** exact birth and death dates, Houghton as the place
+  he died, Howick as the place of his 1962 arrest, and burial in Qunu.
+
+  **Not done.** The hard chapters rest on Wikipedia's summary (MAN-01). English only (MAN-02). Nobody
+  has read it in a browser yet.
+
 - **2026-09-29 (Winnie Madikizela-Mandela gets her own book)** — Tumo: *"now lets do winnie story"*
   (`SP-119`), in the same form as the Biko book (SP-118).
 
