@@ -423,6 +423,12 @@ next person to claim "multilingual" has a real number to put behind it.
       SP-115). Ten languages, machine-drafted 2026-09-24 and narrated aloud in the book reading, so an
       error is heard as well as read. Priority: `tn` (with LANG-11), then `ss`, `ts`, `ve`, `nr`,
       whose drafts carry the least confidence. Check month names especially — four use "Juni"
+- [ ] BIO-01 **Record where each Steve Biko photograph came from** (`app/assets/heroes/biko/`, 16 files,
+      no `sources.txt`). Until each has a source and licence, none can go in the Biko book (SP-118) —
+      and strictly, the hero page's gallery is showing them without one either. Tumo to supply.
+- [ ] BIO-02 **Follow the reopened Biko inquest** (Gqeberha High Court, reopened September 2025). The
+      book ends on it with no outcome; update `biko.ts` scene `justice` when there is one, with a source.
+- [ ] BIO-03 **Setswana (and other) translations of the Biko book.** English only today, shown as such.
 
 ## Phase 7 — Heritage tourism: a story becomes a place you can stand in (planned 2026-09-17, not started)
 

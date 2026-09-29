@@ -36,6 +36,8 @@ export type Hero = {
   quote?: { text: string; attr: string };
   /** Citation(s) — every hero must carry one. */
   sources: string;
+  /** A module that tells this life as a book (content/index.ts). The hero page links to it. */
+  book?: string;
 };
 
 export const heroes: Hero[] = [
@@ -133,25 +135,26 @@ export const heroes: Hero[] = [
     honorific: "Father of Black Consciousness",
     dates: "1946 – 1977",
     role: "Founder of the Black Consciousness Movement; died in police custody, his death igniting global outrage.",
-    born: "1946 · Ginsberg, King William's Town",
+    born: "18 December 1946 · Tarkastad (raised in Ginsberg, King William's Town)",
     died: "1977 · in police custody, Pretoria",
     movement: "Black Consciousness Movement · SASO",
     contribution:
       "As a medical student, Steve Biko helped found the South African Students' Organisation (SASO) in 1968–69 and gave voice to Black Consciousness — the conviction that liberation had to begin with Black people freeing their own minds from the inferiority apartheid tried to teach. Writing under the pen name Frank Talk, he shaped a generation. Banned in 1973 and confined to King William's Town, he was detained in August 1977 and died on 12 September 1977 from injuries sustained in police custody. The state's attempt to excuse his death drew condemnation around the world and made him a martyr of the struggle.",
     life: [
-      { when: "1946", name: "Born in Ginsberg", role: "King William's Town" },
+      { when: "1946", name: "Born in Tarkastad", role: "At his grandmother's house; the family moved to Ginsberg in 1948" },
       { when: "1968", name: "Co-founds SASO", role: "The South African Students' Organisation" },
-      { when: "1972", name: "Black People's Convention", role: "Helps form it [VERIFY]" },
+      { when: "1972", name: "Black People's Convention launched", role: "Hammanskraal, December; Biko took no office in it" },
       { when: "1973", name: "Banned", role: "Restricted to King William's Town" },
       { when: "1977", name: "Detained, then dies in custody", role: "12 September, from his injuries", era: "past" },
     ],
     know: [
       "Black Consciousness taught psychological liberation before political liberation.",
       "His columns, written as ‘Frank Talk’, were collected as I Write What I Like.",
-      "The inquest found no one responsible; accountability came only decades later, at the TRC.",
+      "The 1977 inquest found no one responsible. The TRC refused the officers amnesty in 1998–99, but none was ever prosecuted; the inquest was reopened in 2025.",
     ],
     quote: { text: "The most potent weapon in the hands of the oppressor is the mind of the oppressed.", attr: "Steve Biko" },
-    sources: "South African History Online; Steve Biko, I Write What I Like; the TRC amnesty hearings. Some dates [VERIFY].",
+    sources: "South African History Online, 'Stephen Bantu Biko'; Steve Biko, I Write What I Like; TRC Amnesty Committee decision, 16 February 1999. Birthplace corrected 2026-09-25 against SAHO; BPC role per Wikipedia, 'Steve Biko' (SP-118).",
+    book: "biko",
   },
   {
     id: "winnie",

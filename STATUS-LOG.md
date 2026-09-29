@@ -8,6 +8,32 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-09-25 (Steve Biko gets his own book)** — Tumo: *"i want steve biko to have his own
+  dedicated book where we tell his bio"* (`SP-118`). Tumo chose researched-and-cited facts, Adult +
+  Child, and real photographs where their source is known with AI scenes of places for the rest.
+
+  **What it is.** `content/biko.ts` — eleven scenes, from Tarkastad in 1946 to the inquest reopened
+  in 2025, read in the same book as Mhudi. Each scene's `sourceNote` names what it rests on: South
+  African History Online's biography; the TRC's own press release of 16 February 1999; The Irish
+  Times on the 2003 decision not to prosecute; Daily Maverick on the 2025 reopening; a 1979 review of
+  *I Write What I Like*; and Wikipedia only for four details, each traced there to its own citation.
+  None of Biko's own writing is reproduced — *I Write What I Like* (1978) is very likely in copyright.
+  The pictures are AI interpretations of places, every prompt forbidding faces. His hero page gains a
+  *Read the life as a book* button; the book is also in the Atlas, and the topic index now links the
+  two both ways.
+
+  **The research corrected the app.** The hero page said he was born in Ginsberg — he was born in
+  **Tarkastad**, at his grandmother's house, and the family moved to Ginsberg in 1948. It said he
+  helped form the Black People's Convention "[VERIFY]" — he took no office in it. And it said
+  "accountability came only decades later, at the TRC", which is not true: the TRC refused the five
+  officers amnesty in 1998–99, the state declined to prosecute in 2003, and no one ever stood trial.
+  A first draft of the book also went beyond the sources in four places (a roadblock, the terms of
+  his banning order, two lines of inference) — cut before it was saved.
+
+  **Not done.** The 16 photographs in `assets/heroes/biko/` have no recorded source (BIO-01), so the
+  book has none of them yet. The 2025 inquest has no outcome to report (BIO-02). English only
+  (BIO-03). Tumo has the steps to test it in a browser; nobody has reported back yet.
+
 - **2026-09-24 (the paid keys leave the web bundle — issue #43)** — Tumo: *"pull main and make sure
   we all good and do issue number 43"*. Main pulled (`b9d74c4`): typecheck clean, 308/308.
 
