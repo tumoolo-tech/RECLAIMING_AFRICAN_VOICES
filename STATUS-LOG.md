@@ -8,6 +8,32 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-10-01 (every story gets its own link)** — Tumo: *"create a new endpoint for stories that i
+  added and more for people who want to read them independently"*. Asked how, Tumo chose direct links
+  inside the app, for every readable story.
+
+  **What it does.** `/read/<id>` opens that book or story straight away, whether the link was shared,
+  bookmarked, or the page was refreshed mid-book. Back then goes to `/read`, then Home. `/read` lists
+  all 17 (six lives, the four literary books, six heritage features, Sixteen June) as real links that
+  can be copied or opened in a new tab; a plain click opens the story without reloading. While a book
+  is open the address bar shows its link (`history.replaceState`, so the app's own stack still owns
+  Back). An unknown link opens the list with a notice instead of a blank page.
+
+  **How.** The app still has no router. `src/read-links.ts` holds both directions as pure, tested
+  functions (8 tests); `App.tsx` reads the path once at start-up and writes it back on each screen
+  change. The host already sends every path to the app (`vercel.json`, `serve-dist.mjs`, the service
+  worker), and assets load from absolute paths, so nothing server-side changed. The nav and footer
+  are untouched (D1, D6). The id in the path is the content id, with no aliases, so a link that works
+  now keeps working.
+
+  **Checked** in Chrome on a production build: every path above, the 17 links, a click staying in
+  the same page, and the address resetting to `/` on Home. Not watched: a book opened from the Atlas
+  showing its link (the window was minimised, so the phone tab bar didn't respond; it is the same
+  code path as the list). 349 tests pass; typecheck clean.
+
+  **Not done.** The 8 new UI strings are machine-quality in the ten other languages (LANG-13).
+  Nothing inside the app links to `/read` yet; it is reached by its address.
+
 - **2026-10-01 (the Tambo book in a browser, and why the life books have no pictures)** — Tumo:
   *"start server and test the pr opened in chrome"*, then *"yes fix the black pictures first"*.
 
