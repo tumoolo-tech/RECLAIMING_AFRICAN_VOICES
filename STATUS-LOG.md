@@ -8,6 +8,34 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-10-01 (the Tambo book in a browser, and why the life books have no pictures)** — Tumo:
+  *"start server and test the pr opened in chrome"*, then *"yes fix the black pictures first"*.
+
+  **The book works.** Read in Chrome against a production build of `feat/tambo-book`: the Atlas lists
+  all six life books (07–12), the Tambo book's 13 pages turn, Adult and Child both work, and there are
+  no console errors. The last page's text scrolls, but nothing shows that it does, so it looks cut off.
+
+  **No life book has pictures.** All 72 of their scenes rely on a live Pollinations URL, and
+  Pollinations has changed. A browser asking for a picture it has not generated before now gets
+  `403 "Missing Turnstile token"` (Cloudflare's bot check), so these pages show a black box. Pictures
+  generated earlier still load, and the literary books ship bundled pictures, so they are unaffected.
+  Server-side, keyless requests now get a weaker model (`sana`, not flux), a pollinations.ai
+  watermark, and `HTTP 402` once a free allowance runs out. A `npm run cache:images` pass saved 20 of
+  72, all watermarked and some off-scene (Biko's inquest came back as a stadium). **None was
+  committed**, by Tumo's choice. Both image scripts now list the six books, so one run with a key
+  makes them all: `GEMINI_API_KEY` in `app/.env`, then `npm run gen:images -- --all` (PIC-01). Before
+  that run, check Gemini's style suffix: it asks for "dignified African subjects", and these books'
+  rule is places only.
+
+  **A wrong first diagnosis, recorded.** The literary books' pictures first looked black too. That
+  was the test tab: Chrome reported it as `hidden`, so CSS transitions never started and
+  `expo-image`'s fade stayed at opacity 0. Forcing the fade to finish showed the pictures. Nothing in
+  `SceneImage.tsx` was changed.
+
+  **Two board claims corrected.** The topic scanner links the Mandela and Walter books to Tambo's, and
+  Walter's to Albertina's, but `RelatedTopics` renders only on hero, place and president pages. No
+  screen shows links from a book, so those ways in do not exist yet.
+
 - **2026-09-29 (Setswana goes to ElevenLabs — by decision)** — Tumo, 24 Sep: *"use eleven labs
   that was really bad"*; rebuilt today on its own branch (`SP-117`). The first version was written
   against the old client-side keys and no longer applied once #43 moved them into the `/api/tts`

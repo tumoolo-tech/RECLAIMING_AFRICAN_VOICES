@@ -3,6 +3,12 @@
 // each fetch is byte-for-byte the SAME picture the app already renders at runtime — we just bundle
 // it so stories open instantly instead of black-screening while flux generates live.
 //
+// CHANGED BY 2026-10-01 — check the output before committing it. Keyless requests are now served by
+// a weaker model ("sana", not flux), carry a pollinations.ai watermark, and hit HTTP 402 once a free
+// allowance runs out; browsers get 403 "Missing Turnstile token" for any prompt not already
+// generated. So output is no longer the runtime picture, and for scenes never cached the runtime
+// picture no longer exists at all. Prefer gen:images (Gemini) for new modules.
+//
 // Complements gen:images (Gemini): anything already in images.generated.ts is kept as-is; only
 // missing scenes are fetched here. Output:
 //   · assets/generated/<moduleId>-<sceneId>.webp
@@ -24,13 +30,20 @@ import { peoplingOfSa } from "../src/content/peopling-of-sa.ts";
 import { peoplesCultures } from "../src/content/peoples-cultures.ts";
 import { traditions } from "../src/content/traditions.ts";
 import { food } from "../src/content/food.ts";
+import { biko } from "../src/content/biko.ts";
+import { winnie } from "../src/content/winnie.ts";
+import { mandela } from "../src/content/mandela.ts";
+import { sisulu } from "../src/content/sisulu.ts";
+import { albertina } from "../src/content/albertina.ts";
+import { tambo } from "../src/content/tambo.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = resolve(__dirname, "..");
 const outDir = resolve(appDir, "assets/generated");
 const manifestPath = resolve(appDir, "src/content/images.generated.ts");
 
-const modules = [mhudi, ityalaLamawele, indaba, vilakazi, unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food];
+const modules = [mhudi, ityalaLamawele, indaba, vilakazi, unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food,
+  biko, winnie, mandela, sisulu, albertina, tambo];
 
 // Identical URL construction to src/services/pollinations.ts (same prompt, seed, default 1024²).
 function sceneImageUrl(prompt, seed) {

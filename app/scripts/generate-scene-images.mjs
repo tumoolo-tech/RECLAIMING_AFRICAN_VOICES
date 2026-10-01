@@ -25,6 +25,12 @@ import { peoplingOfSa } from "../src/content/peopling-of-sa.ts";
 import { peoplesCultures } from "../src/content/peoples-cultures.ts";
 import { traditions } from "../src/content/traditions.ts";
 import { food } from "../src/content/food.ts";
+import { biko } from "../src/content/biko.ts";
+import { winnie } from "../src/content/winnie.ts";
+import { mandela } from "../src/content/mandela.ts";
+import { sisulu } from "../src/content/sisulu.ts";
+import { albertina } from "../src/content/albertina.ts";
+import { tambo } from "../src/content/tambo.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = resolve(__dirname, "..");
@@ -54,6 +60,7 @@ const modules = [
   mhudi, ityalaLamawele, indaba, vilakazi,
   unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures,
   traditions, food,
+  biko, winnie, mandela, sisulu, albertina, tambo,
 ];
 const outDir = resolve(appDir, "assets", "generated");
 mkdirSync(outDir, { recursive: true });
