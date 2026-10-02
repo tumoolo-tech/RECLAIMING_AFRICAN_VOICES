@@ -94,6 +94,11 @@ const UI = {
   theRecord: { en: "The record", tn: "Rekoto", af: "Die rekord", zu: "Umlando", xh: "Ingxelo", nso: "Rekoto", st: "Rekoto", ss: "Umlandvo", ts: "Rhekhodo", nr: "Umlando", ve: "Rekhodo" },
   theStruggle: { en: "The struggle", tn: "Ntwa", af: "Die stryd", zu: "Umzabalazo", xh: "Umzabalazo", nso: "Ntwa", st: "Ntoa", ss: "Umzabalazo", ts: "Nyimpi", nr: "Umzabalazo", ve: "Nndwa" },
   whatToKnow: { en: "What to know", tn: "Se o tshwanetseng go se itse", af: "Wat om te weet", zu: "Okumele ukwazi", xh: "Into omele uyazi", nso: "Seo o swanetšego go se tseba", st: "Seo o lokelang ho se tseba", ss: "Lokufanele ukwati", ts: "Leswi u faneleke u swi tiva", nr: "Okufanele ukwazi", ve: "Zwine na fanela u zwi ḓivha" },
+  // Unreviewed like the rest of this block; `t()` falls back to English. Same wording as HeroesScreens.
+  readBook: {
+    en: "Read the life as a book", tn: "Bala botshelo jaaka buka", af: "Lees die lewe as 'n boek", zu: "Funda impilo njengencwadi", xh: "Funda ubomi njengencwadi",
+    nso: "Bala bophelo bjalo ka puku", st: "Bala bophelo jwalo ka buka", ss: "Fundza imphilo njengencwadzi", ts: "Hlaya vutomi tanihi buku", nr: "Funda ipilo njengencwadi", ve: "Vhalani vhutshilo sa bugu",
+  },
   aLife: { en: "A life", tn: "Botshelo", af: "'n Lewe", zu: "Impilo", xh: "Ubomi", nso: "Bophelo", st: "Bophelo", ss: "Kuphila", ts: "Vutomi", nr: "Ukuphila", ve: "Vhutshilo" },
   family: { en: "Family", tn: "Lelapa", af: "Familie", zu: "Umndeni", xh: "Usapho", nso: "Lapa", st: "Lelapa", ss: "Umndeni", ts: "Ndyangu", nr: "Umndeni", ve: "Muṱa" },
   inContext: { en: "In context", tn: "Mo seemong", af: "In konteks", zu: "Kumongo", xh: "Kumxholo", nso: "Ka seemo", st: "Ka moelelo", ss: "Kumongo", ts: "Eka mongo", nr: "Emongweni", ve: "Kha zwithu" },
@@ -262,6 +267,19 @@ export function PresidentScreen({ president, onBack, onArchive, onOpenRef, lang 
       {p.struggle ? (<><Label text={hist ? t(UI.theRecord, lang) : t(UI.theStruggle, lang)} /><Text style={s.para}>{p.struggle}</Text></>) : (
         <><Label text={t(UI.whatToKnow, lang)} /><Text style={s.para}>{p.role}</Text></>
       )}
+      {/* A life told at book length (SP-120) — under the summary, as on a hero page (SP-118). */}
+      {p.book && onOpenRef ? (
+        <Pressable
+          style={s.bookBtn}
+          onPress={() => onOpenRef({ kind: "module", id: p.book as string })}
+          accessibilityRole="button"
+          accessibilityLabel={`${p.name} — ${t(UI.readBook, lang)}`}
+        >
+          <Icon.BookOpen size={16} color={colors.gold} />
+          <Text style={s.bookBtnText}>{t(UI.readBook, lang)}</Text>
+          <Icon.ChevronRight size={14} color={colors.gold} />
+        </Pressable>
+      ) : null}
 
     </View>
   );
@@ -410,6 +428,11 @@ const s = StyleSheet.create({
   sectionLabel: { color: "#fff", fontFamily: fonts.displaySemi, fontSize: 15, letterSpacing: 1, textTransform: "uppercase" },
   sectionSub: { color: "rgba(255,255,255,0.55)", fontFamily: fonts.body, fontSize: type.small, lineHeight: 18, marginTop: 6 },
   para: { color: "rgba(255,255,255,0.72)", fontFamily: fonts.body, fontSize: type.body, lineHeight: 25 },
+  bookBtn: {
+    flexDirection: "row", alignItems: "center", gap: 8, alignSelf: "flex-start", marginTop: spacing.md,
+    borderWidth: 1, borderColor: colors.gold, borderRadius: radius.pill, paddingVertical: 10, paddingHorizontal: 16,
+  },
+  bookBtnText: { color: "#fff", fontFamily: fonts.bodySemi, fontSize: 13 },
 
   hero: { alignItems: "center", justifyContent: "center", paddingVertical: spacing.xl, backgroundColor: "rgba(255,255,255,0.03)", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", borderRadius: radius.lg, marginBottom: spacing.md },
   heroBack: { position: "absolute", top: 12, left: 12, zIndex: 2, width: 36, height: 36, borderRadius: radius.pill, backgroundColor: "rgba(0,0,0,0.45)", borderWidth: 1, borderColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },

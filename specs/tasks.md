@@ -434,6 +434,10 @@ next person to claim "multilingual" has a real number to put behind it.
 - [ ] WIN-02 **Read the TRC finding in full** (Report Vol. 2, ch. 12, *Special Investigation into the Mandela
       United Football Club*). The book quotes the finding through SAPA's 29 Oct 1998 report; check scene
       `truth-commission` against the primary text.
+- [ ] MAN-01 **Check the Mandela book's hard chapters against primary sources** (SP-120). The watch-list,
+      AIDS-criticism and TRC-scope sentences rest on Wikipedia's summary; confirm each against the source
+      Wikipedia cites before the book is called reviewed.
+- [ ] MAN-02 **Setswana (and other) translations of the Mandela book.** English only today, shown as such.
 - [ ] WIN-03 **Setswana (and other) translations of the Winnie book.** English only today, shown as such. The
       Stompie Seipei and TRC pages need a reviewer's care in every language.
 
