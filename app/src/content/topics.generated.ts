@@ -1,7 +1,7 @@
 // GENERATED FILE — do not edit by hand. Regenerate: npm run gen:topics
 //
 // Every topic that can be linked to or from, and every MENTION found by scanning one topic's prose
-// for another topic's name. 91 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 14) · 39 mentions.
+// for another topic's name. 92 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 15) · 45 mentions.
 //
 // WHY A FILE RATHER THAN A RUNTIME SCAN (SP-092): six content registries `require()` image
 // binaries, so reading them needs `node:fs`, which cannot ship in the React Native bundle.
@@ -114,9 +114,11 @@ export const TOPICS: Topic[] = [
   { kind: "module", id: "winnie", name: "Winnie Madikizela-Mandela", routable: true },
   { kind: "module", id: "mandela", name: "The Life of Nelson Mandela", routable: true },
   { kind: "module", id: "sisulu", name: "Walter Sisulu", routable: true },
+  { kind: "module", id: "albertina", name: "Albertina Sisulu", routable: true },
 ];
 
 export const MENTIONS: Mention[] = [
+  { from: { kind: "place", id: "constitution-hill" }, to: { kind: "module", id: "albertina" }, surface: "Albertina Sisulu" },
   { from: { kind: "place", id: "constitution-hill" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "module", id: "vilakazi" }, surface: "Inkondlo kaZulu" },
   { from: { kind: "place", id: "vilakazi-street" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
@@ -154,6 +156,11 @@ export const MENTIONS: Mention[] = [
   { from: { kind: "module", id: "mandela" }, to: { kind: "president", id: "de-klerk" }, surface: "F.W. de Klerk" },
   { from: { kind: "module", id: "mandela" }, to: { kind: "place", id: "mvezo" }, surface: "Mvezo" },
   { from: { kind: "module", id: "mandela" }, to: { kind: "place", id: "qunu" }, surface: "Qunu" },
+  { from: { kind: "module", id: "sisulu" }, to: { kind: "module", id: "albertina" }, surface: "Albertina Sisulu" },
   { from: { kind: "module", id: "sisulu" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "module", id: "sisulu" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
+  { from: { kind: "module", id: "albertina" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
+  { from: { kind: "module", id: "albertina" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
+  { from: { kind: "module", id: "albertina" }, to: { kind: "module", id: "sisulu" }, surface: "Walter Sisulu" },
+  { from: { kind: "module", id: "albertina" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
 ];
