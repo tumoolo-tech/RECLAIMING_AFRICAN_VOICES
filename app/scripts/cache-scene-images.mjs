@@ -36,6 +36,7 @@ import { mandela } from "../src/content/mandela.ts";
 import { sisulu } from "../src/content/sisulu.ts";
 import { albertina } from "../src/content/albertina.ts";
 import { tambo } from "../src/content/tambo.ts";
+import { zuma } from "../src/content/zuma.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const appDir = resolve(__dirname, "..");
@@ -43,7 +44,7 @@ const outDir = resolve(appDir, "assets/generated");
 const manifestPath = resolve(appDir, "src/content/images.generated.ts");
 
 const modules = [mhudi, ityalaLamawele, indaba, vilakazi, unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food,
-  biko, winnie, mandela, sisulu, albertina, tambo];
+  biko, winnie, mandela, sisulu, albertina, tambo, zuma];
 
 // Identical URL construction to src/services/pollinations.ts (same prompt, seed, default 1024²).
 function sceneImageUrl(prompt, seed) {

@@ -8,6 +8,35 @@
 > out of order, reorder them by hand. The board in STATUS.md is deliberately *not* union-merged — two
 > people changing the same board row is a real disagreement and should stop the merge.
 
+- **2026-10-01 (Jacob Zuma gets his own book, controversies included)** — Tumo: *"do Zuma, add the
+  controvecy"* (`SP-124`).
+
+  **What it is.** `content/zuma.ts`, *The Life of Jacob Zuma*, thirteen scenes from Nkandla in 1942 to
+  the arms-deal trial still waiting in 2027. The herd boy who never went to school, ten years on Robben
+  Island, fourteen in exile ending as the ANC's intelligence chief, Deputy President and President, with
+  the 2009 HIV treatment expansion and the 2017 free higher education announcement. Titled so it does
+  not out-rank his president page in the topic scanner; his president page now opens it.
+
+  **The controversies, and the rule for them.** He is alive, and nearly all of it is law, so every
+  finding is credited to whoever made it and never told as the book's own verdict. The Shaik court; the
+  2006 rape trial, where he was **acquitted**; Nkandla, with the Constitutional Court's order quoted from
+  the judgment on SAFLII; state capture, with the Zondo Commission's final report quoted as AFP reported
+  it; contempt of court and the July 2021 unrest (354 dead, the government's figure); the MK party and
+  his expulsion from the ANC. The arms-deal charges have **not** been tried: the book says the trial is
+  set for 1 February 2027 and that he has not been convicted. His own position is quoted.
+
+  **A famous phrase left out.** "A generally corrupt relationship" is usually quoted as Judge Squires's
+  finding against Shaik and Zuma. Squires said he never found it (Mail & Guardian, 12 November 2006),
+  though Wikipedia still prints it as his. The book uses words the judgment does contain.
+
+  **Where the sources disagree** (the arrest year, the year he joined MK, the year he became intelligence
+  chief, the date of Shaik's conviction, the date of the 2024 ruling), the book says less. A first draft
+  said "fifteen years in exile"; it was about fourteen, and was corrected before commit.
+
+  **Not done.** The Zondo and Shaik pages need checking against the report and the judgment themselves
+  (ZUM-01). The book must be updated when the trial ends (ZUM-02). No pictures (PIC-01). English only
+  (ZUM-03). Nobody has read it in a browser yet. 349 tests pass; typecheck clean.
+
 - **2026-10-01 (every story gets its own link)** — Tumo: *"create a new endpoint for stories that i
   added and more for people who want to read them independently"*. Asked how, Tumo chose direct links
   inside the app, for every readable story.

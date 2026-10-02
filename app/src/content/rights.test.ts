@@ -18,6 +18,7 @@ import { mandela } from "./mandela.ts";
 import { sisulu } from "./sisulu.ts";
 import { albertina } from "./albertina.ts";
 import { tambo } from "./tambo.ts";
+import { zuma } from "./zuma.ts";
 import type { Module } from "./types.ts";
 
 // Issue #34. For a year the project called its canon "public domain". One of the four works is not:
@@ -31,7 +32,7 @@ import type { Module } from "./types.ts";
 
 const MODULES: Module[] = [
   mhudi, ityalaLamawele, indaba, vilakazi,
-  unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food, biko, winnie, mandela, sisulu, albertina, tambo,
+  unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food, biko, winnie, mandela, sisulu, albertina, tambo, zuma,
 ];
 const THIS_YEAR = 2026;
 
