@@ -18,4 +18,10 @@
 
 import type { Exclusion } from "./topic-mentions.ts";
 
-export const TOPIC_EXCLUSIONS: Exclusion[] = [];
+export const TOPIC_EXCLUSIONS: Exclusion[] = [
+  {
+    from: { kind: "module", id: "sisulu" },
+    to: { kind: "president", id: "mbeki" },
+    why: "The Mbeki arrested with Sisulu at Liliesleaf in 1963 is Govan Mbeki, Thabo Mbeki's father, not the president. Checked by hand 2026-09-29 (SP-121).",
+  },
+];
