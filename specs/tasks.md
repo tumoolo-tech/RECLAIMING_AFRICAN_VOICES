@@ -429,6 +429,13 @@ next person to claim "multilingual" has a real number to put behind it.
 - [ ] BIO-02 **Follow the reopened Biko inquest** (Gqeberha High Court, reopened September 2025). The
       book ends on it with no outcome; update `biko.ts` scene `justice` when there is one, with a source.
 - [ ] BIO-03 **Setswana (and other) translations of the Biko book.** English only today, shown as such.
+- [ ] WIN-01 **Record where each Winnie Madikizela-Mandela photograph came from** (`app/assets/heroes/winnie/`,
+      17 files, no `sources.txt`). Until each has a source and licence, none can go in her book (SP-119). Tumo to supply.
+- [ ] WIN-02 **Read the TRC finding in full** (Report Vol. 2, ch. 12, *Special Investigation into the Mandela
+      United Football Club*). The book quotes the finding through SAPA's 29 Oct 1998 report; check scene
+      `truth-commission` against the primary text.
+- [ ] WIN-03 **Setswana (and other) translations of the Winnie book.** English only today, shown as such. The
+      Stompie Seipei and TRC pages need a reviewer's care in every language.
 
 ## Phase 7 — Heritage tourism: a story becomes a place you can stand in (planned 2026-09-17, not started)
 

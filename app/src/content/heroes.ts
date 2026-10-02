@@ -181,26 +181,27 @@ export const heroes: Hero[] = [
     honorific: "‘Mother of the Nation’",
     dates: "1936 – 2018",
     role: "Kept the struggle visible through decades of banning, detention and banishment — a towering, and in parts contested, figure.",
-    born: "1936 · Mbongweni, Bizana, E. Cape",
+    born: "26 September 1936 · Mbongweni, Bizana, E. Cape",
     died: "2018 · Johannesburg",
     movement: "ANC Women's League",
     contribution:
-      "Nomzamo Winnie Madikizela trained as a social worker — reported to be the first qualified Black medical social worker at Baragwanath Hospital [VERIFY]. After marrying Nelson Mandela in 1958 and his imprisonment in 1963, she became the public face of his name and of resistance itself, enduring repeated banning orders, months of solitary detention in 1969–70, and forced banishment to the town of Brandfort. Her defiance made her a symbol of the struggle. Her legacy is also contested: in the late 1980s the Mandela United Football Club, associated with her Soweto home, was linked to violence including the 1989 killing of 14-year-old Stompie Seipei, and the Truth and Reconciliation Commission later found her accountable for gross human rights violations. South Africans hold both of these truths about her.",
+      "Nomzamo Winnie Madikizela trained as a social worker — the first qualified Black person to hold the post of medical social worker at Baragwanath Hospital. After marrying Nelson Mandela in 1958 and his imprisonment in 1963, she became the public face of his name and of resistance itself, enduring repeated banning orders, 491 days of detention in 1969–70, much of it in solitary confinement, and forced banishment to the town of Brandfort. Her defiance made her a symbol of the struggle. Her legacy is also contested: in the late 1980s the Mandela United Football Club, associated with her Soweto home, was linked to violence including the 1989 killing of 14-year-old Stompie Seipei, and the Truth and Reconciliation Commission later found her accountable for gross human rights violations. South Africans hold both of these truths about her.",
     life: [
       { when: "1936", name: "Born in Bizana", role: "Eastern Cape (then Pondoland)" },
       { when: "1958", name: "Marries Nelson Mandela", role: "" },
-      { when: "1969–70", name: "Solitary detention", role: "Held for months, much of it in isolation [VERIFY]" },
-      { when: "1977", name: "Banished to Brandfort", role: "Restricted to the Free State town" },
+      { when: "1969–70", name: "491 days in detention", role: "Solitary confinement; the first 200 days without contact. Released without conviction" },
+      { when: "1977", name: "Banished to Brandfort", role: "The Free State town, until 1986" },
       { when: "1988–89", name: "MUFC and the Stompie Seipei killing", role: "Later found accountable by the TRC" },
       { when: "2018", name: "Dies in Johannesburg", role: "", era: "past" },
     ],
     know: [
       "For much of the years Mandela was imprisoned, she was the most visible face of his name and the resistance.",
-      "She endured banning, ~491 days of detention (much in solitary) and years of banishment to Brandfort [VERIFY].",
+      "She endured banning from 1962, 491 days of detention in 1969–70 (much in solitary), and banishment to Brandfort from 1977 to 1986.",
       "Honestly: the TRC found her accountable for gross human rights violations linked to the Mandela United Football Club, including the 1989 killing of Stompie Seipei.",
     ],
     sources:
-      "South African History Online; the Truth and Reconciliation Commission Report (Vol. 2). Told honestly — neither sanitised nor sensationalised (project integrity rule). Some dates [VERIFY].",
+      "South African History Online, 'Winnie Madikizela-Mandela'; the Truth and Reconciliation Commission Report (Vol. 2, ch. 12); her own account, 491 Days (via Wikipedia). Told honestly — neither sanitised nor sensationalised (project integrity rule). [VERIFY] marks resolved 2026-09-29 (SP-119).",
+    book: "winnie",
   },
 ];
 

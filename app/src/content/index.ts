@@ -10,6 +10,7 @@ import { peoplesCultures } from "./peoples-cultures";
 import { traditions } from "./traditions";
 import { food } from "./food";
 import { biko } from "./biko";
+import { winnie } from "./winnie";
 
 // The four literary pillars.
 export const modules: Module[] = [mhudi, ityalaLamawele, indaba, vilakazi];
@@ -22,8 +23,9 @@ export const atlasModules: Module[] = [
   marriageRites,
   food,
   unsungHeroes,
-  // A single life, told as a book (SP-118). Opened from the hero's page as well as the Atlas.
+  // Single lives, told as books (SP-118, SP-119). Opened from the hero's page as well as the Atlas.
   biko,
+  winnie,
 ];
 
 // Everything — for reader lookup and source crediting on the About screen.

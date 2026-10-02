@@ -1,7 +1,7 @@
 // GENERATED FILE — do not edit by hand. Regenerate: npm run gen:topics
 //
 // Every topic that can be linked to or from, and every MENTION found by scanning one topic's prose
-// for another topic's name. 88 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 11) · 28 mentions.
+// for another topic's name. 89 topics (place 49 · president 14 · article 2 · hero 4 · day 8 · module 12) · 31 mentions.
 //
 // WHY A FILE RATHER THAN A RUNTIME SCAN (SP-092): six content registries `require()` image
 // binaries, so reading them needs `node:fs`, which cannot ship in the React Native bundle.
@@ -111,6 +111,7 @@ export const TOPICS: Topic[] = [
   { kind: "module", id: "traditions", name: "Beliefs & Traditions", routable: true },
   { kind: "module", id: "food", name: "Food & Flavour", routable: true },
   { kind: "module", id: "biko", name: "Steve Biko", routable: true },
+  { kind: "module", id: "winnie", name: "Winnie Madikizela-Mandela", routable: true },
 ];
 
 export const MENTIONS: Mention[] = [
@@ -133,6 +134,7 @@ export const MENTIONS: Mention[] = [
   { from: { kind: "president", id: "zuma" }, to: { kind: "place", id: "robben-island" }, surface: "Robben Island" },
   { from: { kind: "president", id: "de-klerk" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
   { from: { kind: "hero", id: "biko" }, to: { kind: "module", id: "biko" }, surface: "Steve Biko" },
+  { from: { kind: "hero", id: "winnie" }, to: { kind: "module", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
   { from: { kind: "hero", id: "winnie" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "day", id: "freedom-day" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "day", id: "mandela-day" }, to: { kind: "president", id: "mandela" }, surface: "Mandela" },
@@ -142,4 +144,6 @@ export const MENTIONS: Mention[] = [
   { from: { kind: "module", id: "peoples-cultures" }, to: { kind: "module", id: "vilakazi" }, surface: "Inkondlo kaZulu" },
   { from: { kind: "module", id: "food" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
   { from: { kind: "module", id: "biko" }, to: { kind: "hero", id: "biko" }, surface: "Steve Biko" },
+  { from: { kind: "module", id: "winnie" }, to: { kind: "hero", id: "winnie" }, surface: "Winnie Madikizela-Mandela" },
+  { from: { kind: "module", id: "winnie" }, to: { kind: "president", id: "mandela" }, surface: "Nelson Mandela" },
 ];
