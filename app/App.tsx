@@ -58,6 +58,8 @@ import type { NavId } from "./src/components/shell/nav";
 import { DEFAULT_COUNTRY } from "./src/content/anthems";
 import { languagesFor } from "./src/content/country-languages";
 import { useProgress } from "./src/services/progress/useProgress";
+import { ReadIndexScreen } from "./src/components/ReadIndexScreen";
+import { parseReadPath, readPathFor } from "./src/read-links";
 
 // Lightweight in-app navigation (no router dependency). Language is shared app-wide.
 
@@ -84,6 +86,8 @@ type Route =
   | { name: "city"; id: string }
   | { name: "place"; id: string }
   | { name: "story"; id: string }
+  // Every book and story with its own link — /read and /read/<id> (src/read-links.ts).
+  | { name: "read"; missing?: string }
   | { name: "presidents" }
   | { name: "president"; id: string }
   | { name: "days" }
@@ -111,7 +115,7 @@ type Route =
 // and translateY(0) at scroll offset 300, the progress rule stayed empty, and every panel fell back
 // to rendering plainly. The story looked finished and had no motion in it at all.
 const OWN_SCROLL = new Set(["home", "atlas", "provinces", "presidents", "president", "days", "totems", "heroes", "hero", "story"]);
-const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader", "story"]);
+const ATLAS_ROOMS = new Set(["atlas", "provinces", "province", "city", "place", "presidents", "president", "days", "totems", "heroes", "hero", "reader", "story", "read"]);
 const ARCHIVE_ROOMS = new Set(["archive", "heritage", "about"]);
 const WATCH_ROOMS = new Set(["watch", "watchItem"]);
 const ROOT_ROOMS = new Set(["home", "journey", "watch", "kids", "schools", "passport", "countries"]);
@@ -143,6 +147,18 @@ const ROUTE_FOR_KIND: Record<string, string | undefined> = {
   day: undefined, // `days` is a list, with no per-day route
   journey: undefined, // `stage` takes a history-trail id, not a journey-slide id
 };
+
+// Where the app opens. A /read link (shared, bookmarked, or the page refreshed mid-book) opens that
+// book or story directly; Back then goes to the list of every story, then Home. Any other path opens
+// Home, as it always has. Web only — native has no address bar.
+function initialStack(): Route[] {
+  const home: Route = { name: "home" };
+  if (Platform.OS !== "web" || typeof window === "undefined") return [home];
+  const target = parseReadPath(window.location.pathname, (id) => !!moduleById(id), (id) => !!storyById(id));
+  if (!target) return [home];
+  if (target.kind === "index") return [home, { name: "read", missing: target.missing }];
+  return [home, { name: "read" }, { name: target.kind, id: target.id } as Route];
+}
 
 // One place, as a page. Extracted for the same reason StageRoute is: inlining a component in the
 // route switch is what made the type-checker recurse over the union, not the union itself.
@@ -247,7 +263,7 @@ export default function App() {
   const progress = useProgress();
   // Route HISTORY (not a single route): push to navigate, pop to go back — so Back always returns
   // to where the user actually came from (e.g. Reader→Atlas, City→Province, Archive→President).
-  const [stack, setStack] = useState<Route[]>([{ name: "home" }]);
+  const [stack, setStack] = useState<Route[]>(initialStack);
   const route = stack[stack.length - 1];
   // A full-screen "dot story" (picture/film) is playing — hide the floating chatbot so it doesn't
   // sit over the film.
@@ -340,6 +356,17 @@ export default function App() {
   const routeId = (route as { id?: string }).id;
   const routeKey = routeId && KEYED_ROUTES.has(routeName) ? `${routeName}:${routeId}` : routeName;
 
+  // Keep the address bar on the story being read (/read/<id>), so the link in it can be copied and
+  // shared from any book, however the reader got there. Every other screen shows "/". replaceState,
+  // not pushState: the in-app stack owns Back, and the browser's history is left as it was.
+  useEffect(() => {
+    if (Platform.OS !== "web" || typeof window === "undefined") return;
+    const want = readPathFor(routeName, routeId) ?? "/";
+    if (window.location.pathname !== want) {
+      window.history.replaceState(window.history.state, "", want + window.location.search + window.location.hash);
+    }
+  }, [routeName, routeId]);
+
   // Flat switch (not a nested ternary) — keeps each screen at the same shallow depth, which also
   // keeps the type-checker from recursing too deeply over the route union.
   function renderRoute() {
@@ -389,6 +416,15 @@ export default function App() {
             lang={lang}
             onBack={back}
             onOpenRef={openRef}
+          />
+        );
+      case "read":
+        return (
+          <ReadIndexScreen
+            lang={lang}
+            missing={(route as { missing?: string }).missing}
+            onBack={back}
+            onOpen={(e) => push({ name: e.route, id: e.id } as Route)}
           />
         );
       case "story":
