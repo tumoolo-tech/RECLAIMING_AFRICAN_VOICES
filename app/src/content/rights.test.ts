@@ -12,6 +12,7 @@ import { peoplingOfSa } from "./peopling-of-sa.ts";
 import { peoplesCultures } from "./peoples-cultures.ts";
 import { traditions } from "./traditions.ts";
 import { food } from "./food.ts";
+import { biko } from "./biko.ts";
 import type { Module } from "./types.ts";
 
 // Issue #34. For a year the project called its canon "public domain". One of the four works is not:
@@ -25,7 +26,7 @@ import type { Module } from "./types.ts";
 
 const MODULES: Module[] = [
   mhudi, ityalaLamawele, indaba, vilakazi,
-  unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food,
+  unsungHeroes, marriageRites, peoplingOfSa, peoplesCultures, traditions, food, biko,
 ];
 const THIS_YEAR = 2026;
 

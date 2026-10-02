@@ -63,6 +63,11 @@ const UI = {
     en: "Movement", tn: "Mokgatlho", af: "Beweging", zu: "Inhlangano", xh: "Umbutho",
     nso: "Mokgatlo", st: "Mokgatlo", ss: "Inhlangano", ts: "Nhlangano", nr: "Ihlangano", ve: "Tshigwada",
   },
+  // Unreviewed like the rest of this block; `t()` falls back to English.
+  readBook: {
+    en: "Read the life as a book", tn: "Bala botshelo jaaka buka", af: "Lees die lewe as 'n boek", zu: "Funda impilo njengencwadi", xh: "Funda ubomi njengencwadi",
+    nso: "Bala bophelo bjalo ka puku", st: "Bala bophelo jwalo ka buka", ss: "Fundza imphilo njengencwadzi", ts: "Hlaya vutomi tanihi buku", nr: "Funda ipilo njengencwadi", ve: "Vhalani vhutshilo sa bugu",
+  },
   theJourney: {
     en: "The journey", tn: "Leeto", af: "Die reis", zu: "Uhambo", xh: "Uhambo",
     nso: "Leeto", st: "Leeto", ss: "Luhambo", ts: "Riendzo", nr: "Ikhambo", ve: "Lwendo",
@@ -191,6 +196,20 @@ export function HeroScreen({ hero, onBack, onOpenRef, lang }: { hero: Hero; onBa
 
       <Label text={t(UI.theJourney, lang)} />
       <Text style={s.para}>{h.contribution}</Text>
+      {/* A life told at book length (SP-118) — right under the summary, where a reader who wants
+          more is looking, rather than in the related topics at the foot of the page. */}
+      {h.book && onOpenRef ? (
+        <Pressable
+          style={s.bookBtn}
+          onPress={() => onOpenRef({ kind: "module", id: h.book as string })}
+          accessibilityRole="button"
+          accessibilityLabel={`${h.name} — ${t(UI.readBook, lang)}`}
+        >
+          <Icon.BookOpen size={16} color={colors.gold} />
+          <Text style={s.bookBtnText}>{t(UI.readBook, lang)}</Text>
+          <Icon.ChevronRight size={14} color={colors.gold} />
+        </Pressable>
+      ) : null}
     </View>
   );
 
@@ -304,6 +323,11 @@ const s = StyleSheet.create({
   tick: { width: 15, height: 3, borderRadius: 2, backgroundColor: colors.orange },
   sectionLabel: { color: "#fff", fontFamily: fonts.displaySemi, fontSize: 15, letterSpacing: 1, textTransform: "uppercase" },
   para: { color: "rgba(255,255,255,0.72)", fontFamily: fonts.body, fontSize: type.body, lineHeight: 25 },
+  bookBtn: {
+    flexDirection: "row", alignItems: "center", gap: 8, alignSelf: "flex-start", marginTop: spacing.md,
+    borderWidth: 1, borderColor: colors.gold, borderRadius: radius.pill, paddingVertical: 10, paddingHorizontal: 16,
+  },
+  bookBtnText: { color: "#fff", fontFamily: fonts.bodySemi, fontSize: 13 },
 
   hero: { alignItems: "center", justifyContent: "center", paddingVertical: spacing.xl, backgroundColor: "rgba(255,255,255,0.03)", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", borderRadius: radius.lg, marginBottom: spacing.md },
   heroBack: { position: "absolute", top: 12, left: 12, zIndex: 2, width: 36, height: 36, borderRadius: radius.pill, backgroundColor: "rgba(0,0,0,0.45)", borderWidth: 1, borderColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
