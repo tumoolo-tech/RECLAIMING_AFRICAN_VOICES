@@ -449,6 +449,12 @@ next person to claim "multilingual" has a real number to put behind it.
       (SP-123). Scene `decisions-of-war` rests on SAPA's 1997 report of the submission and on SAHO; the
       TRC Report (Vol. 2, ch. 4, and the Motsuenyane/Stuart commissions) should be checked before review.
 - [ ] TAM-02 **Setswana (and other) translations of the Oliver Tambo book.** English only today.
+- [ ] ZUM-01 **Check the Zuma book against primary records** (SP-124). The Zondo findings rest on AFP's report of the
+      final report, not the report itself; the Shaik wording on the Mail & Guardian. Read the Zondo report (Part VI)
+      and the Squires judgment before review. A living man: this check matters more than for the other books.
+- [ ] ZUM-02 **Keep the Zuma book current.** The arms-deal trial is set for 1 February 2027; its outcome must go into
+      scene `unfinished` when it comes, and the "has not been convicted" line must change only on a verdict.
+- [ ] ZUM-03 **Setswana (and other) translations of the Jacob Zuma book.** English only today.
 - [ ] WIN-03 **Setswana (and other) translations of the Winnie book.** English only today, shown as such. The
       Stompie Seipei and TRC pages need a reviewer's care in every language.
 

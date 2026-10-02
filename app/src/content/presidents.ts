@@ -138,6 +138,7 @@ export const presidents: President[] = [
       "Honestly: his presidency was dominated by controversy — the arms-deal and corruption charges, Nkandla, and 'state capture', later examined by the Zondo Commission.",
     ],
     sources: "The Zondo Commission report · court records · the Presidency. Stated factually.",
+    book: "zuma",
   },
   {
     id: "ramaphosa",

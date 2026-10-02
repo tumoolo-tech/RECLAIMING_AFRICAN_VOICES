@@ -103,7 +103,7 @@ async function collect() {
   // ── Text-read: modules are single objects, and `index.ts` imports extensionlessly ─────────────
   for (const f of ["mhudi.ts", "ityala-lamawele.ts", "indaba.ts", "vilakazi.ts",
     "unsung-heroes.ts", "marriage-rites.ts", "peopling-of-sa.ts", "peoples-cultures.ts",
-    "traditions.ts", "food.ts", "biko.ts", "winnie.ts", "mandela.ts", "sisulu.ts", "albertina.ts", "tambo.ts"]) {
+    "traditions.ts", "food.ts", "biko.ts", "winnie.ts", "mandela.ts", "sisulu.ts", "albertina.ts", "tambo.ts", "zuma.ts"]) {
     out.push(...fromModuleFile(f));
   }
 
