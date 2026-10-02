@@ -445,6 +445,10 @@ next person to claim "multilingual" has a real number to put behind it.
       Scenes `dr-asvat` and `truth-commission` rest on Wikipedia's summary; read the TRC hearing transcript of
       1 and 4 December 1997 before the book is called reviewed. These pages sit next to the Winnie book's.
 - [ ] ALB-02 **Setswana (and other) translations of the Albertina Sisulu book.** English only today.
+- [ ] TAM-01 **Read the ANC's second TRC submission and the TRC's findings on Church Street and the camps**
+      (SP-123). Scene `decisions-of-war` rests on SAPA's 1997 report of the submission and on SAHO; the
+      TRC Report (Vol. 2, ch. 4, and the Motsuenyane/Stuart commissions) should be checked before review.
+- [ ] TAM-02 **Setswana (and other) translations of the Oliver Tambo book.** English only today.
 - [ ] WIN-03 **Setswana (and other) translations of the Winnie book.** English only today, shown as such. The
       Stompie Seipei and TRC pages need a reviewer's care in every language.
 

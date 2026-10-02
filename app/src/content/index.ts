@@ -14,6 +14,7 @@ import { winnie } from "./winnie";
 import { mandela } from "./mandela";
 import { sisulu } from "./sisulu";
 import { albertina } from "./albertina";
+import { tambo } from "./tambo";
 
 // The four literary pillars.
 export const modules: Module[] = [mhudi, ityalaLamawele, indaba, vilakazi];
@@ -26,12 +27,13 @@ export const atlasModules: Module[] = [
   marriageRites,
   food,
   unsungHeroes,
-  // Single lives, told as books (SP-118–122). Opened from the hero's or president's page (the Sisulus have neither) as well as the Atlas.
+  // Single lives, told as books (SP-118–123). Opened from the hero's or president's page (the Sisulus and Tambo have neither) as well as the Atlas.
   biko,
   winnie,
   mandela,
   sisulu,
   albertina,
+  tambo,
 ];
 
 // Everything — for reader lookup and source crediting on the About screen.
