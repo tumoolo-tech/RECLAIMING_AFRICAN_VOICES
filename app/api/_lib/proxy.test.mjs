@@ -13,6 +13,7 @@ import {
   modelFor,
   synthesize,
   ELEVENLABS_LANGS,
+  ELEVENLABS_BY_DECISION,
   BOTLHALE_LANGS,
   DEFAULT_VOICE_ID,
   OUTPUT_FORMAT,
@@ -192,8 +193,10 @@ test("a voice id with awkward characters is encoded, and a base URL is trimmed",
 
 test("the server's ElevenLabs table matches the app's language registry exactly", () => {
   for (const l of LANGUAGES) {
-    assert.equal(modelFor(l.code) !== null, l.elevenlabs !== null, `${l.code}: a model must exist iff ElevenLabs lists the language`);
+    const voiced = l.elevenlabs !== null || l.elevenlabsByDecision === true;
+    assert.equal(modelFor(l.code) !== null, voiced, `${l.code}: a model must exist iff ElevenLabs lists the language or a decision sends it`);
     if (l.elevenlabs !== null) assert.equal(ELEVENLABS_LANGS[l.code].code, l.elevenlabs);
+    assert.equal(Object.hasOwn(ELEVENLABS_BY_DECISION, l.code), l.elevenlabsByDecision === true, `${l.code}: the server's decision list must match the registry`);
   }
   assert.equal(modelFor("en"), "eleven_multilingual_v2");
   // Afrikaans appears only in the v3 family — multilingual_v2 does not carry it.
@@ -201,10 +204,10 @@ test("the server's ElevenLabs table matches the app's language registry exactly"
   assert.equal(modelFor("__proto__"), null, "no prototype keys sneak through the lookup");
 });
 
-test("it refuses every language ElevenLabs cannot speak, and says why", () => {
+test("it refuses every language ElevenLabs cannot speak, and says why — Setswana excepted by decision", () => {
   for (const l of LANGUAGES) {
     const reason = refuseReason({ provider: "elevenlabs", lang: l.code, text: "Sengwe le sengwe." });
-    if (l.elevenlabs === null) {
+    if (l.elevenlabs === null && !l.elevenlabsByDecision) {
       assert.match(String(reason), /does not speak/, `${l.code} must be refused — fluent mispronunciation is worse than no audio`);
     } else {
       assert.equal(reason, null, `${l.code} should be allowed through`);
@@ -222,12 +225,22 @@ test("it refuses empty text, a passage over the ceiling, and an unknown provider
   assert.equal(refuseReason({ provider: "openai", lang: "en", text: "hi" }), "unknown provider");
 });
 
-test("/api/tts will not send Setswana to ElevenLabs even when asked directly", async () => {
+test("/api/tts will not send isiZulu to ElevenLabs even when asked directly", async () => {
   const fetchFn = stubFetch();
-  const res = await ttsHandle(post("tts", { provider: "elevenlabs", lang: "tn", text: "Dumela" }), { ELEVENLABS_API_KEY: KEY }, fetchFn);
+  const res = await ttsHandle(post("tts", { provider: "elevenlabs", lang: "zu", text: "Sawubona" }), { ELEVENLABS_API_KEY: KEY }, fetchFn);
   assert.equal(res.status, 400);
-  assert.match((await res.json()).error, /does not speak tn/);
+  assert.match((await res.json()).error, /does not speak zu/);
   assert.equal(fetchFn.calls.length, 0);
+});
+
+test("/api/tts sends Setswana to ElevenLabs by decision — eleven_v3, and no language_code (SP-117)", async () => {
+  const mp3 = new Uint8Array([0x49, 0x44, 0x33, 0x04]);
+  const fetchFn = stubFetch(new Response(mp3, { status: 200 }));
+  const res = await ttsHandle(post("tts", { provider: "elevenlabs", lang: "tn", text: "Dumela" }), { ELEVENLABS_API_KEY: KEY }, fetchFn);
+  assert.equal(res.status, 200);
+  const body = JSON.parse(fetchFn.calls[0].init.body);
+  assert.equal(body.model_id, "eleven_v3");
+  assert.equal("language_code" in body, false, "ElevenLabs is not handed a code it does not list");
 });
 
 test("/api/tts returns ElevenLabs audio bytes, with the key only on the upstream call", async () => {

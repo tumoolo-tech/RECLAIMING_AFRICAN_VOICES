@@ -22,6 +22,10 @@
 //    Afrikaans of our eleven. The API does not reject other text — it returns fluent, confident, wrong
 //    pronunciation, the harm AGENTS.md §4 exists to prevent. The client's selector keeps those
 //    languages off the ElevenLabs rung; this is the lock that holds even against a hand-made request.
+//    ONE EXCEPTION, BY DECISION: SETSWANA (SP-117). Tumo chose ElevenLabs first for it, knowing it
+//    is not on ElevenLabs' list. It goes to `eleven_v3` (the widest-language model) with NO
+//    `language_code`, so ElevenLabs is not handed a code it does not recognise. The other eight
+//    indigenous languages are still refused here.
 // 2. IT WILL NOT SILENTLY BURN THE QUOTA. Starter tier = 40 000 characters a month; one passage is
 //    ~800. There is a hard per-request ceiling here, a rate limit in front of it (./http.mjs), and the
 //    client caches every clip so the same passage is only ever paid for once.
@@ -58,13 +62,27 @@ export const BOTLHALE_LANGS = {
   ve: "ve-ZA",
 };
 
+/** Languages ElevenLabs does NOT list that are sent to it anyway, each by a recorded decision.
+ *  Must match `LanguageMeta.elevenlabsByDecision` (a test holds them together). No language code is
+ *  sent for these. SP-117: Setswana. */
+export const ELEVENLABS_BY_DECISION = {
+  tn: { model: "eleven_v3" },
+};
+
 const ELEVENLABS_BASE_URL = "https://api.elevenlabs.io";
 const BOTLHALE_BASE_URL = "https://api.botlhale.xyz";
 const trimBase = (url, fallback) => (url || fallback).replace(/\/+$/, "");
 
 /** Pure: which model voices this language, or null if ElevenLabs does not speak it at all. */
 export function modelFor(lang) {
-  return Object.hasOwn(ELEVENLABS_LANGS, lang) ? ELEVENLABS_LANGS[lang].model : null;
+  if (Object.hasOwn(ELEVENLABS_LANGS, lang)) return ELEVENLABS_LANGS[lang].model;
+  if (Object.hasOwn(ELEVENLABS_BY_DECISION, lang)) return ELEVENLABS_BY_DECISION[lang].model;
+  return null;
+}
+
+/** Pure: the language_code to send, or null to send none (a language sent by decision, SP-117). */
+export function elevenLabsCodeFor(lang) {
+  return Object.hasOwn(ELEVENLABS_LANGS, lang) ? ELEVENLABS_LANGS[lang].code : null;
 }
 
 /** Pure: why a synthesis request must not be made, or null if it may. */
@@ -92,7 +110,7 @@ export function buildElevenLabsTtsRequest({ text, languageCode, modelId, apiKey,
     url: `${trimBase(baseUrl, ELEVENLABS_BASE_URL)}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=${OUTPUT_FORMAT}`,
     method: "POST",
     headers: { "Content-Type": "application/json", "xi-api-key": apiKey },
-    body: JSON.stringify({ text, model_id: modelId, language_code: languageCode }),
+    body: JSON.stringify({ text, model_id: modelId, ...(languageCode ? { language_code: languageCode } : {}) }),
   };
 }
 
@@ -192,8 +210,8 @@ export async function synthesize({ provider, lang, text }, env, fetchFn = fetch)
     if (!env.ELEVENLABS_API_KEY) throw new Error("ElevenLabs: not configured");
     const req = buildElevenLabsTtsRequest({
       text: clean,
-      languageCode: ELEVENLABS_LANGS[lang].code,
-      modelId: ELEVENLABS_LANGS[lang].model,
+      languageCode: elevenLabsCodeFor(lang),
+      modelId: modelFor(lang),
       apiKey: env.ELEVENLABS_API_KEY,
       voiceId: env.ELEVENLABS_VOICE_ID,
     });
